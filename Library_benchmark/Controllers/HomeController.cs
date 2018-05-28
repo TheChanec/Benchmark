@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library_benchmark.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,7 +19,19 @@ namespace Library_benchmark.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult NPOIResult(Parametros parametros)
+        {
+            return View();
+        }
+
         public ActionResult EPPLUSResult()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult EPPLUSResult(Parametros parametros)
         {
             return View();
         }
