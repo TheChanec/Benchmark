@@ -13,6 +13,17 @@ namespace Library_benchmark.Controllers
             return View();
         }
 
+        public ActionResult NPOIResult()
+        {
+            return View();
+        }
+
+        public ActionResult EPPLUSResult()
+        {
+            return View();
+        }
+
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
