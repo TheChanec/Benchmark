@@ -1,4 +1,5 @@
-﻿using Library_benchmark.Models;
+﻿using Library_benchmark.Helpers;
+using Library_benchmark.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,9 @@ namespace Library_benchmark.Controllers
         }
 
         [HttpPost]
-        public ActionResult NPOIResult(Parametros parametros)
+        public JsonResult NPOIResult(Parametros parametros)
         {
-            return View();
+            return Json(new { }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult EPPLUSResult()
@@ -33,7 +34,11 @@ namespace Library_benchmark.Controllers
         [HttpPost]
         public ActionResult EPPLUSResult(Parametros parametros)
         {
-            return View();
+            var cabeceras = new Consultas().Cabeceras();
+            var informacion = new Consultas().Informacion();
+            
+            var excel = new EPPLUSServicio(cabeceras, informacion);
+            return PartialView("About");
         }
 
 
@@ -41,7 +46,7 @@ namespace Library_benchmark.Controllers
         {
             ViewBag.Message = "Your application description page.";
 
-            return View();
+            return PartialView();
         }
 
         public ActionResult Contact()
