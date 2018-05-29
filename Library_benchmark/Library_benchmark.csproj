@@ -160,12 +160,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\Consultas.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EPPLUSServicio.cs" />
     <Compile Include="Models\EPPLUS.cs" />
+    <Compile Include="Models\Header.cs" />
     <Compile Include="Models\NPOI.cs" />
+    <Compile Include="Models\Parametros.cs" />
     <Compile Include="Models\Resultados.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
