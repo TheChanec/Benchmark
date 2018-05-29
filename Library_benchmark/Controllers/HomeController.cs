@@ -2,6 +2,7 @@
 using Library_benchmark.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -34,10 +35,22 @@ namespace Library_benchmark.Controllers
         [HttpPost]
         public ActionResult EPPLUSResult(Parametros parametros)
         {
-            var cabeceras = new Consultas().Cabeceras();
-            var informacion = new Consultas().Informacion();
-            
-            var excel = new EPPLUSServicio(cabeceras, informacion);
+            IList<Elemento1> informacion = new Consultas(parametros.Rows).GetInformacion();
+            if (informacion != null) {
+                var excel = new EPPLUSServicio(informacion, parametros.Sheets).GetExcelExample();
+                var fileStream = new MemoryStream();
+                excel.SaveAs(fileStream);
+                fileStream.Position = 0;
+
+
+                var fileDownloadName = "sample.xlsx";
+                var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                var fsr = new FileStreamResult(fileStream, contentType);
+                fsr.FileDownloadName = fileDownloadName;
+
+                return fsr;
+            }
             return PartialView("About");
         }
 

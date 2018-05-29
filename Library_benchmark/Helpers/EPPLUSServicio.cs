@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using Library_benchmark.Models;
+using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
@@ -11,20 +12,38 @@ namespace Library_benchmark.Helpers
     public class EPPLUSServicio
     {
         private ExcelPackage excel;
-        private object cabeceras;
-        private object informacion;
+        private IList<Elemento1> informacion;
         private ExcelWorksheet currentsheet;
 
-        public EPPLUSServicio(object cabeceras, object informacion)
+        public EPPLUSServicio(IList<Elemento1> informacion, int sheets)
         {
-            this.cabeceras = cabeceras;
             this.informacion = informacion;
+
+            createWorkBook();
+            for (int i = 0; i <= sheets; i++)
+            {
+
+                if (i == 0)
+                {
+                    addSheet("Portada");
+                    ImagePortada();
+                }
+                else
+                {
+                    addSheet("Sheet" + i);
+                    addInformation();
+                }
+            }
+
+        }
+
+        public EPPLUSServicio()
+        {
         }
 
         private void createWorkBook()
         {
             excel = new ExcelPackage();
-            addSheet("Sheet1");
         }
 
         private void addSheet(string name)
@@ -32,40 +51,33 @@ namespace Library_benchmark.Helpers
             currentsheet = excel.Workbook.Worksheets.Add(name);
         }
 
-        private void addCol(int row, int col, string headerText, IEnumerable<string> info)
+        internal ExcelPackage GetExcelExample()
         {
-            if (info.Select(x => x) != null)
-            {
-                currentsheet.Cells[row, col].Value = headerText;
-                currentsheet.Cells[row, col].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                currentsheet.Cells[row, col].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(45, 0, 42, 89));
-                currentsheet.Cells[row, col].Style.Font.Color.SetColor(Color.White);
-                currentsheet.Cells[row, col].Style.Font.Bold = true;
 
-                currentsheet.Cells[row, col].Value = headerText;
-                try
-                {
-                    currentsheet.Cells[row + 1, col].LoadFromCollection(info, false);
-                }
-                catch (Exception)
-                {
+            // FormatExcel();
 
-                    //throw;
-                }
-            }
-            else {
-
-            }
-            
+            return excel;
         }
 
-        private void createExcelExample()
+        private void ImagePortada()
         {
+            Image logo = Image.FromFile("C:/Users/mario.chan/Documents/GitHub/Library_benchmark/Library_benchmark/Content/images/net.png");
+            var picture = currentsheet.Drawings.AddPicture("32", logo);
+            picture.SetPosition(1 * 5, 0, 2, 0);
         }
 
-        enum Labels {
-            Hola ="",
-            Adios=""
+        private void FormatExcel()
+        {
+
         }
+
+        private void addInformation()
+        {
+
+            currentsheet.Cells[1, 1].LoadFromCollection(informacion, true);
+
+
+        }
+
     }
 }

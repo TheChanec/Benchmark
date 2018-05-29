@@ -6,21 +6,15 @@ namespace Library_benchmark.Controllers
 {
     internal class Consultas
     {
-        public Consultas()
-        {
-        }
+        private int rows;
 
-        internal object Cabeceras()
+        public Consultas(int rows)
         {
-            throw new NotImplementedException();
+            this.rows = rows;
         }
+        
 
-        internal object Informacion()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal IList<Elemento1> Informacion(int rows)
+        internal IList<Elemento1> GetInformacion()
         {
             if (rows > 0)
             {
@@ -29,32 +23,32 @@ namespace Library_benchmark.Controllers
                 {
                     respuesta.Add(new Elemento1
                     {
-                        Propiedad1 = "col " + i,
-                        Propiedad2 = "col " + i,
-                        Propiedad3 = "col " + i,
-                        Propiedad4 = "col " + i,
-                        Propiedad5 = "col " + i,
-                        Propiedad6 = "col " + i,
-                        Propiedad7 = "col " + i,
-                        Propiedad8 = "col " + i,
-                        Propiedad9 = "col " + i,
-                        Propiedad10 = "col " + i,
-                        Propiedad11 = "col " + i,
-                        Propiedad12 = "col " + i,
-                        Propiedad13 = "col " + i,
-                        Propiedad14 = "col " + i,
-                        Propiedad15 = "col " + i,
-                        Propiedad16 = "col " + i,
-                        Propiedad17 = "col " + i,
-                        Propiedad18 = "col " + i,
-                        Propiedad19 = "col " + i,
-                        Propiedad20 = "col " + i,
-                        Propiedad21 = "col " + i,
-                        Propiedad22 = "col " + i,
-                        Propiedad23 = "col " + i,
-                        Propiedad24 = "col " + i,
-                        Propiedad25 = "col " + i,
-                        Propiedad26 = "col " + i,
+                        Propiedad1 = "row  " + i,
+                        Propiedad2 = "row  " + i,
+                        Propiedad3 = "row  " + i,
+                        Propiedad4 = "row  " + i,
+                        Propiedad5 = "row  " + i,
+                        Propiedad6 = "row  " + i,
+                        Propiedad7 = "row  " + i,
+                        Propiedad8 = "row  " + i,
+                        Propiedad9 = "row  " + i,
+                        Propiedad10 = "row  " + i,
+                        Propiedad11 = "row  " + i,
+                        Propiedad12 = "row  " + i,
+                        Propiedad13 = "row  " + i,
+                        Propiedad14 = "row  " + i,
+                        Propiedad15 = "row  " + i,
+                        Propiedad16 = "row  " + i,
+                        Propiedad17 = "row  " + i,
+                        Propiedad18 = "row  " + i,
+                        Propiedad19 = "row  " + i,
+                        Propiedad20 = "row  " + i,
+                        Propiedad21 = "row  " + i,
+                        Propiedad22 = "row  " + i,
+                        Propiedad23 = "row  " + i,
+                        Propiedad24 = "row  " + i,
+                        Propiedad25 = "row  " + i,
+                        Propiedad26 = "row  " + i
 
                     });
                 }
