@@ -1,0 +1,23 @@
+﻿@model  Library_benchmark.Models.Resultado
+<h4>Resultados: </h4>
+@if (Model != null)
+{
+    if (Model.Tiempos != null)
+    {
+        foreach (var item in Model.Tiempos.OrderBy(x => x.TiempoDeEjecucion))
+        {
+<p><small>@item.TiempoDeEjecucion (rows @item.Parametro.Rows - sheet @item.Parametro.Sheets ) </small>  @item.Libreria   </p>
+        }
+
+    }
+    else
+    {
+        <h2>Nada por aqui</h2>
+    }
+}
+else
+{
+    <h2>Nada por aqui</h2>
+}
+
+

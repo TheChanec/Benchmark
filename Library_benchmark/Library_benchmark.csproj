@@ -166,11 +166,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EPPLUSServicio.cs" />
+    <Compile Include="Helpers\NPOIService.cs" />
     <Compile Include="Models\EPPLUS.cs" />
     <Compile Include="Models\Elemento1.cs" />
     <Compile Include="Models\NPOI.cs" />
     <Compile Include="Models\Parametros.cs" />
-    <Compile Include="Models\Resultados.cs" />
+    <Compile Include="Models\Resultado.cs" />
+    <Compile Include="Models\Tiempo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +253,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\NPOIResult.cshtml" />
     <Content Include="Views\Home\EPPLUSResult.cshtml" />
+    <Content Include="Views\Home\Tiempos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
