@@ -63,7 +63,7 @@ namespace Library_benchmark.Helpers
         {
             Image logo = Image.FromFile("C:/Users/mario.chan/Documents/GitHub/Library_benchmark/Library_benchmark/Content/images/net.png");
             var picture = currentsheet.Drawings.AddPicture("32", logo);
-            picture.SetPosition(1 * 5, 0, 2, 0);
+            picture.SetPosition(2, 0, 2, 0);
         }
 
         private void FormatExcel()
