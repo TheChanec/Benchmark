@@ -1,5 +1,6 @@
 ﻿using Library_benchmark.Helpers;
 using Library_benchmark.Models;
+using NPOI.HSSF.UserModel;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -62,22 +63,27 @@ namespace Library_benchmark.Controllers
             {
                 Resultado res = Resultado.Instance;
                 Stopwatch stopWatch = Stopwatch.StartNew();
-                using (var exportData = new MemoryStream())
+                FileContentResult file;
+
+                var excel = new NPOIService(informacion, parametros.Sheets).GetExcelExample();
+                if (parametros.Design)
                 {
-                    var excel = new NPOIService(informacion, parametros.Sheets).GetExcelExample();
-                    excel.Write(exportData);
-
-                    string saveAsFileName = string.Format("MembershipExport-{0:d}.xls", DateTime.Now).Replace("/", "-");
-
-                    byte[] bytes = exportData.ToArray();
-                    stopWatch.Stop();
-                    res.Tiempos.Add(new Tiempo { Parametro = parametros, Libreria = "NPOI", TiempoDeEjecucion = stopWatch.Elapsed.ToString() });
-                    return File(bytes, "application/vnd.ms-excel", saveAsFileName);
+                    var design = new NPOIDesign(excel).GetExcelExample();
+                    file = NPOIdownload(design);
                 }
+                else {
+                    file = NPOIdownload(excel);
+                }
+                
 
+                stopWatch.Stop();
+                res.Tiempos.Add(new Tiempo { Parametro = parametros, Libreria = "NPOI", TiempoDeEjecucion = stopWatch.Elapsed.ToString() });
+                return file;
             }
             return null;
         }
+
+       
 
         [HttpPost]
         public ActionResult EPPLUSResult(Parametros parametros)
@@ -98,9 +104,8 @@ namespace Library_benchmark.Controllers
                     file = EPPlusDownload(design);
                 }
                 else
-                {
                     file = EPPlusDownload(excel);
-                }
+
 
 
                 stopWatch.Stop();
@@ -129,6 +134,20 @@ namespace Library_benchmark.Controllers
             return fsr;
         }
 
+        private FileContentResult NPOIdownload(HSSFWorkbook excel)
+        {
+            using (var exportData = new MemoryStream())
+            {
+
+                excel.Write(exportData);
+
+                string saveAsFileName = string.Format("MembershipExport-{0:d}.xls", DateTime.Now).Replace("/", "-");
+
+                byte[] bytes = exportData.ToArray();
+                
+                return File(bytes, "application/vnd.ms-excel", saveAsFileName);
+            }
+        }
 
         #endregion
 

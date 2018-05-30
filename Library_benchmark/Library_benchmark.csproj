@@ -162,9 +162,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\Consultas.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Helpers\NPOIDesign.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EPPlusDesign.cs" />
     <Compile Include="Helpers\EPPLUSServicio.cs" />
     <Compile Include="Helpers\NPOIService.cs" />
     <Compile Include="Models\EPPLUS.cs" />
