@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Library_benchmark.Models
 {
-    public class Elemento1
+    public class Dummy
     {
         public string Propiedad1 { get; set; }
         public string Propiedad2 { get; set; }

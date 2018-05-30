@@ -14,14 +14,14 @@ namespace Library_benchmark.Controllers
         }
         
 
-        internal IList<Elemento1> GetInformacion()
+        internal IList<Dummy> GetInformacion()
         {
             if (rows > 0)
             {
-                IList<Elemento1> respuesta = new List<Elemento1>();
+                IList<Dummy> respuesta = new List<Dummy>();
                 for (int i = 0; i <= rows; i++)
                 {
-                    respuesta.Add(new Elemento1
+                    respuesta.Add(new Dummy
                     {
                         Propiedad1 = "row  " + i,
                         Propiedad2 = "row  " + i,

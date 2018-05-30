@@ -10,11 +10,11 @@ namespace Library_benchmark.Helpers
 {
     public class NPOIService
     {
-        private IList<Elemento1> informacion;
+        private IList<Dummy> informacion;
         private HSSFWorkbook excel;
         private ISheet currentsheet;
 
-        public NPOIService(IList<Elemento1> informacion, int sheets)
+        public NPOIService(IList<Dummy> informacion, int sheets)
         {
             this.informacion = informacion;
             createWorkBook();
@@ -57,7 +57,7 @@ namespace Library_benchmark.Helpers
 
         private void addInformation()
         {
-            Type type = typeof(Elemento1);
+            Type type = typeof(Dummy);
 
             ICreationHelper cH = excel.GetCreationHelper();
 

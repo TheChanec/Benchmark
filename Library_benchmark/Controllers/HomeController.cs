@@ -56,7 +56,7 @@ namespace Library_benchmark.Controllers
         [HttpPost]
         public FileResult NPOIResult(Parametros parametros)
         {
-            IList<Elemento1> informacion = new Consultas(parametros.Rows).GetInformacion();
+            IList<Dummy> informacion = new Consultas(parametros.Rows).GetInformacion();
 
 
             if (informacion != null)
@@ -75,20 +75,17 @@ namespace Library_benchmark.Controllers
                     file = NPOIdownload(excel);
                 }
                 
-
                 stopWatch.Stop();
                 res.Tiempos.Add(new Tiempo { Parametro = parametros, Libreria = "NPOI", TiempoDeEjecucion = stopWatch.Elapsed.ToString() });
                 return file;
             }
             return null;
         }
-
-       
-
+        
         [HttpPost]
         public ActionResult EPPLUSResult(Parametros parametros)
         {
-            IList<Elemento1> informacion = new Consultas(parametros.Rows).GetInformacion();
+            IList<Dummy> informacion = new Consultas(parametros.Rows).GetInformacion();
             if (informacion != null)
             {
 

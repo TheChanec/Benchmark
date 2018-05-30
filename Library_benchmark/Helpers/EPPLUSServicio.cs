@@ -12,10 +12,10 @@ namespace Library_benchmark.Helpers
     public class EPPLUSServicio
     {
         private ExcelPackage excel;
-        private IList<Elemento1> informacion;
+        private IList<Dummy> informacion;
         private ExcelWorksheet currentsheet;
 
-        public EPPLUSServicio(IList<Elemento1> informacion, int sheets)
+        public EPPLUSServicio(IList<Dummy> informacion, int sheets)
         {
             this.informacion = informacion;
 
