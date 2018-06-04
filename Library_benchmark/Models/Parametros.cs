@@ -11,5 +11,6 @@ namespace Library_benchmark.Models
         public int Cols { get; set; }
         public int Sheets { get; set; }
         public bool Design { get; set; }
+        public bool Resource { get; set; }
     }
 }

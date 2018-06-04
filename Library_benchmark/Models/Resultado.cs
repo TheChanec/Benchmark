@@ -1,31 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace Library_benchmark.Models
 {
     public class Resultado
     {
-        public List<Tiempo> Tiempos { get; set; }
-        
-        private static Resultado instance = null;
-        private static readonly object padlock = new object();
+        private List<Tiempo> _tiempos = new List<Tiempo>();
 
-        private Resultado() { }
+        public Parametros Parametro { get; set; }
 
-        public static Resultado Instance
-        {
-            get
-            {
-                if (instance == null) {
-                    instance = new Resultado();
-                    instance.Tiempos = new List<Tiempo>();
-                }
-                    
-
-                return instance;
-            }
-        }
+        public string Libreria { get; set; }
+        public List<Tiempo> Tiempos { get => _tiempos; set => _tiempos = value; }
     }
 }

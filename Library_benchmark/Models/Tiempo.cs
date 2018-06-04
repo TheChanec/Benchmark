@@ -2,10 +2,7 @@
 {
     public class Tiempo
     {
-        public Parametros Parametro { get; set; }
-
-        public string Libreria { get; set; }
-
-        public string TiempoDeEjecucion { get; set; }
+        public string Descripcion { get; set; }
+        public string Value { get; set; }
     }
 }

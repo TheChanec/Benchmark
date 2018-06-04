@@ -17,11 +17,33 @@ namespace Library_benchmark.Helpers
         private HSSFWorkbook excel;
         private ISheet currentsheet;
 
+
         public NPOIService(IList<Dummy> informacion, int sheets)
         {
             this.informacion = informacion;
             createWorkBook();
+            createSheets(sheets, true);
 
+        }
+
+        public NPOIService(byte[] excelFile, IList<Dummy> informacion, int sheets)
+        {
+            this.informacion = informacion;
+
+            var fs = new MemoryStream(excelFile);
+            excel = new HSSFWorkbook(fs);
+            createSheets(sheets, true);
+        }
+
+        public NPOIService(int sheets)
+        {
+            createWorkBook();
+            createSheets(sheets);
+
+        }
+
+        private void createSheets(int sheets, bool addInfo = false)
+        {
             for (int i = 0; i < sheets; i++)
             {
                 if (i == 0)
@@ -32,30 +54,15 @@ namespace Library_benchmark.Helpers
                 else
                 {
                     addSheet("Sheet" + i);
-                    addInformation();
+                    if (addInfo)
+                        addInformation();
+
                 }
             }
         }
 
         private void ImagePortada()
         {
-            //Image image = Image.FromFile("C:/Users/mario.chan/Documents/GitHub/Library_benchmark/Library_benchmark/Content/images/net.png");
-            //MemoryStream ms = new MemoryStream();
-            //image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-            //IDrawing patriarch = currentsheet.CreateDrawingPatriarch();
-            //int intx1 = 1;
-            //int inty1 = 1;
-
-            //int intx2 = 2;
-            //int inty2 = 2;
-
-
-            //HSSFClientAnchor anchor = new HSSFClientAnchor(1023, 0, 1023, 255, intx1, inty1, intx2, inty2);
-            ////types are 0, 2, and 3. 0 resizes within the cell, 2 doesn’t
-            //anchor.AnchorType = AnchorType.MoveAndResize;
-            ////add the byte array and encode it for the excel file
-            //int index = excel.AddPicture(ms.ToArray(),PictureType.PNG);
-            //IPicture signaturePicture = patriarch.CreatePicture(anchor, index);
 
 
             Image image = Image.FromFile("C:/Users/mario.chan/Documents/GitHub/Library_benchmark/Library_benchmark/Content/images/net.png");
@@ -84,7 +91,9 @@ namespace Library_benchmark.Helpers
 
         private void addSheet(string name)
         {
-            currentsheet = excel.CreateSheet(name);
+            currentsheet = excel.GetSheet(name);
+            if (currentsheet == null)
+                currentsheet = excel.CreateSheet(name);
         }
 
         internal HSSFWorkbook GetExcelExample()
@@ -94,9 +103,7 @@ namespace Library_benchmark.Helpers
 
         private void addInformation()
         {
-            Type type = typeof(Dummy);
 
-            ICreationHelper cH = excel.GetCreationHelper();
 
             int cont = 0;
             foreach (var item in informacion)
@@ -135,5 +142,7 @@ namespace Library_benchmark.Helpers
             }
 
         }
+
+
     }
 }

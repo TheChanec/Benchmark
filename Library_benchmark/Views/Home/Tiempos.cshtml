@@ -1,23 +1,94 @@
-﻿@model  Library_benchmark.Models.Resultado
-<h4>Resultados: </h4>
-@if (Model != null)
-{
-    if (Model.Tiempos != null)
-    {
-        foreach (var item in Model.Tiempos.OrderBy(x => x.TiempoDeEjecucion))
-        {
-<p><small>@item.TiempoDeEjecucion (rows @item.Parametro.Rows - sheet @item.Parametro.Sheets ) </small>  @item.Libreria   </p>
-        }
+﻿@model  ICollection<Library_benchmark.Models.Resultado>
 
-    }
-    else
-    {
-        <h2>Nada por aqui</h2>
-    }
-}
-else
-{
-    <h2>Nada por aqui</h2>
-}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Resultados
+    </div>
+    
+        @if (Model != null)
+        {
+            if (Model != null)
+            {
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr class="info">
+                            <td>
+                                Libreria
+                            </td>
+                            <td>
+                                Recurso
+                            </td>
+                            <td>
+                                Rows
+                            </td>
+                            <td>
+                                Sheet
+                            </td>
+
+                            <td>
+                                Tiempos
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Libreria
+                                </td>
+                                <td>
+                                    @item.Parametro.Resource
+                                </td>
+                                <td>
+                                    @item.Parametro.Rows
+                                </td>
+                                <td>
+                                    @item.Parametro.Sheets
+                                </td>
+                                <td>
+                                    @if (item.Tiempos != null)
+                                    {
+                                        <ul class="list-group">
+                                            @foreach (var time in item.Tiempos)
+                                            {
+
+                                                <li class="list-group-item">
+                                                    <span class="badge">@time.Descripcion</span>
+                                                    @time.Value
+
+                                                </li>
+                                            }
+                                        </ul>
+
+                                    }
+
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    </tbody>
+
+                </table>
+
+
+            }
+            else
+            {
+                <h2>Nada por aqui</h2>
+            }
+        }
+        else
+        {
+            <h2>Nada por aqui</h2>
+        }
+    
+
+</div>
+
+
 
 

@@ -3,17 +3,17 @@
 }
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         @{
             Html.RenderPartial("EPPLUSResult");
         }
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         @{
             Html.RenderPartial("NPOIResult");
         }
     </div>
-    <div class="col-md-4" id="reporte-content">
+    <div class="col-md-6" id="reporte-content">
         @{ 
             Html.RenderAction("Tiempos");
 
