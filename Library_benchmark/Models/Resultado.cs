@@ -4,6 +4,7 @@ namespace Library_benchmark.Models
 {
     public class Resultado
     {
+        public int Intento { get; set; }
         private List<Tiempo> _tiempos = new List<Tiempo>();
 
         public Parametros Parametro { get; set; }

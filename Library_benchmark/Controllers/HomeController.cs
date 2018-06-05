@@ -58,6 +58,7 @@ namespace Library_benchmark.Controllers
         public FileResult NPOIResult(Parametros parametros)
         {
             Singleton res = Singleton.Instance;
+            
             Stopwatch stopWatch = Stopwatch.StartNew();
             IList<Dummy> informacion = new Consultas(parametros.Rows).GetInformacion();
 
@@ -72,7 +73,7 @@ namespace Library_benchmark.Controllers
                 Stopwatch watchCreation = Stopwatch.StartNew();
 
                 if (parametros.Resource)
-                    excel = new NPOIService(Resources.Book1, informacion, parametros.Sheets).GetExcelExample();
+                    excel = new NPOIService(Resources.BookNPOI, informacion, parametros.Sheets).GetExcelExample();
 
                 else
                     excel = new NPOIService(informacion, parametros.Sheets).GetExcelExample();
@@ -140,7 +141,7 @@ namespace Library_benchmark.Controllers
                 Stopwatch watchCreation = Stopwatch.StartNew();
 
                 if (parametros.Resource)
-                    excel = new EPPLUSServicio(informacion, parametros.Sheets).GetExcelExample();
+                    excel = new EPPLUSServicio(@"C:\Users\mario.chan\Documents\GitHub\Library_benchmark\Library_benchmark\Resource\Book1.xls", informacion, parametros.Sheets).GetExcelExample();
                 else
                     excel = new EPPLUSServicio(informacion, parametros.Sheets).GetExcelExample();
 

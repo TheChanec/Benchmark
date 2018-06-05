@@ -4,6 +4,7 @@ using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 
@@ -35,6 +36,29 @@ namespace Library_benchmark.Helpers
                 }
             }
             
+        }
+
+        public EPPLUSServicio(string path,IList<Dummy> informacion, int sheets)
+        {
+            this.informacion = informacion;
+
+            excel = new ExcelPackage(new FileInfo(path));
+
+            for (int i = 0; i <= sheets; i++)
+            {
+
+                if (i == 0)
+                {
+                    addSheet("Portada");
+                    ImagePortada();
+                }
+                else
+                {
+                    addSheet("Sheet" + i);
+                    addInformation();
+                }
+            }
+
         }
 
         public EPPLUSServicio()
