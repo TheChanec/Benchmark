@@ -23,14 +23,15 @@ namespace Library_benchmark.Controllers
                 {
                     respuesta.Add(new Dummy
                     {
-                        Propiedad1 = "row  " + i,
-                        Propiedad2 = "row  " + i,
-                        Propiedad3 = "row  " + i,
-                        Propiedad4 = "row  " + i,
-                        Propiedad5 = "row  " + i,
-                        Propiedad6 = "row  " + i,
-                        Propiedad7 = "row  " + i,
-                        Propiedad8 = "row  " + i,
+                        Fecha1 = DateTime.Now.Date,
+                        Fecha2 = DateTime.Now.Date,
+                        Fecha3 = DateTime.Now.Date,
+                        Fecha4 = DateTime.Now.Date,
+                        Moneda1 = (decimal)i,
+                        Moneda2 = (decimal)i,
+                        Moneda3 = (decimal)i,
+                        Moneda4 = (decimal)i,
+                        
                         Propiedad9 = "row  " + i,
                         Propiedad10 = "row  " + i,
                         Propiedad11 = "row  " + i,

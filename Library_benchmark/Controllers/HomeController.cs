@@ -76,7 +76,7 @@ namespace Library_benchmark.Controllers
                     excel = new NPOIService(Resources.BookNPOI, informacion, parametros.Sheets).GetExcelExample();
 
                 else
-                    excel = new NPOIService(informacion, parametros.Sheets).GetExcelExample();
+                    excel = new NPOIService(informacion, parametros.Design, parametros.Sheets).GetExcelExample();
 
 
                 watchCreation.Stop();
@@ -89,7 +89,7 @@ namespace Library_benchmark.Controllers
                 if (parametros.Design)
                 {
                     Stopwatch watchDesign = Stopwatch.StartNew();
-                    excel = new NPOIDesign(excel, true).GetExcelExample();
+                    excel = new NPOIDesign(excel, parametros.Resource).GetExcelExample();
                     
                     watchDesign.Stop();
                     result.Tiempos.Add(new Tiempo
@@ -141,9 +141,9 @@ namespace Library_benchmark.Controllers
                 Stopwatch watchCreation = Stopwatch.StartNew();
 
                 if (parametros.Resource)
-                    excel = new EPPLUSServicio(@"C:\Users\mario.chan\Documents\GitHub\Library_benchmark\Library_benchmark\Resource\Book1.xls", informacion, parametros.Sheets).GetExcelExample();
+                    excel = new EPPLUSServicio(@"C:\Users\mario.chan\Documents\GitHub\Library_benchmark\Library_benchmark\Resource\BookEPPLUS.xlsx", informacion, parametros.Sheets).GetExcelExample();
                 else
-                    excel = new EPPLUSServicio(informacion, parametros.Sheets).GetExcelExample();
+                    excel = new EPPLUSServicio(informacion, parametros.Design,  parametros.Sheets).GetExcelExample();
 
                 watchCreation.Stop();
                 result.Tiempos.Add(new Tiempo
@@ -156,7 +156,7 @@ namespace Library_benchmark.Controllers
                 if (parametros.Design)
                 {
                     Stopwatch watchDesign = Stopwatch.StartNew();
-                    excel = new EPPlusDesign(excel, true).GetExcelExample();
+                    excel = new EPPlusDesign(excel,  parametros.Resource).GetExcelExample();
                     watchDesign.Stop();
                     result.Tiempos.Add(new Tiempo
                     {

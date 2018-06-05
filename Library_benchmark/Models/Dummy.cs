@@ -7,14 +7,14 @@ namespace Library_benchmark.Models
 {
     public class Dummy
     {
-        public string Propiedad1 { get; set; }
-        public string Propiedad2 { get; set; }
-        public string Propiedad3 { get; set; }
-        public string Propiedad4 { get; set; }
-        public string Propiedad5 { get; set; }
-        public string Propiedad6 { get; set; }
-        public string Propiedad7 { get; set; }
-        public string Propiedad8 { get; set; }
+        public DateTime Fecha1 { get; set; }
+        public DateTime Fecha2 { get; set; }
+        public DateTime Fecha3 { get; set; }
+        public DateTime Fecha4 { get; set; }
+        public decimal Moneda1 { get; set; }
+        public decimal Moneda2 { get; set; }
+        public decimal Moneda3 { get; set; }
+        public decimal Moneda4 { get; set; }
         public string Propiedad9 { get; set; }
         public string Propiedad10 { get; set; }
         public string Propiedad11 { get; set; }
