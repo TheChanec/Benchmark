@@ -169,6 +169,7 @@
     <Compile Include="Helpers\EPPlusDesign.cs" />
     <Compile Include="Helpers\EPPLUSServicio.cs" />
     <Compile Include="Helpers\NPOIService.cs" />
+    <Compile Include="Models\DummyView.cs" />
     <Compile Include="Models\EPPLUS.cs" />
     <Compile Include="Models\Dummy.cs" />
     <Compile Include="Models\NPOI.cs" />

@@ -12,5 +12,6 @@ namespace Library_benchmark.Models
         public int Sheets { get; set; }
         public bool Design { get; set; }
         public bool Resource { get; set; }
+        public int Iteraciones { get; set; }
     }
 }

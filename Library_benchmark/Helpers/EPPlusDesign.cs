@@ -99,6 +99,7 @@ namespace Library_benchmark.Helpers
 
         internal ExcelPackage GetExcelExample()
         {
+            
             return excel;
         }
     }

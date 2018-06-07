@@ -4,7 +4,7 @@
     <div class="panel-heading">
         Resultados
     </div>
-    
+     @Html.ActionLink("Singleton", "DownloadSingleton")
         @if (Model != null)
         {
             if (Model != null)
@@ -12,6 +12,9 @@
                 <table class="table table-responsive table-striped">
                     <thead>
                         <tr class="info">
+                            <td>
+                                iteracion
+                            </td>
                             <td>
                                 Libreria
                             </td>
@@ -34,39 +37,42 @@
 
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
-                                    @item.Libreria
-                                </td>
-                                <td>
-                                    @item.Parametro.Resource
-                                </td>
-                                <td>
-                                    @item.Parametro.Rows
-                                </td>
-                                <td>
-                                    @item.Parametro.Sheets
-                                </td>
-                                <td>
-                                    @if (item.Tiempos != null)
-                                    {
-                                        <ul class="list-group">
-                                            @foreach (var time in item.Tiempos)
-                                            {
+                        <tr>
+                            <td>
+                                @item.Intento
+                            </td>
+                            <td>
+                                @item.Libreria
+                            </td>
+                            <td>
+                                @item.Parametro.Resource
+                            </td>
+                            <td>
+                                @item.Parametro.Rows
+                            </td>
+                            <td>
+                                @item.Parametro.Sheets
+                            </td>
+                            <td>
+                                @if (item.Tiempos != null)
+        {
+                        <ul class="list-group">
+                            @foreach (var time in item.Tiempos)
+    {
 
-                                                <li class="list-group-item">
-                                                    <span class="badge">@time.Descripcion</span>
-                                                    @time.Value
+                        <li class="list-group-item">
+                            <span class="badge">@time.Descripcion</span>
+                            @time.Value
 
-                                                </li>
-                                            }
-                                        </ul>
+                        </li>
+}
+                        </ul>
 
-                                    }
+}
 
-                                </td>
+                            </td>
 
-                            </tr>
+                        </tr>
 
                         }
 
