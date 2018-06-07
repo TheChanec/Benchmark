@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Library_benchmark.Controllers
+namespace Library_benchmark.Helpers
 {
     internal class Consultas
     {

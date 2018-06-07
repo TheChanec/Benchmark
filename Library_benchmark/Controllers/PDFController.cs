@@ -6,13 +6,12 @@ using System.Web.Mvc;
 
 namespace Library_benchmark.Controllers
 {
-    public class HomeController : Controller
+    public class PDFController : Controller
     {
+        // GET: PDF
         public ActionResult Index()
         {
             return View();
         }
-
-       
     }
 }
