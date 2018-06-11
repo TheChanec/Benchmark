@@ -15,7 +15,7 @@ namespace Library_benchmark.Controllers.Tests
         public void EPPLUSResultTest()
         {
             ExcelController controller = new ExcelController();
-            var parametros = new Models.Parametros() { Cols =5 , Rows = 3  } ;
+            var parametros = new Models.ParametrosExcel() { Cols =5 , Rows = 3  } ;
             //var result = controller.EPPLUSResult(parametros);
 
             Assert.Fail();

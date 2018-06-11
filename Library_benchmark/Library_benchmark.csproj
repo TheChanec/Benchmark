@@ -167,13 +167,14 @@
     <Compile Include="Controllers\PDFController.cs" />
     <Compile Include="Helpers\Consultas.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
-    <Compile Include="Helpers\NPOIDesign.cs" />
+    <Compile Include="Helpers\ITextSharp\ITextSharpServicio.cs" />
+    <Compile Include="Helpers\NPOI\NPOIDesign.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EPPlusDesign.cs" />
-    <Compile Include="Helpers\EPPLUSServicio.cs" />
-    <Compile Include="Helpers\NPOIService.cs" />
+    <Compile Include="Helpers\EPPlus\EPPlusDesign.cs" />
+    <Compile Include="Helpers\EPPlus\EPPLUSServicio.cs" />
+    <Compile Include="Helpers\NPOI\NPOIService.cs" />
     <Compile Include="Models\DummyView.cs" />
     <Compile Include="Models\EPPLUS.cs" />
     <Compile Include="Models\Dummy.cs" />
@@ -194,8 +195,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\goodmorning.jpg" />
     <Content Include="Content\images\net.png" />
-    <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -270,10 +271,9 @@
     <Content Include="Views\Excel\Tiempos.cshtml" />
     <Content Include="Views\Excel\Index.cshtml" />
     <Content Include="Views\PDF\Index.cshtml" />
+    <Content Include="Views\PDF\ITextSharp.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
