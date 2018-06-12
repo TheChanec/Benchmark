@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library_benchmark", "Library_benchmark\Library_benchmark.csproj", "{50BDB997-0BBB-4824-8471-FB6DAA7CD862}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "Library_benchmark\Benchmark.csproj", "{50BDB997-0BBB-4824-8471-FB6DAA7CD862}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library_benchmarkTests", "Library_benchmarkTests\Library_benchmarkTests.csproj", "{06A362F8-F7DD-4168-A54C-AD2D535E9035}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BenchmarkTests", "Library_benchmarkTests\BenchmarkTests.csproj", "{06A362F8-F7DD-4168-A54C-AD2D535E9035}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
