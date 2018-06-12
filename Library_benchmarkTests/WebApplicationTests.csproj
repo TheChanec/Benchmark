@@ -65,9 +65,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Library_benchmark\Benchmark.csproj">
+    <ProjectReference Include="..\Library_benchmark\WebApplication.csproj">
       <Project>{50BDB997-0BBB-4824-8471-FB6DAA7CD862}</Project>
-      <Name>Benchmark</Name>
+      <Name>WebApplication</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

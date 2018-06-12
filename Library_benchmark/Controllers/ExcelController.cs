@@ -21,9 +21,7 @@ namespace Library_benchmark.Controllers
         {
             return View();
         }
-
         
-
         public ActionResult NPOI()
         {
             return View();
