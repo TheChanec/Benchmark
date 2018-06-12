@@ -172,7 +172,7 @@ namespace Library_benchmark.Controllers
                     Stopwatch watchCreation = Stopwatch.StartNew();
 
                     if (parametros.Resource)
-                        excel = new EPPLUSServicio(@"C:\Users\mario.chan\Documents\GitHub\Library_benchmark\Library_benchmark\Resource\BookEPPLUS.xlsx", informacion, parametros.Sheets).GetExcelExample();
+                        excel = new EPPLUSServicio(@"C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Resource/BookEPPLUS.xlsx", informacion, parametros.Sheets).GetExcelExample();
                     else
                         excel = new EPPLUSServicio(informacion, parametros.Design, parametros.Sheets).GetExcelExample();
 

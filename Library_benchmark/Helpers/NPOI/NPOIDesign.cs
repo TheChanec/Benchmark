@@ -69,7 +69,7 @@ namespace Library_benchmark.Helpers
         {
             var pestana = excel.GetSheetAt(sheet);
 
-            Image image = Image.FromFile(@"C:/Users/mario.chan/Documents/GitHub/Library_benchmark/Library_benchmark/Content/images/net.png");
+            Image image = Image.FromFile(@"C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Content/images/net.png");
             for (int i = 0; i < 6; i++)
             {
                 var row = pestana.CreateRow(i);

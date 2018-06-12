@@ -42,7 +42,7 @@ namespace Library_benchmark.Helpers
 
         private void PutImagenTitulo(ExcelWorksheet item)
         {
-            Image logo = Image.FromFile("C:/Users/mario.chan/Documents/GitHub/Library_benchmark/Library_benchmark/Content/images/net.png");
+            Image logo = Image.FromFile("C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Content/images/net.png");
             var picture = item.Drawings.AddPicture("DotNet", logo);
             picture.SetPosition(0, 5, 0, 5);
             picture.SetSize(110, 110);
