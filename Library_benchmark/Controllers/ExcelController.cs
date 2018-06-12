@@ -24,12 +24,12 @@ namespace Library_benchmark.Controllers
 
         
 
-        public ActionResult NPOIResult()
+        public ActionResult NPOI()
         {
             return View();
         }
 
-        public ActionResult EPPLUSResult()
+        public ActionResult EPPLUS()
         {
             return View();
         }
@@ -76,7 +76,7 @@ namespace Library_benchmark.Controllers
 
         #region Post
         [HttpPost]
-        public FileResult NPOIResult(Parametros parametros)
+        public FileResult NPOI(Parametros parametros)
         {
             Singleton res = Singleton.Instance;
             for (int i = 0; i < parametros.Iteraciones; i++)
@@ -140,10 +140,13 @@ namespace Library_benchmark.Controllers
                     });
                     result.Intento = i;
                     res.Resultados.Add(result);
-                    
-                    //return file;
+
                     excel = null;
-                    file = null;
+                    if (i != (parametros.Iteraciones - 1))
+                        file = null;
+                    else
+                        return file;
+                    
                 }
             }
             
@@ -151,10 +154,10 @@ namespace Library_benchmark.Controllers
         }
 
         [HttpPost]
-        public ActionResult EPPLUSResult(Parametros parametros)
+        public ActionResult EPPLUS(Parametros parametros)
         {
             Singleton res = Singleton.Instance;
-
+            FileStreamResult file;
             for (int i = 0; i < parametros.Iteraciones; i++)
             {
                 Stopwatch stopWatch = Stopwatch.StartNew();
@@ -163,8 +166,7 @@ namespace Library_benchmark.Controllers
                 Resultado result = new Resultado();
                 result.Parametro = parametros;
                 result.Libreria = "EPPLUS";
-
-
+                
                 ExcelPackage excel;
 
                 if (informacion != null)
@@ -196,7 +198,7 @@ namespace Library_benchmark.Controllers
                         });
                     }
                     Stopwatch watchFiletoDonwload = Stopwatch.StartNew();
-                    FileStreamResult file = EPPlusDownload(excel);
+                    file = EPPlusDownload(excel);
                     watchFiletoDonwload.Stop();
                     result.Tiempos.Add(new Tiempo
                     {
@@ -214,15 +216,17 @@ namespace Library_benchmark.Controllers
                     res.Resultados.Add(result);
 
                     excel = null;
-                    file = null;
-                    //return file;
+                    if (i != (parametros.Iteraciones -1))
+                        file = null;
+                    else
+                        return file;
                 }
 
             }
 
 
-
-            return PartialView("About");
+            return null;
+            
         }
         #endregion
 

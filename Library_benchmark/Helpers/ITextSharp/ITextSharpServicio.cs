@@ -2,8 +2,6 @@
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -28,18 +26,19 @@ namespace Library_benchmark.Helpers.ITextSharp
             this.sheets = sheets;
             this.workStream = workStream;
 
-            CreateDoc();
-            AbrirDocumento();
-            prueba();
-            CerrarDocumento();
             //CreateDoc();
-            //CreateTableLayout();
             //AbrirDocumento();
-            //CrearTitulo();
-            //CrearCabeceras();
-            //CrearContenido();
-            //ADDContenido();
+            //prueba();
             //CerrarDocumento();
+
+            CreateDoc();
+            CreateTableLayout();
+            AbrirDocumento();
+            CrearTitulo();
+            CrearCabeceras();
+            CrearContenido();
+            ADDContenido();
+            CerrarDocumento();
         }
 
         private void prueba()
@@ -210,14 +209,14 @@ namespace Library_benchmark.Helpers.ITextSharp
             footerTable.TotalWidth = 644f;
             footerTable.LockedWidth = true;
             PdfPCell footerCell = new PdfPCell(new Phrase("Resume"));
-            footerCell.BackgroundColor = new iTextSharp.text.BaseColor(Color.Black);
+            footerCell.BackgroundColor = new iTextSharp.text.BaseColor(System.Drawing.Color.Black);
             iTextSharp.text.Image footerImage = iTextSharp.text.Image.GetInstance(HttpContext.Current.Server.MapPath("~/Content/images/goodmorning.jpg"));
             footerImage.SpacingBefore = 5f;
             footerImage.SpacingAfter = 5f;
             footerImage.ScaleToFit(100f, 22f);
             footerCell.AddElement(footerImage);
             footerCell.MinimumHeight = 30f;
-            iTextSharp.text.Font newFont = FontFactory.GetFont("Segoe UI, Lucida Grande, Lucida Grande", 8, new iTextSharp.text.BaseColor(Color.White));
+            iTextSharp.text.Font newFont = FontFactory.GetFont("Segoe UI, Lucida Grande, Lucida Grande", 8, new iTextSharp.text.BaseColor(System.Drawing.Color.White));
             Paragraph rightReservedLabel = new Paragraph("© " + DateTime.Now.Year + " Resume. All rights reserved.", newFont);
             footerCell.AddElement(rightReservedLabel);
             footerCell.PaddingLeft = 430f;
@@ -239,32 +238,32 @@ namespace Library_benchmark.Helpers.ITextSharp
         private void CrearTitulo()
         {
 
-            //PdfPTable table = new PdfPTable(1);
-            //table.WidthPercentage = 100;
-            //PdfPTable table2 = new PdfPTable(2);
+            PdfPTable table = new PdfPTable(1);
+            table.WidthPercentage = 100;
+            PdfPTable table2 = new PdfPTable(2);
 
-            //iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance("C:/Users/mario.chan/Documents/GitHub/Library_benchmark/Library_benchmark/Content/images/net.png");
-            //image.ScalePercent(7f);
+            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance("C:/Users/mario.chan/Documents/GitHub/Library_benchmark/Library_benchmark/Content/images/net.png");
+            image.ScalePercent(7f);
 
-            //image.SetAbsolutePosition(doc.PageSize.Width - 36f - 72f,
-            //      doc.PageSize.Height - 36f - 216.6f);
-            //PdfPCell cell2 = new PdfPCell(image);
-            //cell2.Colspan = 2;
-            //cell2.Border = 0;
-            //table2.AddCell(cell2);
+            image.SetAbsolutePosition(doc.PageSize.Width - 36f - 72f,
+                  doc.PageSize.Height - 36f - 216.6f);
+            PdfPCell cell2 = new PdfPCell(image);
+            cell2.Colspan = 2;
+            cell2.Border = 0;
+            table2.AddCell(cell2);
 
-            //cell2 = new PdfPCell(new Phrase("\nTITLE TEXT", new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD | Font.UNDERLINE)));
-            //cell2.HorizontalAlignment = Element.ALIGN_CENTER;
-            //cell2.Colspan = 2;
-            //table2.AddCell(cell2);
+            cell2 = new PdfPCell(new Phrase("\nTITLE TEXT", new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD | Font.UNDERLINE)));
+            cell2.HorizontalAlignment = Element.ALIGN_CENTER;
+            cell2.Colspan = 2;
+            table2.AddCell(cell2);
 
-            //PdfPCell cell = new PdfPCell(table2);
-            //cell.Border = 0;
-            //table.HeaderRows = 1;
-            //table.AddCell(cell);
-            //table.AddCell(new PdfPCell(new Phrase("")));
+            PdfPCell cell = new PdfPCell(table2);
+            cell.Border = 0;
+            table.HeaderRows = 1;
+            table.AddCell(cell);
+            table.AddCell(new PdfPCell(new Phrase("")));
 
-            //doc.Add(table);
+            doc.Add(table);
 
         }
 

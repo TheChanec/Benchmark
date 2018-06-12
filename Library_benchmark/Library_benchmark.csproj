@@ -266,8 +266,8 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Excel\NPOIResult.cshtml" />
-    <Content Include="Views\Excel\EPPLUSResult.cshtml" />
+    <Content Include="Views\Excel\NPOI.cshtml" />
+    <Content Include="Views\Excel\EPPLUS.cshtml" />
     <Content Include="Views\Excel\Tiempos.cshtml" />
     <Content Include="Views\Excel\Index.cshtml" />
     <Content Include="Views\PDF\Index.cshtml" />
