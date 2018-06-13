@@ -175,6 +175,7 @@
     <Compile Include="Helpers\EPPlus\EPPlusDesign.cs" />
     <Compile Include="Helpers\EPPlus\EPPLUSServicio.cs" />
     <Compile Include="Helpers\NPOI\NPOIService.cs" />
+    <Compile Include="ITextEvents.cs" />
     <Compile Include="Models\DummyView.cs" />
     <Compile Include="Models\EPPLUS.cs" />
     <Compile Include="Models\Dummy.cs" />
@@ -273,7 +274,9 @@
     <Content Include="Views\PDF\Index.cshtml" />
     <Content Include="Views\PDF\ITextSharp.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="PdfUploads\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
@@ -306,7 +309,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>61742</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

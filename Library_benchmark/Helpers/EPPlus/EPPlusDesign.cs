@@ -57,7 +57,6 @@ namespace Library_benchmark.Helpers
             item.Cells["C1:O6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
-
         internal void PutCabeceras(ExcelWorksheet workSheet)
         {
 
@@ -71,6 +70,7 @@ namespace Library_benchmark.Helpers
 
 
         }
+
         internal void PutFitInCells(ExcelWorksheet workSheet)
         {
             try
@@ -85,6 +85,7 @@ namespace Library_benchmark.Helpers
             }
 
         }
+
         internal void PutTypeAndSizeText(ExcelWorksheet workSheet)
         {
 
@@ -99,7 +100,7 @@ namespace Library_benchmark.Helpers
 
         internal ExcelPackage GetExcelExample()
         {
-            
+
             return excel;
         }
     }

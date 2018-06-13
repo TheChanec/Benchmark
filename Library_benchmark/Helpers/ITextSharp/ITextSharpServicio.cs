@@ -26,32 +26,37 @@ namespace Library_benchmark.Helpers.ITextSharp
             this.sheets = sheets;
             this.workStream = workStream;
 
-            //CreateDoc();
-            //AbrirDocumento();
-            //prueba();
-            //CerrarDocumento();
-
             CreateDoc();
-            CreateTableLayout();
             AbrirDocumento();
-            CrearTitulo();
-            CrearCabeceras();
-            CrearContenido();
-            ADDContenido();
+            prueba();
             CerrarDocumento();
+
+            //CreateDoc();
+            //CreateTableLayout();
+            //AbrirDocumento();
+            //CrearTitulo();
+            //CrearCabeceras();
+            //CrearContenido();
+            //ADDContenido();
+            //CerrarDocumento();
         }
 
         private void prueba()
         {
             
-            iTextSharp.text.Font mainFont = FontFactory.GetFont("Segoe UI", 22, new iTextSharp.text.BaseColor(System.Drawing.ColorTranslator.FromHtml("#999")));
-            iTextSharp.text.Font infoFont1 = FontFactory.GetFont("Kalinga", 10, new iTextSharp.text.BaseColor(System.Drawing.ColorTranslator.FromHtml("#666")));
-            iTextSharp.text.Font expHeadFond = FontFactory.GetFont("Calibri (Body)", 12, new iTextSharp.text.BaseColor(System.Drawing.ColorTranslator.FromHtml("#666")));
+
+            iTextSharp.text.Font mainFont = FontFactory.GetFont("Segoe UI", 22,
+                new iTextSharp.text.BaseColor(System.Drawing.ColorTranslator.FromHtml("#999")));
+            iTextSharp.text.Font infoFont1 = FontFactory.GetFont("Kalinga", 10,
+                new iTextSharp.text.BaseColor(System.Drawing.ColorTranslator.FromHtml("#666")));
+            iTextSharp.text.Font expHeadFond = FontFactory.GetFont("Calibri (Body)", 12, 
+                new iTextSharp.text.BaseColor(System.Drawing.ColorTranslator.FromHtml("#666")));
+
             PdfContentByte contentByte = writer.DirectContent;
-            
+
             ColumnText ct = new ColumnText(contentByte);
             //Create the font for show the name of user  
-            
+
             PdfPTable modelInfoTable = new PdfPTable(1);
             modelInfoTable.TotalWidth = 100f;
             modelInfoTable.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -65,9 +70,10 @@ namespace Library_benchmark.Helpers.ITextSharp
             //Set right hand the first heading  
             Phrase mainPharse = new Phrase();
             Chunk mChunk = new Chunk("Mario Enrique Chan Fernandez", mainFont);
+            
             mainPharse.Add(mChunk);
             mainPharse.Add(new Chunk(Environment.NewLine));
-            //Set the user role  
+                        //Set the user role  
             Chunk infoChunk1 = new Chunk("Profile - Admin", infoFont1);
             mainPharse.Add(infoChunk1);
             mainPharse.Add(new Chunk(Environment.NewLine));
@@ -115,7 +121,9 @@ namespace Library_benchmark.Helpers.ITextSharp
                 BorderWidthBottom = 0f,
                 BorderWidthTop = 0f,
                 BorderWidthLeft = 0f,
-                BorderWidthRight = 0f
+                BorderWidthRight = 0f,
+                Rowspan= 3
+                
             };
             cell1.PaddingTop = 5f;
             Phrase bioPhrase = new Phrase();
@@ -144,7 +152,6 @@ namespace Library_benchmark.Helpers.ITextSharp
 
             for (int i = 0; i < 50; i++)
             {
-                //Set the experience  
                 PdfPCell expcell = new PdfPCell()
                 {
                     BorderWidthBottom = 0f,
@@ -226,8 +233,8 @@ namespace Library_benchmark.Helpers.ITextSharp
 
         private void AbrirDocumento()
         {
-            
-            writer = PdfWriter.GetInstance(doc, workStream );
+
+            writer = PdfWriter.GetInstance(doc, workStream);
             writer.CloseStream = false;
             doc.Open();
 
@@ -237,17 +244,24 @@ namespace Library_benchmark.Helpers.ITextSharp
 
         private void CrearTitulo()
         {
+            iTextSharp.text.Image imageHeader = iTextSharp.text.Image.GetInstance("C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Content/images/net.png");
+            imageHeader.ScalePercent(7f);
+            imageHeader.SetAbsolutePosition(doc.PageSize.Width - 36f - 72f,
+                  doc.PageSize.Height - 36f - 216.6f);
 
-            PdfPTable table = new PdfPTable(1);
+
+            PdfPTable table = new PdfPTable(2);
+
             table.WidthPercentage = 100;
+            table.AddCell(imageHeader);
+            table.PaddingTop = 20f;
             PdfPTable table2 = new PdfPTable(2);
 
-            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance("C:/Users/mario.chan/Documents/GitHub/Library_benchmark/Library_benchmark/Content/images/net.png");
-            image.ScalePercent(7f);
+            
+            
 
-            image.SetAbsolutePosition(doc.PageSize.Width - 36f - 72f,
-                  doc.PageSize.Height - 36f - 216.6f);
-            PdfPCell cell2 = new PdfPCell(image);
+            
+            PdfPCell cell2 = new PdfPCell(imageHeader);
             cell2.Colspan = 2;
             cell2.Border = 0;
             table2.AddCell(cell2);
@@ -303,12 +317,12 @@ namespace Library_benchmark.Helpers.ITextSharp
 
                 foreach (var prop in cabeceras)
                 {
-                    //tableLayout.AddCell(new PdfPCell(new Phrase(prop.GetValue(item, null).ToString(), new Font(Font.FontFamily.HELVETICA, 8, 1, iTextSharp.text.BaseColor.BLACK)))
-                    //{
-                    //    HorizontalAlignment = Element.ALIGN_LEFT,
-                    //    Padding = 5,
-                    //    BackgroundColor = new iTextSharp.text.BaseColor(255, 255, 255)
-                    //});
+                    tableLayout.AddCell(new PdfPCell(new Phrase(prop.GetValue(item, null).ToString(), new Font(Font.FontFamily.HELVETICA, 8, 1, iTextSharp.text.BaseColor.BLACK)))
+                    {
+                        HorizontalAlignment = Element.ALIGN_LEFT,
+                        Padding = 5,
+                        BackgroundColor = new iTextSharp.text.BaseColor(255, 255, 255)
+                    });
                 }
 
             }
