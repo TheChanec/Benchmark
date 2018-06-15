@@ -238,7 +238,7 @@ namespace Library_benchmark.Controllers
             fileStream.Position = 0;
 
 
-            var fileDownloadName = "sample.xlsx";
+            var fileDownloadName = "EPPLUS.xlsx";
             var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
             var fsr = new FileStreamResult(fileStream, contentType);
@@ -254,7 +254,7 @@ namespace Library_benchmark.Controllers
 
                 excel.Write(exportData);
 
-                string saveAsFileName = string.Format("{0:d}.xls", DateTime.Now).Replace("/", "-");
+                string saveAsFileName = "NPOI.xls";
 
                 byte[] bytes = exportData.ToArray();
 
