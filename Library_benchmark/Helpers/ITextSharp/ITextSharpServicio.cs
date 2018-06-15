@@ -43,13 +43,13 @@ namespace Library_benchmark.Helpers.ITextSharp
 
         private void prueba()
         {
-            
+
 
             iTextSharp.text.Font mainFont = FontFactory.GetFont("Segoe UI", 22,
                 new iTextSharp.text.BaseColor(System.Drawing.ColorTranslator.FromHtml("#999")));
             iTextSharp.text.Font infoFont1 = FontFactory.GetFont("Kalinga", 10,
                 new iTextSharp.text.BaseColor(System.Drawing.ColorTranslator.FromHtml("#666")));
-            iTextSharp.text.Font expHeadFond = FontFactory.GetFont("Calibri (Body)", 12, 
+            iTextSharp.text.Font expHeadFond = FontFactory.GetFont("Calibri (Body)", 12,
                 new iTextSharp.text.BaseColor(System.Drawing.ColorTranslator.FromHtml("#666")));
 
             PdfContentByte contentByte = writer.DirectContent;
@@ -70,10 +70,10 @@ namespace Library_benchmark.Helpers.ITextSharp
             //Set right hand the first heading  
             Phrase mainPharse = new Phrase();
             Chunk mChunk = new Chunk("Mario Enrique Chan Fernandez", mainFont);
-            
+
             mainPharse.Add(mChunk);
             mainPharse.Add(new Chunk(Environment.NewLine));
-                        //Set the user role  
+            //Set the user role  
             Chunk infoChunk1 = new Chunk("Profile - Admin", infoFont1);
             mainPharse.Add(infoChunk1);
             mainPharse.Add(new Chunk(Environment.NewLine));
@@ -122,8 +122,8 @@ namespace Library_benchmark.Helpers.ITextSharp
                 BorderWidthTop = 0f,
                 BorderWidthLeft = 0f,
                 BorderWidthRight = 0f,
-                Rowspan= 3
-                
+                Rowspan = 3
+
             };
             cell1.PaddingTop = 5f;
             Phrase bioPhrase = new Phrase();
@@ -257,10 +257,10 @@ namespace Library_benchmark.Helpers.ITextSharp
             table.PaddingTop = 20f;
             PdfPTable table2 = new PdfPTable(2);
 
-            
-            
 
-            
+
+
+
             PdfPCell cell2 = new PdfPCell(imageHeader);
             cell2.Colspan = 2;
             cell2.Border = 0;

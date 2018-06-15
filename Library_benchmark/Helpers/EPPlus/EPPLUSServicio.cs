@@ -84,10 +84,10 @@ namespace Library_benchmark.Helpers
             else
                 currentsheet = excel.Workbook.Worksheets.Where(x => x.Name == name).FirstOrDefault();
 
-
+            currentsheet.DefaultRowHeight = 15;
         }
 
-        
+
 
 
 

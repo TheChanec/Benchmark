@@ -12,7 +12,7 @@ namespace Library_benchmark.Helpers
         {
             this.rows = rows;
         }
-        
+
 
         internal IList<Dummy> GetInformacion()
         {
@@ -31,7 +31,7 @@ namespace Library_benchmark.Helpers
                         Moneda2 = (decimal)i,
                         Moneda3 = (decimal)i,
                         Moneda4 = (decimal)i,
-                        
+
                         Propiedad9 = "row  " + i,
                         Propiedad10 = "row  " + i,
                         Propiedad11 = "row  " + i,

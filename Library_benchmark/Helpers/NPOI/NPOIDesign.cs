@@ -4,6 +4,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
+using NPOI.XSSF.UserModel;
 
 namespace Library_benchmark.Helpers
 {
@@ -15,6 +16,7 @@ namespace Library_benchmark.Helpers
 
         HSSFCellStyle headerStyle;
         HSSFCellStyle normalStyle;
+        HSSFCellStyle dateStyle;
         HSSFCellStyle cabeceraStyle;
 
 
@@ -97,12 +99,12 @@ namespace Library_benchmark.Helpers
             var pictureIndex = excel.AddPicture(data, PictureType.PNG);
             var helper = excel.GetCreationHelper();
             var drawing = pestana.CreateDrawingPatriarch();
-            var anchor = new HSSFClientAnchor(0, 0, 3, 0, 0, 0, 1, 3);
+            var anchor = new HSSFClientAnchor(0, 0, 600, 0, 0, 0, 1, 6);
+
 
             var picture = drawing.CreatePicture(anchor, pictureIndex);
 
-            picture.Resize(1.8, 1.8);
-
+            picture.Resize(1);
 
 
 
@@ -152,8 +154,6 @@ namespace Library_benchmark.Helpers
 
         }
 
-
-
         private HSSFCellStyle GetHeaderCellStyle()
         {
             HSSFCellStyle style = (HSSFCellStyle)excel.CreateCellStyle();
@@ -161,10 +161,8 @@ namespace Library_benchmark.Helpers
             style.FillPattern = FillPattern.SolidForeground;
             style.FillBackgroundColor = HSSFColor.DarkBlue.Index;
 
-
             var hfont = (HSSFFont)excel.CreateFont();
             hfont.FontHeightInPoints = 13;
-            hfont.IsBold = true;
             hfont.Color = IndexedColors.White.Index;
             style.SetFont(hfont);
 
@@ -176,13 +174,19 @@ namespace Library_benchmark.Helpers
             HSSFCellStyle style = (HSSFCellStyle)excel.CreateCellStyle();
             style.FillForegroundColor = HSSFColor.DarkBlue.Index; ;
             style.FillPattern = FillPattern.SolidForeground;
-            style.FillBackgroundColor = HSSFColor.DarkBlue.Index;
 
+
+
+            HSSFPalette palette = excel.GetCustomPalette();
+            HSSFColor myColor = palette.FindSimilarColor(0, 42, 89);
+            style.FillBackgroundColor = myColor.Indexed;
+            style.Alignment = HorizontalAlignment.Center;
+            style.VerticalAlignment = VerticalAlignment.Center;
 
             var hfont = (HSSFFont)excel.CreateFont();
             hfont.FontHeightInPoints = 72;
-            hfont.IsBold = true;
             hfont.Color = IndexedColors.White.Index;
+            hfont.FontName = "Arial";
             style.SetFont(hfont);
 
             return style;
@@ -192,10 +196,26 @@ namespace Library_benchmark.Helpers
         {
             var style = (HSSFCellStyle)excel.CreateCellStyle();
             var hfont = (HSSFFont)excel.CreateFont();
+            hfont.FontHeightInPoints = 12;
+            hfont.Color = IndexedColors.Black.Index;
+            hfont.FontName = "Arial";
+
+
+            style.SetFont(hfont);
+            return style;
+        }
+
+        private HSSFCellStyle GetDateCellStyle()
+        {
+            var style = (HSSFCellStyle)excel.CreateCellStyle();
+
+            var hfont = (HSSFFont)excel.CreateFont();
             hfont.FontHeightInPoints = 13;
             hfont.Color = IndexedColors.Black.Index;
             hfont.IsBold = true;
             style.SetFont(hfont);
+            style.DataFormat = excel.CreateDataFormat().GetFormat("");
+
             return style;
         }
 
@@ -230,8 +250,6 @@ namespace Library_benchmark.Helpers
 
             }
         }
-
-
 
         internal HSSFWorkbook GetExcelExample()
         {

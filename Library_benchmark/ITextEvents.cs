@@ -61,7 +61,7 @@ namespace Library_benchmark
 
             Font baseFontBig = FontFactory.GetFont(FontFactory.TIMES, 12f, Font.NORMAL, BaseColor.BLACK);
             Font time = FontFactory.GetFont(FontFactory.HELVETICA, 11f, Font.NORMAL);
-            
+            var prueba = HttpContext.Current.Server.MapPath("~/Content/images/net.png");
             var logo = Image.GetInstance(HttpContext.Current.Server.MapPath("~/Content/images/net.png"));
             logo.ScaleToFit(150f, 62f);
             //logo.ScalePercent(7f);

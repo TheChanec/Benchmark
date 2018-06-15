@@ -75,7 +75,7 @@ namespace Library_benchmark.Helpers
 
         private void addcabeceras()
         {
-            IRow row = currentsheet.CreateRow(rowInicial -1);
+            IRow row = currentsheet.CreateRow(rowInicial - 1);
             int cell = 0;
 
             var item = informacion.FirstOrDefault();
@@ -97,7 +97,7 @@ namespace Library_benchmark.Helpers
                     currentsheet = excel.CreateSheet(name);
 
             }
-
+            currentsheet.DefaultRowHeight = 300;
         }
 
         private void addInformation()

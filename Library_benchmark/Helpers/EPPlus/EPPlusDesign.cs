@@ -13,11 +13,13 @@ namespace Library_benchmark.Helpers
         private ExcelPackage excel;
         private bool resource;
         private int rowInicial;
+        private Image logo;
 
-        public EPPlusDesign(ExcelPackage excel, bool resource)
+        public EPPlusDesign(ExcelPackage excel, bool resource, Image logo)
         {
             this.excel = excel;
             this.resource = resource;
+            this.logo = logo;
             rowInicial = 8;
 
             DarFormato();
@@ -44,8 +46,9 @@ namespace Library_benchmark.Helpers
         {
             Image logo = Image.FromFile("C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Content/images/net.png");
             var picture = item.Drawings.AddPicture("DotNet", logo);
-            picture.SetPosition(0, 5, 0, 5);
-            picture.SetSize(110, 110);
+            picture.SetPosition(0, 0);
+            picture.SetSize(140, 750);
+            picture.SetSize(13);
 
             item.Cells["C1:O6"].Merge = true;
             item.Cells["C1:O6"].Value = "EPPLUS";
@@ -54,6 +57,7 @@ namespace Library_benchmark.Helpers
             item.Cells["C1:O6"].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(45, 0, 42, 89));
             item.Cells["C1:O6"].Style.Font.Color.SetColor(Color.White);
             item.Cells["C1:O6"].Style.Font.Size = 72f;
+            item.Cells["C1:O6"].Style.Font.Name = "Arial";
             item.Cells["C1:O6"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
         }
 
@@ -62,7 +66,7 @@ namespace Library_benchmark.Helpers
 
             var allCells = workSheet.Cells[rowInicial, 1, rowInicial, workSheet.Dimension.End.Column];
             allCells.Style.Fill.PatternType = ExcelFillStyle.Solid;
-            allCells.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(45, 0, 42, 89));
+            allCells.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(0, 42, 89));
             allCells.Style.Font.Color.SetColor(Color.White);
             allCells.Style.Font.Bold = true;
 

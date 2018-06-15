@@ -6,10 +6,12 @@ using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
 
 namespace Library_benchmark.Controllers
 {
@@ -21,7 +23,7 @@ namespace Library_benchmark.Controllers
         {
             return View();
         }
-        
+
         public ActionResult NPOI()
         {
             return View();
@@ -63,7 +65,7 @@ namespace Library_benchmark.Controllers
                 })
                 .ToList();
 
-            currentsheet.Cells[1, 1].LoadFromCollection(respuesta, true );
+            currentsheet.Cells[1, 1].LoadFromCollection(respuesta, true);
             FileStreamResult file = EPPlusDownload(excel);
 
 
@@ -144,10 +146,10 @@ namespace Library_benchmark.Controllers
                         file = null;
                     else
                         return file;
-                    
+
                 }
             }
-            
+
             return null;
         }
 
@@ -164,7 +166,7 @@ namespace Library_benchmark.Controllers
                 Resultado result = new Resultado();
                 result.Parametro = parametros;
                 result.Libreria = "EPPLUS";
-                
+
                 ExcelPackage excel;
 
                 if (informacion != null)
@@ -187,7 +189,7 @@ namespace Library_benchmark.Controllers
                     if (parametros.Design)
                     {
                         Stopwatch watchDesign = Stopwatch.StartNew();
-                        excel = new EPPlusDesign(excel, parametros.Resource).GetExcelExample();
+                        excel = new EPPlusDesign(excel, parametros.Resource, null).GetExcelExample();
                         watchDesign.Stop();
                         result.Tiempos.Add(new Tiempo
                         {
@@ -214,7 +216,7 @@ namespace Library_benchmark.Controllers
                     res.Resultados.Add(result);
 
                     excel = null;
-                    if (i != (parametros.Iteraciones -1))
+                    if (i != (parametros.Iteraciones - 1))
                         file = null;
                     else
                         return file;
@@ -224,7 +226,7 @@ namespace Library_benchmark.Controllers
 
 
             return null;
-            
+
         }
         #endregion
 
