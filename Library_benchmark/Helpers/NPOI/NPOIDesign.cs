@@ -139,7 +139,7 @@ namespace Library_benchmark.Helpers
             {
 
 
-                for (int j = rowInicial; j < excel.GetSheetAt(i).LastRowNum; j++)
+                for (int j = rowInicial; j <= excel.GetSheetAt(i).LastRowNum; j++)
                 {
                     foreach (var item in excel.GetSheetAt(i).GetRow(j).Cells)
                     {
