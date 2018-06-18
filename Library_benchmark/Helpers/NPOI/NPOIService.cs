@@ -154,7 +154,7 @@ namespace Library_benchmark.Helpers
                     if (celda == null)
                         celda = row.CreateCell(cell);
 
-                    celda.CellStyle = currentsheet.GetColumnStyle(cell);
+                    var style = currentsheet.GetColumnStyle(cell);
 
                     if (prop.PropertyType.Equals(typeof(DateTime)))
                     {
@@ -171,15 +171,20 @@ namespace Library_benchmark.Helpers
 
 
                     }
-                    else if (prop.PropertyType.Equals(typeof(Decimal)))
+                    else if (prop.PropertyType.Equals(typeof(decimal)))
                     {
+                        //var  df = excel.CreateDataFormat();
+                        //style.DataFormat = df.GetFormat("$#,###.##");
+
                         var money = (decimal)prop.GetValue(item, null);
-                        //celda.SetCellValue(money.ToString("C"));
-                        celda.SetCellValue(money.ToString());
+                        celda.SetCellValue(money.ToString("C"));
+                        //celda.SetCellValue(money.ToString());
                     }
                     else
                         celda.SetCellValue(prop.GetValue(item, null).ToString());
 
+
+                    celda.CellStyle = style;
                     cell++;
                 }
                 cont++;
