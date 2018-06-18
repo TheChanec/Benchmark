@@ -3,6 +3,7 @@ using Library_benchmark.Models;
 using Library_benchmark.Properties;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -89,14 +90,14 @@ namespace Library_benchmark.Controllers
                 result.Parametro = parametros;
                 result.Libreria = "NPOI";
 
-                IWorkbook excel;
+                XSSFWorkbook excel;
 
                 if (informacion != null)
                 {
                     Stopwatch watchCreation = Stopwatch.StartNew();
 
                     if (parametros.Resource)
-                        excel = new NPOIService(Resources.BookEPPLUS, informacion, parametros.Sheets).GetExcelExample();
+                        excel = new NPOIService(Resources.DummyReport, informacion, parametros.Sheets).GetExcelExample();
 
                     else
                         excel = new NPOIService(informacion, parametros.Design, parametros.Sheets).GetExcelExample();
@@ -175,7 +176,7 @@ namespace Library_benchmark.Controllers
                     Stopwatch watchCreation = Stopwatch.StartNew();
 
                     if (parametros.Resource)
-                        excel = new EPPLUSServicio(@"C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Resource/BookEPPLUS.xlsx", informacion, parametros.Sheets).GetExcelExample();
+                        excel = new EPPLUSServicio(Resources.DummyReport, informacion, parametros.Sheets).GetExcelExample();
                     else
                         excel = new EPPLUSServicio(informacion, parametros.Design, parametros.Sheets).GetExcelExample();
 
@@ -234,33 +235,37 @@ namespace Library_benchmark.Controllers
         #region Helpers
         private FileStreamResult EPPlusDownload(ExcelPackage excel)
         {
-            var fileStream = new MemoryStream();
-            excel.SaveAs(fileStream);
-            fileStream.Position = 0;
+            var ms = new MemoryStream();
+            excel.SaveAs(ms);
+            ms.Position = 0;
 
 
             var fileDownloadName = "EPPLUS.xlsx";
             var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-            var fsr = new FileStreamResult(fileStream, contentType);
+            var fsr = new FileStreamResult(ms, contentType);
             fsr.FileDownloadName = fileDownloadName;
 
             return fsr;
         }
 
-        private FileContentResult NPOIdownload(IWorkbook excel)
+        private FileContentResult NPOIdownload(XSSFWorkbook excel)
         {
-            using (var exportData = new MemoryStream())
+            using (MemoryStream ms = new MemoryStream())
             {
+                
+                excel.Write(ms);
 
-                excel.Write(exportData);
+                var fileDownloadName = "NPOI.xlsx";
+                var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-                string saveAsFileName = "NPOI.xlsx";
+                byte[] bytes = ms.ToArray();
+                
 
-                byte[] bytes = exportData.ToArray();
-
-                return File(bytes, "application/vnd.ms-excel", saveAsFileName);
+                return File(bytes, contentType, fileDownloadName);
             }
+
+            
         }
 
         #endregion

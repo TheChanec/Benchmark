@@ -20,7 +20,7 @@ namespace Library_benchmark.Helpers
             this.excel = excel;
             this.resource = resource;
             this.logo = logo;
-            rowInicial = 8;
+            rowInicial = 3;
 
             DarFormato();
         }
@@ -77,16 +77,10 @@ namespace Library_benchmark.Helpers
 
         internal void PutFitInCells(ExcelWorksheet workSheet)
         {
-            try
-            {
+            
 
                 workSheet.Cells[workSheet.Dimension.Address].AutoFitColumns();
-            }
-            catch (Exception)
-            {
-
-
-            }
+            
 
         }
 

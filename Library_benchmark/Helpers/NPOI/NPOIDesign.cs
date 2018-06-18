@@ -10,7 +10,7 @@ namespace Library_benchmark.Helpers
 {
     internal class NPOIDesign
     {
-        private IWorkbook excel;
+        private XSSFWorkbook excel;
         private bool resource;
         private int rowInicial;
 
@@ -22,11 +22,11 @@ namespace Library_benchmark.Helpers
 
 
 
-        public NPOIDesign(IWorkbook excel, bool resource)
+        public NPOIDesign(XSSFWorkbook excel, bool resource)
         {
             this.excel = excel;
             this.resource = resource;
-            rowInicial = 8;
+            rowInicial = 4;
 
             DarFormato();
         }
@@ -74,17 +74,28 @@ namespace Library_benchmark.Helpers
             Image image = Image.FromFile(@"C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Content/images/net.png");
             for (int i = 0; i < 6; i++)
             {
-                var row = pestana.CreateRow(i);
+                IRow row;
+                row = pestana.GetRow(i);
+                if (row == null)
+                {
+                    row = pestana.CreateRow(i);
+                }
+
+
 
 
                 for (int j = 0; j < 16; j++)
                 {
-                    row.CreateCell(j);
+                    if (row.GetCell(j) == null)
+                    {
+                        row.CreateCell(j);
+                    }
+
                 }
             }
 
             var cra = new CellRangeAddress(0, 5, 2, 15);
-            
+
 
             pestana.AddMergedRegion(cra);
 
@@ -101,7 +112,7 @@ namespace Library_benchmark.Helpers
             var pictureIndex = excel.AddPicture(data, PictureType.PNG);
             var helper = excel.GetCreationHelper();
             var drawing = pestana.CreateDrawingPatriarch();
-            var anchor = new HSSFClientAnchor(0, 0, 600, 0, 0, 0, 1, 6);
+            var anchor = new XSSFClientAnchor(0, 0, 600, 0, 0, 0, 1, 6);
 
 
             var picture = drawing.CreatePicture(anchor, pictureIndex);
@@ -121,11 +132,15 @@ namespace Library_benchmark.Helpers
 
             for (int i = 0; i < excel.NumberOfSheets; i++)
             {
-                foreach (var item in excel.GetSheetAt(i).GetRow(rowInicial - 1).Cells)
+                if (excel.GetSheetAt(i).GetRow(rowInicial - 1)!= null)
                 {
-                    item.CellStyle = headerStyle;
+                    foreach (var item in excel.GetSheetAt(i).GetRow(rowInicial - 1).Cells)
+                    {
+                        item.CellStyle = headerStyle;
 
+                    }
                 }
+                
             }
 
         }
@@ -156,14 +171,14 @@ namespace Library_benchmark.Helpers
 
         }
 
-        private HSSFCellStyle GetHeaderCellStyle()
+        private ICellStyle GetHeaderCellStyle()
         {
-            HSSFCellStyle style = (HSSFCellStyle)excel.CreateCellStyle();
-            style.FillForegroundColor = HSSFColor.DarkBlue.Index; ;
+            var style = excel.CreateCellStyle();
+            style.FillForegroundColor = IndexedColors.DarkBlue.Index; ;
             style.FillPattern = FillPattern.SolidForeground;
-            style.FillBackgroundColor = HSSFColor.DarkBlue.Index;
+            style.FillBackgroundColor = IndexedColors.DarkBlue.Index;
 
-            var hfont = (HSSFFont)excel.CreateFont();
+            var hfont = excel.CreateFont();
             hfont.FontHeightInPoints = 13;
             hfont.Color = IndexedColors.White.Index;
             style.SetFont(hfont);
@@ -174,18 +189,14 @@ namespace Library_benchmark.Helpers
         private ICellStyle GetCabeceraCellStyle()
         {
             ICellStyle style = excel.CreateCellStyle();
-            style.FillForegroundColor = HSSFColor.DarkBlue.Index; ;
+            style.FillForegroundColor = IndexedColors.DarkBlue.Index; ;
             style.FillPattern = FillPattern.SolidForeground;
-
-
-
-            //HSSFPalette palette = excel.st();
-            //HSSFColor myColor = palette.FindSimilarColor(0, 42, 89);
-            //style.FillBackgroundColor = myColor.Indexed;
+            
+            style.FillBackgroundColor = IndexedColors.DarkBlue.Index;
             style.Alignment = HorizontalAlignment.Center;
             style.VerticalAlignment = VerticalAlignment.Center;
 
-            var hfont = (HSSFFont)excel.CreateFont();
+            IFont hfont = excel.CreateFont();
             hfont.FontHeightInPoints = 72;
             hfont.Color = IndexedColors.White.Index;
             hfont.FontName = "Arial";
@@ -194,10 +205,10 @@ namespace Library_benchmark.Helpers
             return style;
         }
 
-        private HSSFCellStyle GetNormalCellStyle()
+        private ICellStyle GetNormalCellStyle()
         {
-            var style = (HSSFCellStyle)excel.CreateCellStyle();
-            var hfont = (HSSFFont)excel.CreateFont();
+            ICellStyle style = excel.CreateCellStyle();
+            var hfont = excel.CreateFont();
             hfont.FontHeightInPoints = 12;
             hfont.Color = IndexedColors.Black.Index;
             hfont.FontName = "Arial";
@@ -207,11 +218,11 @@ namespace Library_benchmark.Helpers
             return style;
         }
 
-        private HSSFCellStyle GetDateCellStyle()
+        private ICellStyle GetDateCellStyle()
         {
-            var style = (HSSFCellStyle)excel.CreateCellStyle();
+            var style = excel.CreateCellStyle();
 
-            var hfont = (HSSFFont)excel.CreateFont();
+            var hfont = excel.CreateFont();
             hfont.FontHeightInPoints = 13;
             hfont.Color = IndexedColors.Black.Index;
             hfont.IsBold = true;
@@ -227,12 +238,15 @@ namespace Library_benchmark.Helpers
 
             for (int i = 0; i < excel.NumberOfSheets; i++)
             {
-
-                int noOfColumns = excel.GetSheetAt(i).GetRow(rowInicial).LastCellNum;
-                for (int j = 0; j < noOfColumns; j++)
+                if (excel.GetSheetAt(i).GetRow(rowInicial) != null)
                 {
-                    excel.GetSheetAt(i).AutoSizeColumn(j);
+                    int noOfColumns = excel.GetSheetAt(i).GetRow(rowInicial).LastCellNum;
+                    for (int j = 0; j < noOfColumns; j++)
+                    {
+                        excel.GetSheetAt(i).AutoSizeColumn(j);
+                    }
                 }
+                
 
             }
 
@@ -245,16 +259,20 @@ namespace Library_benchmark.Helpers
 
             for (int i = 0; i < excel.NumberOfSheets; i++)
             {
-                for (int j = 0; j < excel.GetSheetAt(i).GetRow(rowInicial).Cells.Count; j++)
+                if (excel.GetSheetAt(i).GetRow(rowInicial) != null)
                 {
-                    
-                    excel.GetSheetAt(i).SetDefaultColumnStyle(j, normalStyle);
+                    for (int j = 0; j < excel.GetSheetAt(i).GetRow(rowInicial).Cells.Count; j++)
+                    {
+
+                        excel.GetSheetAt(i).SetDefaultColumnStyle(j, normalStyle);
+                    }
                 }
+                
 
             }
         }
 
-        internal IWorkbook GetExcelExample()
+        internal XSSFWorkbook GetExcelExample()
         {
             return excel;
         }

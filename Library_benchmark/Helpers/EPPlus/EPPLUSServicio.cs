@@ -20,13 +20,15 @@ namespace Library_benchmark.Helpers
         private ExcelWorksheet basesheet;
         private int InicialRow;
         private bool design;
+        private byte[] documentDummy;
+        private int sheets;
 
         public EPPLUSServicio(IList<Dummy> informacion, bool design, int sheets)
         {
             this.informacion = informacion;
             this.design = design;
             if (design)
-                this.InicialRow = 8;
+                this.InicialRow = 4;
             else
                 this.InicialRow = 1;
 
@@ -35,18 +37,25 @@ namespace Library_benchmark.Helpers
 
         }
 
-        public EPPLUSServicio(string path, IList<Dummy> informacion, int sheets)
+        public EPPLUSServicio(byte[] documentDummy, IList<Dummy> informacion, int sheets)
         {
             this.informacion = informacion;
-            this.InicialRow = 8;
+            this.InicialRow = 4;
             this.design = false;
 
 
-            createWorkBook(path);
+            createWorkBook(documentDummy);
             createSheetBase();
             //deleteWorkSheets();
             createSheets(sheets);
+        }
 
+        private void createWorkBook(byte[] documentDummy)
+        {
+            using (MemoryStream memStream = new MemoryStream(documentDummy))
+            {
+                excel = new ExcelPackage(memStream);
+            }
         }
 
         private void deleteWorkSheets(int sheetsBase)
@@ -57,9 +66,9 @@ namespace Library_benchmark.Helpers
                 {
                     excel.Workbook.Worksheets.Delete(i);
                 }
-                
+
             }
-            
+
         }
 
         private void createWorkBook()
@@ -73,10 +82,10 @@ namespace Library_benchmark.Helpers
         }
         private void createSheetBase()
         {
-            if (excel.Workbook.Worksheets.Count() > 0) 
+            if (excel.Workbook.Worksheets.Count() > 0)
                 basesheet = excel.Workbook.Worksheets.FirstOrDefault();
-                
-                
+
+
 
         }
         private void createSheets(int sheets)
@@ -121,9 +130,15 @@ namespace Library_benchmark.Helpers
         {
 
             currentsheet.Cells[InicialRow, 1].LoadFromCollection(informacion, true, TableStyles.None);
-
-            Mascaras();
+            currentsheet.Cells[currentsheet.Dimension.Address].AutoFitColumns();
+            if (!design)
+            {
+                //Mascaras();
+            }
+            
         }
+
+
 
         private void Mascaras()
         {

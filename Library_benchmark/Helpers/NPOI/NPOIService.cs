@@ -17,18 +17,20 @@ namespace Library_benchmark.Helpers
     {
         private IList<Dummy> informacion;
         private bool design;
-        private IWorkbook excel;
-        private ISheet currentsheet;
-        private int rowInicial;
-        private ISheet basesheet;
+        private XSSFWorkbook excel;
         private ICellStyle dateStyle;
+        private XSSFSheet currentsheet;
+        private XSSFSheet basesheet;
+        private int rowInicial;
+
+
 
         public NPOIService(IList<Dummy> informacion, bool design, int sheets)
         {
             this.informacion = informacion;
             this.design = design;
             if (design)
-                this.rowInicial = 8;
+                this.rowInicial = 4;
             else
                 this.rowInicial = 1;
 
@@ -41,7 +43,7 @@ namespace Library_benchmark.Helpers
         {
             this.informacion = informacion;
             this.design = false;
-            this.rowInicial = 8;
+            this.rowInicial = 4;
 
             createWorkBook(excelFile);
             createSheetBase();
@@ -50,20 +52,20 @@ namespace Library_benchmark.Helpers
 
         private void createSheetBase()
         {
-            basesheet = excel.GetSheetAt(0);
+            basesheet = (XSSFSheet)excel.GetSheetAt(0);
         }
 
         private void createWorkBook()
         {
-            excel = new HSSFWorkbook();
+            excel = new XSSFWorkbook();
 
         }
         private void createWorkBook(byte[] excelFile)
         {
-           
+
             var fs = new MemoryStream(excelFile);
             //excel = new HSSFWorkbook(fs);
-            excel = WorkbookFactory.Create(fs);
+            excel = (XSSFWorkbook)WorkbookFactory.Create(fs);
         }
 
 
@@ -74,7 +76,24 @@ namespace Library_benchmark.Helpers
                 addSheet("Sheet" + i);
                 addcabeceras();
                 addInformation();
+                PutFitInCells();
             }
+        }
+
+        internal void PutFitInCells()
+        {
+
+
+            int noOfColumns = currentsheet.GetRow(rowInicial - 1).LastCellNum;
+            for (int j = 0; j < noOfColumns; j++)
+            {
+                currentsheet.AutoSizeColumn(j, false);
+            }
+
+
+
+
+
         }
 
         private void addcabeceras()
@@ -104,13 +123,13 @@ namespace Library_benchmark.Helpers
 
         private void addSheet(string name)
         {
-            currentsheet = excel.GetSheet(name);
+            currentsheet = (XSSFSheet)excel.GetSheet(name);
             if (currentsheet == null)
             {
                 if (basesheet != null)
-                    currentsheet = basesheet.CopySheet(name, true);
+                    currentsheet = (XSSFSheet)basesheet.CopySheet(name, true);
                 else
-                    currentsheet = excel.CreateSheet(name);
+                    currentsheet = (XSSFSheet)excel.CreateSheet(name);
 
             }
             currentsheet.DefaultRowHeight = 300;
@@ -135,21 +154,28 @@ namespace Library_benchmark.Helpers
                     if (celda == null)
                         celda = row.CreateCell(cell);
 
+                    celda.CellStyle = currentsheet.GetColumnStyle(cell);
+
                     if (prop.PropertyType.Equals(typeof(DateTime)))
                     {
                         var date = (DateTime)prop.GetValue(item, null);
-                        if (dateStyle == null)
-                            dateStyle = GetDateCellStyle();
+                        if (design)
+                        {
+
+                            if (dateStyle == null)
+                                dateStyle = GetDateCellStyle();
+                            celda.CellStyle = dateStyle;
+                        }
 
                         celda.SetCellValue(date);
-                        celda.CellStyle = dateStyle;
+
 
                     }
                     else if (prop.PropertyType.Equals(typeof(Decimal)))
                     {
-                        var money = (Decimal)prop.GetValue(item, null);
-                        celda.SetCellValue(money.ToString("C"));
-
+                        var money = (decimal)prop.GetValue(item, null);
+                        //celda.SetCellValue(money.ToString("C"));
+                        celda.SetCellValue(money.ToString());
                     }
                     else
                         celda.SetCellValue(prop.GetValue(item, null).ToString());
@@ -161,7 +187,7 @@ namespace Library_benchmark.Helpers
 
         }
 
-        internal IWorkbook GetExcelExample()
+        internal XSSFWorkbook GetExcelExample()
         {
             return excel;
         }
