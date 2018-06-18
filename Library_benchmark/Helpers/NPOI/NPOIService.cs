@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Web;
 using Library_benchmark.Models;
 using NPOI.HSSF.UserModel;
+using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 
@@ -16,10 +17,11 @@ namespace Library_benchmark.Helpers
     {
         private IList<Dummy> informacion;
         private bool design;
-        private HSSFWorkbook excel;
+        private IWorkbook excel;
         private ISheet currentsheet;
         private int rowInicial;
         private ISheet basesheet;
+        private ICellStyle dateStyle;
 
         public NPOIService(IList<Dummy> informacion, bool design, int sheets)
         {
@@ -58,8 +60,10 @@ namespace Library_benchmark.Helpers
         }
         private void createWorkBook(byte[] excelFile)
         {
+           
             var fs = new MemoryStream(excelFile);
-            excel = new HSSFWorkbook(fs);
+            //excel = new HSSFWorkbook(fs);
+            excel = WorkbookFactory.Create(fs);
         }
 
 
@@ -75,13 +79,25 @@ namespace Library_benchmark.Helpers
 
         private void addcabeceras()
         {
-            IRow row = currentsheet.CreateRow(rowInicial - 1);
+            IRow row;
+            row = currentsheet.GetRow(rowInicial - 1);
+            if (row == null)
+            {
+                row = currentsheet.CreateRow(rowInicial - 1);
+            }
+
             int cell = 0;
 
             var item = informacion.FirstOrDefault();
             foreach (var prop in item.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
             {
-                var celda = row.CreateCell(cell++);
+
+                var celda = row.GetCell(cell);
+                if (celda == null)
+                {
+                    celda = row.CreateCell(cell);
+                }
+                cell++;
                 celda.SetCellValue(prop.Name.ToString());
             }
         }
@@ -105,17 +121,28 @@ namespace Library_benchmark.Helpers
             int cont = rowInicial;
             foreach (var item in informacion)
             {
-                IRow row = currentsheet.CreateRow(cont);
+                IRow row;
+                row = currentsheet.GetRow(cont);
+                if (row == null)
+                    row = currentsheet.CreateRow(cont);
+
                 int cell = 0;
 
                 foreach (var prop in item.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
                 {
-                    var celda = row.CreateCell(cell++);
+                    ICell celda;
+                    celda = row.GetCell(cell);
+                    if (celda == null)
+                        celda = row.CreateCell(cell);
 
                     if (prop.PropertyType.Equals(typeof(DateTime)))
                     {
                         var date = (DateTime)prop.GetValue(item, null);
-                        celda.SetCellValue(date.ToString("MM/dd/yyyy"));
+                        if (dateStyle == null)
+                            dateStyle = GetDateCellStyle();
+
+                        celda.SetCellValue(date);
+                        celda.CellStyle = dateStyle;
 
                     }
                     else if (prop.PropertyType.Equals(typeof(Decimal)))
@@ -126,15 +153,24 @@ namespace Library_benchmark.Helpers
                     }
                     else
                         celda.SetCellValue(prop.GetValue(item, null).ToString());
+
+                    cell++;
                 }
                 cont++;
             }
 
         }
 
-        internal HSSFWorkbook GetExcelExample()
+        internal IWorkbook GetExcelExample()
         {
             return excel;
+        }
+
+        private ICellStyle GetDateCellStyle()
+        {
+            ICellStyle style = excel.CreateCellStyle();
+            style.DataFormat = excel.CreateDataFormat().GetFormat("MM/dd/yyyy");
+            return style;
         }
     }
 }

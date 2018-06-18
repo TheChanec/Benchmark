@@ -2,6 +2,7 @@
 using Library_benchmark.Models;
 using Library_benchmark.Properties;
 using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -88,14 +89,14 @@ namespace Library_benchmark.Controllers
                 result.Parametro = parametros;
                 result.Libreria = "NPOI";
 
-                HSSFWorkbook excel;
+                IWorkbook excel;
 
                 if (informacion != null)
                 {
                     Stopwatch watchCreation = Stopwatch.StartNew();
 
                     if (parametros.Resource)
-                        excel = new NPOIService(Resources.BookNPOI, informacion, parametros.Sheets).GetExcelExample();
+                        excel = new NPOIService(Resources.BookEPPLUS, informacion, parametros.Sheets).GetExcelExample();
 
                     else
                         excel = new NPOIService(informacion, parametros.Design, parametros.Sheets).GetExcelExample();
@@ -247,14 +248,14 @@ namespace Library_benchmark.Controllers
             return fsr;
         }
 
-        private FileContentResult NPOIdownload(HSSFWorkbook excel)
+        private FileContentResult NPOIdownload(IWorkbook excel)
         {
             using (var exportData = new MemoryStream())
             {
 
                 excel.Write(exportData);
 
-                string saveAsFileName = "NPOI.xls";
+                string saveAsFileName = "NPOI.xlsx";
 
                 byte[] bytes = exportData.ToArray();
 

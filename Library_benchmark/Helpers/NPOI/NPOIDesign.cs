@@ -10,19 +10,19 @@ namespace Library_benchmark.Helpers
 {
     internal class NPOIDesign
     {
-        private HSSFWorkbook excel;
+        private IWorkbook excel;
         private bool resource;
         private int rowInicial;
 
-        HSSFCellStyle headerStyle;
-        HSSFCellStyle normalStyle;
-        HSSFCellStyle dateStyle;
-        HSSFCellStyle cabeceraStyle;
+        ICellStyle headerStyle;
+        ICellStyle normalStyle;
+        ICellStyle dateStyle;
+        ICellStyle cabeceraStyle;
 
 
 
 
-        public NPOIDesign(HSSFWorkbook excel, bool resource)
+        public NPOIDesign(IWorkbook excel, bool resource)
         {
             this.excel = excel;
             this.resource = resource;
@@ -59,7 +59,7 @@ namespace Library_benchmark.Helpers
 
         private void PutImagenTitulo()
         {
-            for (int i = 0; i < excel.Workbook.NumSheets; i++)
+            for (int i = 0; i < excel.NumberOfSheets; i++)
             {
                 DiseñoCabeceras(i);
             }
@@ -84,6 +84,7 @@ namespace Library_benchmark.Helpers
             }
 
             var cra = new CellRangeAddress(0, 5, 2, 15);
+            
 
             pestana.AddMergedRegion(cra);
 
@@ -92,6 +93,7 @@ namespace Library_benchmark.Helpers
             var celda = pestana.GetRow(0).GetCell(2);
             celda.SetCellValue("NPOI");
             celda.CellStyle = cabeceraStyle;
+
 
             //row0.HeightInPoints = (float)image.Height;
             var converter = new ImageConverter();
@@ -117,7 +119,7 @@ namespace Library_benchmark.Helpers
                 headerStyle = GetHeaderCellStyle();
 
 
-            for (int i = 0; i < excel.Workbook.NumSheets; i++)
+            for (int i = 0; i < excel.NumberOfSheets; i++)
             {
                 foreach (var item in excel.GetSheetAt(i).GetRow(rowInicial - 1).Cells)
                 {
@@ -135,7 +137,7 @@ namespace Library_benchmark.Helpers
                 normalStyle = GetNormalCellStyle();
 
 
-            for (int i = 0; i < excel.Workbook.NumSheets; i++)
+            for (int i = 0; i < excel.NumberOfSheets; i++)
             {
 
 
@@ -169,17 +171,17 @@ namespace Library_benchmark.Helpers
             return style;
         }
 
-        private HSSFCellStyle GetCabeceraCellStyle()
+        private ICellStyle GetCabeceraCellStyle()
         {
-            HSSFCellStyle style = (HSSFCellStyle)excel.CreateCellStyle();
+            ICellStyle style = excel.CreateCellStyle();
             style.FillForegroundColor = HSSFColor.DarkBlue.Index; ;
             style.FillPattern = FillPattern.SolidForeground;
 
 
 
-            HSSFPalette palette = excel.GetCustomPalette();
-            HSSFColor myColor = palette.FindSimilarColor(0, 42, 89);
-            style.FillBackgroundColor = myColor.Indexed;
+            //HSSFPalette palette = excel.st();
+            //HSSFColor myColor = palette.FindSimilarColor(0, 42, 89);
+            //style.FillBackgroundColor = myColor.Indexed;
             style.Alignment = HorizontalAlignment.Center;
             style.VerticalAlignment = VerticalAlignment.Center;
 
@@ -223,7 +225,7 @@ namespace Library_benchmark.Helpers
         {
 
 
-            for (int i = 0; i < excel.Workbook.NumSheets; i++)
+            for (int i = 0; i < excel.NumberOfSheets; i++)
             {
 
                 int noOfColumns = excel.GetSheetAt(i).GetRow(rowInicial).LastCellNum;
@@ -241,17 +243,18 @@ namespace Library_benchmark.Helpers
             if (normalStyle == null)
                 normalStyle = GetNormalCellStyle();
 
-            for (int i = 0; i < excel.Workbook.NumSheets; i++)
+            for (int i = 0; i < excel.NumberOfSheets; i++)
             {
                 for (int j = 0; j < excel.GetSheetAt(i).GetRow(rowInicial).Cells.Count; j++)
                 {
+                    
                     excel.GetSheetAt(i).SetDefaultColumnStyle(j, normalStyle);
                 }
 
             }
         }
 
-        internal HSSFWorkbook GetExcelExample()
+        internal IWorkbook GetExcelExample()
         {
             return excel;
         }

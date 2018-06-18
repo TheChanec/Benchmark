@@ -44,11 +44,23 @@ namespace Library_benchmark.Helpers
 
             createWorkBook(path);
             createSheetBase();
+            //deleteWorkSheets();
             createSheets(sheets);
 
         }
 
-
+        private void deleteWorkSheets(int sheetsBase)
+        {
+            if (excel.Workbook.Worksheets.Count() > sheetsBase)
+            {
+                for (int i = sheetsBase; i <= excel.Workbook.Worksheets.Count(); i++)
+                {
+                    excel.Workbook.Worksheets.Delete(i);
+                }
+                
+            }
+            
+        }
 
         private void createWorkBook()
         {
@@ -61,7 +73,11 @@ namespace Library_benchmark.Helpers
         }
         private void createSheetBase()
         {
-            basesheet = excel.Workbook.Worksheets.FirstOrDefault();
+            if (excel.Workbook.Worksheets.Count() > 0) 
+                basesheet = excel.Workbook.Worksheets.FirstOrDefault();
+                
+                
+
         }
         private void createSheets(int sheets)
         {
@@ -82,7 +98,12 @@ namespace Library_benchmark.Helpers
                     currentsheet = excel.Workbook.Worksheets.Add(name);
             }
             else
+            {
+                //excel.Workbook.Worksheets.Delete(name);
+                //addSheet(name);
                 currentsheet = excel.Workbook.Worksheets.Where(x => x.Name == name).FirstOrDefault();
+            }
+
 
             currentsheet.DefaultRowHeight = 15;
         }
