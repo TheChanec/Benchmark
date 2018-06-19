@@ -28,7 +28,7 @@ namespace Library_benchmark.Controllers
 
             return View(parametros);
         }
-        
+
         public ActionResult Tiempos()
         {
             return PartialView(Singleton.Instance.Resultados);
@@ -72,9 +72,10 @@ namespace Library_benchmark.Controllers
         #region Post
 
         [HttpPost]
-        public ActionResult Index(Parametros parametros) {
+        public ActionResult Index(Parametros parametros)
+        {
 
-            if (parametros.IdExcel ==1)
+            if (parametros.IdExcel == 1)
             {
                 var res = NPOI(parametros);
                 return res;
@@ -85,16 +86,16 @@ namespace Library_benchmark.Controllers
             }
             else
             {
-                
+
                 ViewBag.IdLibreria = new SelectList(parametros.Exceles, "Id", "Nombre");
 
                 return View(parametros);
             }
 
-            
+
         }
-        
-        
+
+
         #endregion
 
         #region Helpers
@@ -132,7 +133,7 @@ namespace Library_benchmark.Controllers
 
 
         }
-        
+
         private FileResult NPOI(Parametros parametros)
         {
             Singleton res = Singleton.Instance;
@@ -202,17 +203,18 @@ namespace Library_benchmark.Controllers
                     excel = null;
                     if (i != (parametros.Iteraciones - 1))
                         file = null;
-                   
+
 
                 }
-                else {
+                else
+                {
                     return null;
                 }
             }
 
             return file;
         }
-        
+
         private FileStreamResult EPPLUS(Parametros parametros)
         {
             Singleton res = Singleton.Instance;
@@ -277,7 +279,7 @@ namespace Library_benchmark.Controllers
                     excel = null;
                     if (i != (parametros.Iteraciones - 1))
                         file = null;
-                    
+
                 }
 
             }
