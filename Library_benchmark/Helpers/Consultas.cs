@@ -4,16 +4,23 @@ using System.Collections.Generic;
 
 namespace Library_benchmark.Helpers
 {
-    internal class Consultas
+    public class Consultas
     {
         private int rows;
 
+        /// <summary>
+        /// Contructor Inicial de la clase consultas 
+        /// </summary>
+        /// <param name="rows"> Numero de registros que se retornaran en un List<Dummy> </param>
         public Consultas(int rows)
         {
             this.rows = rows;
         }
 
-
+        /// <summary>
+        /// Obtiene el la lista generada de entidad Dummy
+        /// </summary>
+        /// <returns></returns>
         internal IList<Dummy> GetInformacion()
         {
             if (rows > 0)
