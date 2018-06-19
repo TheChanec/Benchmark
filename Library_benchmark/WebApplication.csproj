@@ -196,6 +196,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\Cemex.png" />
     <Content Include="Content\images\goodmorning.jpg" />
     <Content Include="Content\images\net.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -291,6 +292,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -114,7 +114,7 @@ namespace Library_benchmark.Helpers
             }
 
 
-            currentsheet.DefaultRowHeight = 15;
+            currentsheet.DefaultRowHeight = 17.25;
         }
 
 
@@ -131,9 +131,9 @@ namespace Library_benchmark.Helpers
 
             currentsheet.Cells[InicialRow, 1].LoadFromCollection(informacion, true, TableStyles.None);
             currentsheet.Cells[currentsheet.Dimension.Address].AutoFitColumns();
-            if (!design)
+            if (design)
             {
-                //Mascaras();
+                Mascaras();
             }
             
         }

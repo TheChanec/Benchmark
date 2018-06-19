@@ -23,19 +23,12 @@ namespace Library_benchmark.Controllers
         #region GET
         public ActionResult Index()
         {
-            return View();
-        }
+            Parametros parametros = new Parametros();
+            ViewBag.IdLibreria = new SelectList(parametros.Exceles, "Id", "Nombre");
 
-        public ActionResult NPOI()
-        {
-            return View();
+            return View(parametros);
         }
-
-        public ActionResult EPPLUS()
-        {
-            return View();
-        }
-
+        
         public ActionResult Tiempos()
         {
             return PartialView(Singleton.Instance.Resultados);
@@ -77,10 +70,73 @@ namespace Library_benchmark.Controllers
         #endregion
 
         #region Post
+
         [HttpPost]
-        public FileResult NPOI(Parametros parametros)
+        public ActionResult Index(Parametros parametros) {
+
+            if (parametros.IdExcel ==1)
+            {
+                var res = NPOI(parametros);
+                return res;
+            }
+            else if (parametros.IdExcel == 2)
+            {
+                return EPPLUS(parametros);
+            }
+            else
+            {
+                
+                ViewBag.IdLibreria = new SelectList(parametros.Exceles, "Id", "Nombre");
+
+                return View(parametros);
+            }
+
+            
+        }
+        
+        
+        #endregion
+
+        #region Helpers
+        private FileStreamResult EPPlusDownload(ExcelPackage excel)
+        {
+            var ms = new MemoryStream();
+            excel.SaveAs(ms);
+            ms.Position = 0;
+
+
+            var fileDownloadName = "EPPLUS.xlsx";
+            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            var fsr = new FileStreamResult(ms, contentType);
+            fsr.FileDownloadName = fileDownloadName;
+
+            return fsr;
+        }
+
+        private FileContentResult NPOIdownload(XSSFWorkbook excel)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+
+                excel.Write(ms);
+
+                var fileDownloadName = "NPOI.xlsx";
+                var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                byte[] bytes = ms.ToArray();
+
+
+                return File(bytes, contentType, fileDownloadName);
+            }
+
+
+        }
+        
+        private FileResult NPOI(Parametros parametros)
         {
             Singleton res = Singleton.Instance;
+            FileContentResult file = null;
             for (int i = 0; i < parametros.Iteraciones; i++)
             {
                 Stopwatch stopWatch = Stopwatch.StartNew();
@@ -124,7 +180,7 @@ namespace Library_benchmark.Controllers
 
                     }
                     Stopwatch watchFiletoDonwload = Stopwatch.StartNew();
-                    FileContentResult file = NPOIdownload(excel);
+                    file = NPOIdownload(excel);
                     watchFiletoDonwload.Stop();
                     result.Tiempos.Add(new Tiempo
                     {
@@ -146,20 +202,21 @@ namespace Library_benchmark.Controllers
                     excel = null;
                     if (i != (parametros.Iteraciones - 1))
                         file = null;
-                    else
-                        return file;
+                   
 
+                }
+                else {
+                    return null;
                 }
             }
 
-            return null;
+            return file;
         }
-
-        [HttpPost]
-        public ActionResult EPPLUS(Parametros parametros)
+        
+        private FileStreamResult EPPLUS(Parametros parametros)
         {
             Singleton res = Singleton.Instance;
-            FileStreamResult file;
+            FileStreamResult file = null;
             for (int i = 0; i < parametros.Iteraciones; i++)
             {
                 Stopwatch stopWatch = Stopwatch.StartNew();
@@ -220,54 +277,15 @@ namespace Library_benchmark.Controllers
                     excel = null;
                     if (i != (parametros.Iteraciones - 1))
                         file = null;
-                    else
-                        return file;
+                    
                 }
 
             }
 
 
-            return null;
+            return file;
 
         }
-        #endregion
-
-        #region Helpers
-        private FileStreamResult EPPlusDownload(ExcelPackage excel)
-        {
-            var ms = new MemoryStream();
-            excel.SaveAs(ms);
-            ms.Position = 0;
-
-
-            var fileDownloadName = "EPPLUS.xlsx";
-            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
-            var fsr = new FileStreamResult(ms, contentType);
-            fsr.FileDownloadName = fileDownloadName;
-
-            return fsr;
-        }
-
-        private FileContentResult NPOIdownload(XSSFWorkbook excel)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                
-                excel.Write(ms);
-
-                var fileDownloadName = "NPOI.xlsx";
-                var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
-                byte[] bytes = ms.ToArray();
-                
-
-                return File(bytes, contentType, fileDownloadName);
-            }
-
-            
-        }
-
         #endregion
 
     }

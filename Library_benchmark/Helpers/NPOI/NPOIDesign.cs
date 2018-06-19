@@ -21,7 +21,11 @@ namespace Library_benchmark.Helpers
 
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="excel"></param>
+        /// <param name="resource"></param>
         public NPOIDesign(XSSFWorkbook excel, bool resource)
         {
             this.excel = excel;
@@ -30,18 +34,11 @@ namespace Library_benchmark.Helpers
 
             DarFormato();
         }
+        
 
-
-
-
-
-
-
-
-
-
-
-
+        /// <summary>
+        /// 
+        /// </summary>
         private void DarFormato()
         {
             if (excel != null)
@@ -49,7 +46,7 @@ namespace Library_benchmark.Helpers
                 if (!resource)
                     PutImagenTitulo();
 
-                PutTypeAndSizeText();
+                //PutTypeAndSizeText();
                 PutCabeceras();
                 PutCeldasNormales();
                 PutFitInCells();
@@ -57,6 +54,9 @@ namespace Library_benchmark.Helpers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void PutImagenTitulo()
         {
             for (int i = 0; i < excel.NumberOfSheets; i++)
@@ -67,12 +67,16 @@ namespace Library_benchmark.Helpers
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sheet"></param>
         private void DiseñoCabeceras(int sheet)
         {
             var pestana = excel.GetSheetAt(sheet);
 
-            Image image = Image.FromFile(@"C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Content/images/net.png");
-            for (int i = 0; i < 6; i++)
+            Image image = Image.FromFile(@"C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Content/images/Cemex.png");
+            for (int i = 0; i < 2; i++)
             {
                 IRow row;
                 row = pestana.GetRow(i);
@@ -81,10 +85,10 @@ namespace Library_benchmark.Helpers
                     row = pestana.CreateRow(i);
                 }
 
+                row.HeightInPoints = 51f;
 
 
-
-                for (int j = 0; j < 16; j++)
+                for (int j = 7; j < 13; j++)
                 {
                     if (row.GetCell(j) == null)
                     {
@@ -94,36 +98,47 @@ namespace Library_benchmark.Helpers
                 }
             }
 
-            var cra = new CellRangeAddress(0, 5, 2, 15);
+            var cra = new CellRangeAddress(0, 1,8, 12);
 
 
             pestana.AddMergedRegion(cra);
 
             if (cabeceraStyle == null)
                 cabeceraStyle = GetCabeceraCellStyle();
-            var celda = pestana.GetRow(0).GetCell(2);
+            var celda = pestana.GetRow(0).GetCell(8);
             celda.SetCellValue("NPOI");
             celda.CellStyle = cabeceraStyle;
 
 
-            //row0.HeightInPoints = (float)image.Height;
+            ////row0.HeightInPoints = (float)image.Height;
             var converter = new ImageConverter();
             var data = (byte[])converter.ConvertTo(image, typeof(byte[]));
-            var pictureIndex = excel.AddPicture(data, PictureType.PNG);
-            var helper = excel.GetCreationHelper();
-            var drawing = pestana.CreateDrawingPatriarch();
-            var anchor = new XSSFClientAnchor(0, 0, 600, 0, 0, 0, 1, 6);
+            //var pictureIndex = excel.AddPicture(data, PictureType.PNG);
+            //var helper = excel.GetCreationHelper();
+            //var drawing = pestana.CreateDrawingPatriarch();
+            //var anchor = new XSSFClientAnchor(900, 0, 0, 0, 1, 1, 7, 2);
 
 
-            var picture = drawing.CreatePicture(anchor, pictureIndex);
+            //var picture = drawing.CreatePicture(anchor, pictureIndex);
 
-            picture.Resize(1);
+            //picture.Resize(1);
 
+            int myPictureId = excel.AddPicture(data, XSSFWorkbook.PICTURE_TYPE_PNG);
 
+            IDrawing drawing = pestana.CreateDrawingPatriarch();
+            XSSFClientAnchor myAnchor = new XSSFClientAnchor(0, 0, 0, 0, 0, 0, 7, 2);
+
+           
+
+            IPicture myPicture = drawing.CreatePicture(myAnchor, myPictureId);
+            myPicture.Resize();
 
         }
 
-        internal void PutCabeceras()
+        /// <summary>
+        /// 
+        /// </summary>
+        private void PutCabeceras()
         {
 
             if (headerStyle == null)
@@ -145,7 +160,10 @@ namespace Library_benchmark.Helpers
 
         }
 
-        internal void PutCeldasNormales()
+        /// <summary>
+        /// 
+        /// </summary>
+        private void PutCeldasNormales()
         {
 
             if (normalStyle == null)
@@ -171,12 +189,15 @@ namespace Library_benchmark.Helpers
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private ICellStyle GetHeaderCellStyle()
         {
             var style = excel.CreateCellStyle();
             style.FillForegroundColor = IndexedColors.DarkBlue.Index; ;
             style.FillPattern = FillPattern.SolidForeground;
-            style.FillBackgroundColor = IndexedColors.DarkBlue.Index;
 
             var hfont = excel.CreateFont();
             hfont.FontHeightInPoints = 13;
@@ -186,6 +207,10 @@ namespace Library_benchmark.Helpers
             return style;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private ICellStyle GetCabeceraCellStyle()
         {
             ICellStyle style = excel.CreateCellStyle();
@@ -199,25 +224,33 @@ namespace Library_benchmark.Helpers
             IFont hfont = excel.CreateFont();
             hfont.FontHeightInPoints = 72;
             hfont.Color = IndexedColors.White.Index;
-            hfont.FontName = "Arial";
+            hfont.FontName = "Century Gothic";
             style.SetFont(hfont);
 
             return style;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private ICellStyle GetNormalCellStyle()
         {
             ICellStyle style = excel.CreateCellStyle();
             var hfont = excel.CreateFont();
             hfont.FontHeightInPoints = 12;
             hfont.Color = IndexedColors.Black.Index;
-            hfont.FontName = "Arial";
+            hfont.FontName = "Century Gothic";
 
 
             style.SetFont(hfont);
             return style;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         private ICellStyle GetDateCellStyle()
         {
             var style = excel.CreateCellStyle();
@@ -232,7 +265,10 @@ namespace Library_benchmark.Helpers
             return style;
         }
 
-        internal void PutFitInCells()
+        /// <summary>
+        /// 
+        /// </summary>
+        private void PutFitInCells()
         {
 
 
@@ -252,7 +288,10 @@ namespace Library_benchmark.Helpers
 
         }
 
-        internal void PutTypeAndSizeText()
+        /// <summary>
+        /// 
+        /// </summary>
+        private void PutTypeAndSizeText()
         {
             if (normalStyle == null)
                 normalStyle = GetNormalCellStyle();
@@ -272,6 +311,10 @@ namespace Library_benchmark.Helpers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         internal XSSFWorkbook GetExcelExample()
         {
             return excel;

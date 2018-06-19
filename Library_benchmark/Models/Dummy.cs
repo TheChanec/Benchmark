@@ -11,14 +11,16 @@ namespace Library_benchmark.Models
         public DateTime Fecha2 { get; set; }
         public DateTime Fecha3 { get; set; }
         public DateTime Fecha4 { get; set; }
+        public DateTime Fecha5 { get; set; }
+        public DateTime Fecha6 { get; set; }
+
         public decimal Moneda1 { get; set; }
         public decimal Moneda2 { get; set; }
         public decimal Moneda3 { get; set; }
         public decimal Moneda4 { get; set; }
-        public string Propiedad9 { get; set; }
-        public string Propiedad10 { get; set; }
-        public string Propiedad11 { get; set; }
-        public string Propiedad12 { get; set; }
+        public decimal Moneda5 { get; set; }
+        public decimal Moneda6 { get; set; }
+
         public string Propiedad13 { get; set; }
         public string Propiedad14 { get; set; }
         public string Propiedad15 { get; set; }

@@ -75,7 +75,9 @@ namespace Library_benchmark.Helpers
             {
                 addSheet("Sheet" + i);
                 addcabeceras();
+
                 addInformation();
+                
                 PutFitInCells();
             }
         }
@@ -108,14 +110,34 @@ namespace Library_benchmark.Helpers
             int cell = 0;
 
             var item = informacion.FirstOrDefault();
+            
+
+
             foreach (var prop in item.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
             {
-
                 var celda = row.GetCell(cell);
                 if (celda == null)
                 {
                     celda = row.CreateCell(cell);
                 }
+
+                
+                if (prop.PropertyType.Equals(typeof(DateTime)))
+                {
+                    var style = excel.CreateCellStyle();
+                    style.DataFormat = excel.CreateDataFormat().GetFormat("m/d/yyyy"); ;
+                    currentsheet.SetDefaultColumnStyle(cell, style);
+                    
+                }
+                else if (prop.PropertyType.Equals(typeof(decimal)))
+                {
+                    var style = excel.CreateCellStyle();
+                    style.DataFormat = excel.CreateDataFormat().GetFormat("[$$-409]#,##0.00");
+                    currentsheet.SetDefaultColumnStyle(cell, style);
+                    celda.SetCellType(CellType.Numeric);
+                }
+                
+                
                 cell++;
                 celda.SetCellValue(prop.Name.ToString());
             }
@@ -153,32 +175,25 @@ namespace Library_benchmark.Helpers
                     celda = row.GetCell(cell);
                     if (celda == null)
                         celda = row.CreateCell(cell);
-
-                    var style = currentsheet.GetColumnStyle(cell);
-
+                    
+                    var style = currentsheet.GetColumnStyle(cell); 
                     if (prop.PropertyType.Equals(typeof(DateTime)))
                     {
                         var date = (DateTime)prop.GetValue(item, null);
-                        if (design)
-                        {
-
-                            if (dateStyle == null)
-                                dateStyle = GetDateCellStyle();
-                            celda.CellStyle = dateStyle;
-                        }
-
-                        celda.SetCellValue(date);
+                        celda.SetCellValue(date.Date);
+                        style.DataFormat = excel.CreateDataFormat().GetFormat("MM/dd/yyyy");
+                        
 
 
                     }
                     else if (prop.PropertyType.Equals(typeof(decimal)))
                     {
-                        //var  df = excel.CreateDataFormat();
-                        //style.DataFormat = df.GetFormat("$#,###.##");
-
                         var money = (decimal)prop.GetValue(item, null);
-                        celda.SetCellValue(money.ToString("C"));
-                        //celda.SetCellValue(money.ToString());
+                        celda.SetCellValue(Convert.ToDouble(money));
+                        style.DataFormat = excel.CreateDataFormat().GetFormat("[$$-409]#,##0.00");
+                        
+                        celda.SetCellType(CellType.Numeric);
+                        
                     }
                     else
                         celda.SetCellValue(prop.GetValue(item, null).ToString());
@@ -189,19 +204,13 @@ namespace Library_benchmark.Helpers
                 }
                 cont++;
             }
-
+            
         }
 
         internal XSSFWorkbook GetExcelExample()
         {
             return excel;
         }
-
-        private ICellStyle GetDateCellStyle()
-        {
-            ICellStyle style = excel.CreateCellStyle();
-            style.DataFormat = excel.CreateDataFormat().GetFormat("MM/dd/yyyy");
-            return style;
-        }
+        
     }
 }
