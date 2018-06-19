@@ -24,7 +24,12 @@ namespace Library_benchmark.Helpers
         private int rowInicial;
 
 
-
+        /// <summary>
+        /// Contructor base para NPOI
+        /// </summary>
+        /// <param name="informacion">Lista de registros que se incrustaran en las hojas</param>
+        /// <param name="design">parametro bandera para definir si se pondra diseño a las hojas</param>
+        /// <param name="sheets">numero de hojas que tendra el workbook</param>
         public NPOIService(IList<Dummy> informacion, bool design, int sheets)
         {
             this.informacion = informacion;
@@ -39,6 +44,12 @@ namespace Library_benchmark.Helpers
 
         }
 
+        /// <summary>
+        /// Contructor para armar el NPOI en base a un template ya establecido
+        /// </summary>
+        /// <param name="excelFile">archivo template en arreglo de bytes</param>
+        /// <param name="informacion">informacion que se incrustara en las hojas</param>
+        /// <param name="sheets">numero de hojas que tendra el workbook</param>
         public NPOIService(byte[] excelFile, IList<Dummy> informacion, int sheets)
         {
             this.informacion = informacion;
@@ -50,16 +61,28 @@ namespace Library_benchmark.Helpers
             createSheets(sheets);
         }
 
+
+        /// <summary>
+        /// obtiene la primera hoja de el template para utilizarla como hoja base para armar el workbook
+        /// </summary>
         private void createSheetBase()
         {
             basesheet = (XSSFSheet)excel.GetSheetAt(0);
         }
 
+        /// <summary>
+        /// crea un workbook base 
+        /// </summary>
         private void createWorkBook()
         {
             excel = new XSSFWorkbook();
 
         }
+
+        /// <summary>
+        /// crea un workbook en base al templete establecido 
+        /// </summary>
+        /// <param name="excelFile">Templete</param>
         private void createWorkBook(byte[] excelFile)
         {
 
@@ -67,8 +90,11 @@ namespace Library_benchmark.Helpers
             //excel = new HSSFWorkbook(fs);
             excel = (XSSFWorkbook)WorkbookFactory.Create(fs);
         }
-
-
+        
+        /// <summary>
+        /// Funcion que crea hojas en el workbook
+        /// </summary>
+        /// <param name="sheets">numero de hojas que se crearan</param>
         private void createSheets(int sheets)
         {
             for (int i = 0; i < sheets; i++)
@@ -82,7 +108,10 @@ namespace Library_benchmark.Helpers
             }
         }
 
-        internal void PutFitInCells()
+        /// <summary>
+        /// Pone un autoFit en las columnas
+        /// </summary>
+        private void PutFitInCells()
         {
 
 
@@ -98,6 +127,9 @@ namespace Library_benchmark.Helpers
 
         }
 
+        /// <summary>
+        /// Se encarga de poner el titulo de las tablas y de definil el estilo que tendra cada columna por defecto
+        /// </summary>
         private void addcabeceras()
         {
             IRow row;
@@ -143,6 +175,10 @@ namespace Library_benchmark.Helpers
             }
         }
 
+        /// <summary>
+        /// Agrega Sheet a el excel en base a nombre
+        /// </summary>
+        /// <param name="name"></param>
         private void addSheet(string name)
         {
             currentsheet = (XSSFSheet)excel.GetSheet(name);
@@ -157,6 +193,9 @@ namespace Library_benchmark.Helpers
             currentsheet.DefaultRowHeight = 300;
         }
 
+        /// <summary>
+        /// Agrega informacion a la Sheet que este en memoria 
+        /// </summary>
         private void addInformation()
         {
             int cont = rowInicial;
@@ -207,6 +246,10 @@ namespace Library_benchmark.Helpers
             
         }
 
+        /// <summary>
+        /// Obtiene el dato del Workbook 
+        /// </summary>
+        /// <returns>dato referente a el excel que se esta armando</returns>
         internal XSSFWorkbook GetExcelExample()
         {
             return excel;
