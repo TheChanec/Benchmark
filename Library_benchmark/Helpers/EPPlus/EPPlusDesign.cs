@@ -71,9 +71,10 @@ namespace Library_benchmark.Helpers
             item.Cells["I1:M2"].Style.Fill.BackgroundColor.SetColor(colorPrimary);
             item.Cells["I1:M2"].Style.Font.Color.SetColor(colorPrimaryText);
             item.Cells["I1:M2"].Style.Font.Size = 36f;
+            item.Cells["I1:M2"].Style.Font.Bold = true;
             item.Cells["I1:M2"].Style.Font.Name = "Century Gothic";
             item.Cells["I1:M2"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-
+            item.Cells["I1:M2"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
             Image logo = Image.FromFile("C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Content/images/Cemex.png");
             var picture = item.Drawings.AddPicture("DotNet", logo);

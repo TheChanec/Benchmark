@@ -14,10 +14,10 @@ namespace Library_benchmark.Helpers
         private bool resource;
         private int rowInicial;
 
-        ICellStyle headerStyle;
-        ICellStyle normalStyle;
-        ICellStyle dateStyle;
-        ICellStyle cabeceraStyle;
+        private ICellStyle headerStyle;
+        private ICellStyle normalStyle;
+        private ICellStyle dateStyle;
+        private ICellStyle cabeceraStyle;
 
 
 
@@ -34,7 +34,7 @@ namespace Library_benchmark.Helpers
 
             DarFormato();
         }
-        
+
 
         /// <summary>
         /// 
@@ -48,7 +48,7 @@ namespace Library_benchmark.Helpers
 
                 //PutTypeAndSizeText();
                 PutCabeceras();
-                PutCeldasNormales();
+                //PutCeldasNormales();
                 PutFitInCells();
 
             }
@@ -98,7 +98,7 @@ namespace Library_benchmark.Helpers
                 }
             }
 
-            var cra = new CellRangeAddress(0, 1,8, 12);
+            var cra = new CellRangeAddress(0, 1, 8, 12);
 
 
             pestana.AddMergedRegion(cra);
@@ -128,7 +128,7 @@ namespace Library_benchmark.Helpers
             IDrawing drawing = pestana.CreateDrawingPatriarch();
             XSSFClientAnchor myAnchor = new XSSFClientAnchor(0, 0, 0, 0, 0, 0, 7, 2);
 
-           
+
 
             IPicture myPicture = drawing.CreatePicture(myAnchor, myPictureId);
             myPicture.Resize();
@@ -147,7 +147,7 @@ namespace Library_benchmark.Helpers
 
             for (int i = 0; i < excel.NumberOfSheets; i++)
             {
-                if (excel.GetSheetAt(i).GetRow(rowInicial - 1)!= null)
+                if (excel.GetSheetAt(i).GetRow(rowInicial - 1) != null)
                 {
                     foreach (var item in excel.GetSheetAt(i).GetRow(rowInicial - 1).Cells)
                     {
@@ -155,39 +155,12 @@ namespace Library_benchmark.Helpers
 
                     }
                 }
-                
-            }
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void PutCeldasNormales()
-        {
-
-            if (normalStyle == null)
-                normalStyle = GetNormalCellStyle();
-
-
-            for (int i = 0; i < excel.NumberOfSheets; i++)
-            {
-
-
-                for (int j = rowInicial; j <= excel.GetSheetAt(i).LastRowNum; j++)
-                {
-                    foreach (var item in excel.GetSheetAt(i).GetRow(j).Cells)
-                    {
-                        var style = item.CellStyle;
-                        item.CellStyle = normalStyle;
-
-                    }
-                }
-
 
             }
 
         }
+
+        
 
         /// <summary>
         /// 
@@ -199,9 +172,10 @@ namespace Library_benchmark.Helpers
             style.FillForegroundColor = IndexedColors.DarkBlue.Index; ;
             style.FillPattern = FillPattern.SolidForeground;
 
-            var hfont = excel.CreateFont();
-            hfont.FontHeightInPoints = 13;
+            IFont hfont = excel.CreateFont();
+            hfont.FontHeightInPoints = 12;
             hfont.Color = IndexedColors.White.Index;
+            hfont.FontName = "Century Gothic";
             style.SetFont(hfont);
 
             return style;
@@ -216,15 +190,16 @@ namespace Library_benchmark.Helpers
             ICellStyle style = excel.CreateCellStyle();
             style.FillForegroundColor = IndexedColors.DarkBlue.Index; ;
             style.FillPattern = FillPattern.SolidForeground;
-            
+
             style.FillBackgroundColor = IndexedColors.DarkBlue.Index;
             style.Alignment = HorizontalAlignment.Center;
             style.VerticalAlignment = VerticalAlignment.Center;
 
             IFont hfont = excel.CreateFont();
-            hfont.FontHeightInPoints = 72;
+            hfont.FontHeightInPoints = 36;
             hfont.Color = IndexedColors.White.Index;
             hfont.FontName = "Century Gothic";
+            hfont.IsBold = true;
             style.SetFont(hfont);
 
             return style;
@@ -282,7 +257,7 @@ namespace Library_benchmark.Helpers
                         excel.GetSheetAt(i).AutoSizeColumn(j);
                     }
                 }
-                
+
 
             }
 
@@ -306,7 +281,7 @@ namespace Library_benchmark.Helpers
                         excel.GetSheetAt(i).SetDefaultColumnStyle(j, normalStyle);
                     }
                 }
-                
+
 
             }
         }

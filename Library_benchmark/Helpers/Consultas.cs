@@ -26,7 +26,7 @@ namespace Library_benchmark.Helpers
             if (rows > 0)
             {
                 IList<Dummy> respuesta = new List<Dummy>();
-                for (int i = 0; i < rows; i++)
+                for (int i = 1; i <= rows; i++)
                 {
                     respuesta.Add(new Dummy
                     {

@@ -90,7 +90,7 @@ namespace Library_benchmark.Helpers
             //excel = new HSSFWorkbook(fs);
             excel = (XSSFWorkbook)WorkbookFactory.Create(fs);
         }
-        
+
         /// <summary>
         /// Funcion que crea hojas en el workbook
         /// </summary>
@@ -103,7 +103,7 @@ namespace Library_benchmark.Helpers
                 addcabeceras();
 
                 addInformation();
-                
+
                 PutFitInCells();
             }
         }
@@ -142,7 +142,7 @@ namespace Library_benchmark.Helpers
             int cell = 0;
 
             var item = informacion.FirstOrDefault();
-            
+
 
 
             foreach (var prop in item.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
@@ -153,23 +153,43 @@ namespace Library_benchmark.Helpers
                     celda = row.CreateCell(cell);
                 }
 
-                
-                if (prop.PropertyType.Equals(typeof(DateTime)))
+                if (design)
                 {
-                    var style = excel.CreateCellStyle();
-                    style.DataFormat = excel.CreateDataFormat().GetFormat("m/d/yyyy"); ;
-                    currentsheet.SetDefaultColumnStyle(cell, style);
-                    
+                    var hfont = excel.CreateFont();
+                    hfont.FontHeightInPoints = 12;
+                    hfont.Color = IndexedColors.Black.Index;
+                    hfont.FontName = "Century Gothic";
+
+                    if (prop.PropertyType.Equals(typeof(DateTime)))
+                    {
+                        var style = excel.CreateCellStyle();
+                        style.DataFormat = excel.CreateDataFormat().GetFormat("m/d/yyyy");
+                        
+                        style.SetFont(hfont);
+                        currentsheet.SetDefaultColumnStyle(cell, style);
+
+                    }
+                    else if (prop.PropertyType.Equals(typeof(decimal)))
+                    {
+                        var style = excel.CreateCellStyle();
+                        style.DataFormat = excel.CreateDataFormat().GetFormat("[$$-409]#,##0.00");
+                        
+                        style.SetFont(hfont);
+                        currentsheet.SetDefaultColumnStyle(cell, style);
+                        celda.SetCellType(CellType.Numeric);
+                    }
+                    else
+                    {
+                        var style = excel.CreateCellStyle();
+                        
+                        style.SetFont(hfont);
+                        currentsheet.SetDefaultColumnStyle(cell, style);
+                        celda.SetCellType(CellType.Numeric);
+                    }
                 }
-                else if (prop.PropertyType.Equals(typeof(decimal)))
-                {
-                    var style = excel.CreateCellStyle();
-                    style.DataFormat = excel.CreateDataFormat().GetFormat("[$$-409]#,##0.00");
-                    currentsheet.SetDefaultColumnStyle(cell, style);
-                    celda.SetCellType(CellType.Numeric);
-                }
-                
-                
+
+
+
                 cell++;
                 celda.SetCellValue(prop.Name.ToString());
             }
@@ -214,14 +234,14 @@ namespace Library_benchmark.Helpers
                     celda = row.GetCell(cell);
                     if (celda == null)
                         celda = row.CreateCell(cell);
-                    
-                    var style = currentsheet.GetColumnStyle(cell); 
+
+                    var style = currentsheet.GetColumnStyle(cell);
                     if (prop.PropertyType.Equals(typeof(DateTime)))
                     {
                         var date = (DateTime)prop.GetValue(item, null);
                         celda.SetCellValue(date.Date);
                         style.DataFormat = excel.CreateDataFormat().GetFormat("MM/dd/yyyy");
-                        
+
 
 
                     }
@@ -230,9 +250,9 @@ namespace Library_benchmark.Helpers
                         var money = (decimal)prop.GetValue(item, null);
                         celda.SetCellValue(Convert.ToDouble(money));
                         style.DataFormat = excel.CreateDataFormat().GetFormat("[$$-409]#,##0.00");
-                        
+
                         celda.SetCellType(CellType.Numeric);
-                        
+
                     }
                     else
                         celda.SetCellValue(prop.GetValue(item, null).ToString());
@@ -243,7 +263,7 @@ namespace Library_benchmark.Helpers
                 }
                 cont++;
             }
-            
+
         }
 
         /// <summary>
@@ -254,6 +274,6 @@ namespace Library_benchmark.Helpers
         {
             return excel;
         }
-        
+
     }
 }
