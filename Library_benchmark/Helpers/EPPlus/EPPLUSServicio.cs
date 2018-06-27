@@ -20,13 +20,16 @@ namespace Library_benchmark.Helpers
         private ExcelWorksheet basesheet;
         private int InicialRow;
         private bool design;
+        private bool mascaras;
         private byte[] documentDummy;
         private int sheets;
 
-        public EPPLUSServicio(IList<Dummy> informacion, bool design, int sheets)
+        public EPPLUSServicio(IList<Dummy> informacion, bool design, bool mascaras, int sheets)
         {
             this.informacion = informacion;
             this.design = design;
+            this.mascaras = mascaras;
+
             if (design)
                 this.InicialRow = 4;
             else
@@ -37,12 +40,12 @@ namespace Library_benchmark.Helpers
 
         }
 
-        public EPPLUSServicio(byte[] documentDummy, IList<Dummy> informacion, int sheets)
+        public EPPLUSServicio(byte[] documentDummy, IList<Dummy> informacion, bool mascaras, int sheets)
         {
             this.informacion = informacion;
             this.InicialRow = 4;
             this.design = false;
-
+            this.mascaras = mascaras;
 
             createWorkBook(documentDummy);
             createSheetBase();
@@ -131,7 +134,7 @@ namespace Library_benchmark.Helpers
 
             currentsheet.Cells[InicialRow, 1].LoadFromCollection(informacion, true, TableStyles.None);
             currentsheet.Cells[currentsheet.Dimension.Address].AutoFitColumns();
-            if (design)
+            if (mascaras)
             {
                 Mascaras();
             }

@@ -154,10 +154,10 @@ namespace Library_benchmark.Controllers
                     Stopwatch watchCreation = Stopwatch.StartNew();
 
                     if (parametros.Resource)
-                        excel = new NPOIService(Resources.DummyReport, informacion, parametros.Sheets).GetExcelExample();
+                        excel = new NPOIService(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Sheets).GetExcelExample();
 
                     else
-                        excel = new NPOIService(informacion, parametros.Design, parametros.Sheets).GetExcelExample();
+                        excel = new NPOIService(informacion, parametros.Design, parametros.Mascaras, parametros.Sheets).GetExcelExample();
 
 
                     watchCreation.Stop();
@@ -235,9 +235,9 @@ namespace Library_benchmark.Controllers
                     Stopwatch watchCreation = Stopwatch.StartNew();
 
                     if (parametros.Resource)
-                        excel = new EPPLUSServicio(Resources.DummyReport, informacion, parametros.Sheets).GetExcelExample();
+                        excel = new EPPLUSServicio(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Sheets).GetExcelExample();
                     else
-                        excel = new EPPLUSServicio(informacion, parametros.Design, parametros.Sheets).GetExcelExample();
+                        excel = new EPPLUSServicio(informacion, parametros.Design, parametros.Mascaras, parametros.Sheets).GetExcelExample();
 
                     watchCreation.Stop();
                     result.Tiempos.Add(new Tiempo

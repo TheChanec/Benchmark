@@ -111,13 +111,15 @@ namespace Library_benchmark.Controllers
         {
             //var userTickets = JsonConvert.DeserializeObject<List<TicketsByNameDetails>>(jsonString);
 
-            var doc = new Document(PageSize.A4, 10f, 10f, 120f, 100f);
+            var doc = new Document(PageSize.A4, 5f, 5f, 73.5f, 70f);
             var strFilePath = Server.MapPath("~/PdfUploads/");
 
             var fileName = "Pdf_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".pdf";
 
-            var titleFont = FontFactory.GetFont(FontFactory.HELVETICA, 9, Font.UNDERLINE, BaseColor.BLACK);
-            var h1Font = FontFactory.GetFont(FontFactory.HELVETICA, 11, Font.NORMAL);
+            var fontDoc = FontFactory.GetFont(FontFactory.HELVETICA, 9, Font.UNDERLINE, BaseColor.BLACK);
+            var fontTitle = FontFactory.GetFont(FontFactory.HELVETICA, 18, Font.NORMAL, BaseColor.WHITE);
+            var fontSubTitle = FontFactory.GetFont(FontFactory.HELVETICA, 11.3f, Font.NORMAL, BaseColor.WHITE);
+
             var bodyFont = FontFactory.GetFont(FontFactory.HELVETICA, 9, Font.NORMAL, BaseColor.DARK_GRAY);
 
 
@@ -125,16 +127,35 @@ namespace Library_benchmark.Controllers
             pdfWriter.PageEvent = new ITextEvents();
             doc.Open();
 
-            var tblContainer = new PdfPTable(5) { TotalWidth = 520f, LockedWidth = true };
-            float[] widths = { 90f, 150f, 120f, 95f, 65f };
-            tblContainer.SetWidths(widths);
-            var heading = new Phrase("LearnShareCorner demo code to Genereate Pdf using ITextSharp.", h1Font);
-            var titleEmployee = new Phrase("Employee", titleFont);
-            var titleName = new Phrase("Name", titleFont);
-            var titleOccupation = new Phrase("Occupation", titleFont);
-            var titleLa = new Phrase("Lapse Action", titleFont);
-            var titleExpiryDate = new Phrase("Expiry Date", titleFont);
-            var cellTicketName = new PdfPCell(heading) { Colspan = 5, Border = 0 };
+            var tblContainer = new PdfPTable(5) { TotalWidth = 558f, LockedWidth = true };
+            //float[] widths = { 90f, 150f, 120f, 95f, 65f };
+            //tblContainer.SetWidths(widths);
+            var title = new Phrase("DRIVER INSPECTION REPORT", fontTitle);
+            var subtitle = new Phrase("AS REQUIRED BY DOT FEDERAL MOTOR CARRIER SAFETY REGULATIONS", fontSubTitle);
+
+            var titleEmployee = new Phrase("Employee", fontDoc);
+            var titleName = new Phrase("Name", fontDoc);
+            var titleOccupation = new Phrase("Occupation", fontDoc);
+            var titleLa = new Phrase("Lapse Action", fontDoc);
+            var titleExpiryDate = new Phrase("Expiry Date", fontDoc);
+            var cellTitle = new PdfPCell(title)
+            {
+                Colspan = 5,
+                Border = 0,
+                BackgroundColor = BaseColor.BLACK,
+                HorizontalAlignment = PdfPCell.ALIGN_CENTER,
+                VerticalAlignment = PdfPCell.ALIGN_BOTTOM,
+                FixedHeight = 29f
+            };
+            var cellSubTitle = new PdfPCell(subtitle)
+            {
+                Colspan = 5,
+                Border = 0,
+                BackgroundColor = BaseColor.BLACK,
+                HorizontalAlignment = PdfPCell.ALIGN_CENTER,
+                VerticalAlignment = PdfPCell.ALIGN_TOP,
+                FixedHeight = 29f
+            };
             var cellTitleEmployee = new PdfPCell(titleEmployee);
             var cellTitleName = new PdfPCell(titleName);
             var cellTitleOccupation = new PdfPCell(titleOccupation);
@@ -147,7 +168,8 @@ namespace Library_benchmark.Controllers
             cellTitleLa.Border = 0;
             cellTitleExpiryDate.Border = 0;
 
-            tblContainer.AddCell(cellTicketName);
+            tblContainer.AddCell(cellTitle);
+            tblContainer.AddCell(cellSubTitle);
 
             tblContainer.AddCell(cellTitleEmployee);
             tblContainer.AddCell(cellTitleName);
@@ -158,7 +180,7 @@ namespace Library_benchmark.Controllers
             doc.Add(tblContainer);
 
             var tblResult = new PdfPTable(5) { TotalWidth = 520f, LockedWidth = true };
-            tblResult.SetWidths(widths);
+            //tblResult.SetWidths(widths);
             var employee = new Phrase("WebTechSys.in", bodyFont);
             var name = new Phrase("Mukesh Salaria", bodyFont);
             var occupation = new Phrase("Software Engineer", bodyFont);

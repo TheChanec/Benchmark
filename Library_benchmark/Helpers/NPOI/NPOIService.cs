@@ -22,6 +22,7 @@ namespace Library_benchmark.Helpers
         private XSSFSheet currentsheet;
         private XSSFSheet basesheet;
         private int rowInicial;
+        private bool mascaras;
 
 
         /// <summary>
@@ -30,8 +31,9 @@ namespace Library_benchmark.Helpers
         /// <param name="informacion">Lista de registros que se incrustaran en las hojas</param>
         /// <param name="design">parametro bandera para definir si se pondra diseño a las hojas</param>
         /// <param name="sheets">numero de hojas que tendra el workbook</param>
-        public NPOIService(IList<Dummy> informacion, bool design, int sheets)
+        public NPOIService(IList<Dummy> informacion, bool design, bool mascaras, int sheets)
         {
+            this.mascaras = mascaras;
             this.informacion = informacion;
             this.design = design;
             if (design)
@@ -50,11 +52,12 @@ namespace Library_benchmark.Helpers
         /// <param name="excelFile">archivo template en arreglo de bytes</param>
         /// <param name="informacion">informacion que se incrustara en las hojas</param>
         /// <param name="sheets">numero de hojas que tendra el workbook</param>
-        public NPOIService(byte[] excelFile, IList<Dummy> informacion, int sheets)
+        public NPOIService(byte[] excelFile, IList<Dummy> informacion, bool mascaras, int sheets)
         {
             this.informacion = informacion;
             this.design = false;
             this.rowInicial = 4;
+            this.mascaras = mascaras;
 
             createWorkBook(excelFile);
             createSheetBase();
@@ -153,7 +156,7 @@ namespace Library_benchmark.Helpers
                     celda = row.CreateCell(cell);
                 }
 
-                if (design)
+                if (mascaras)
                 {
                     var hfont = excel.CreateFont();
                     hfont.FontHeightInPoints = 12;

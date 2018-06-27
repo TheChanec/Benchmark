@@ -35,22 +35,22 @@ namespace Library_benchmark
 
         public override void OnOpenDocument(PdfWriter writer, Document document)
         {
-            try
-            {
-                PrintTime = DateTime.Now;
-                bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-                cb = writer.DirectContent;
-                headerTemplate = cb.CreateTemplate(400, 150);
-                footerTemplate = cb.CreateTemplate(50, 50);
-            }
-            catch (DocumentException de)
-            {
+            //try
+            //{
+            PrintTime = DateTime.Now;
+            bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            cb = writer.DirectContent;
+            headerTemplate = cb.CreateTemplate(500, 100);
+            footerTemplate = cb.CreateTemplate(50, 50);
+            //}
+            //catch (DocumentException de)
+            //{
 
-            }
-            catch (System.IO.IOException ioe)
-            {
+            //}
+            //catch (System.IO.IOException ioe)
+            //{
 
-            }
+            //}
         }
 
         public override void OnEndPage(PdfWriter writer, Document document)
@@ -59,63 +59,67 @@ namespace Library_benchmark
 
             Font baseFontNormal = FontFactory.GetFont(FontFactory.HELVETICA, 12f, Font.NORMAL, BaseColor.BLACK);
 
-            Font baseFontBig = FontFactory.GetFont(FontFactory.TIMES, 12f, Font.NORMAL, BaseColor.BLACK);
+            Font fontFolio = FontFactory.GetFont(FontFactory.TIMES, 14, Font.NORMAL, BaseColor.BLACK);
             Font time = FontFactory.GetFont(FontFactory.HELVETICA, 11f, Font.NORMAL);
-            var prueba = HttpContext.Current.Server.MapPath("~/Content/images/net.png");
-            var logo = Image.GetInstance(HttpContext.Current.Server.MapPath("~/Content/images/net.png"));
-            logo.ScaleToFit(150f, 62f);
-            //logo.ScalePercent(7f);
+            var logo = Image.GetInstance(HttpContext.Current.Server.MapPath("~/Content/images/CemexPDF.png"));
+            //logo.ScaleToFit(200, 57);
+            logo.ScalePercent(60);
             //document.Add(new Phrase(Environment.NewLine));
-            var p1Header = new Phrase("\"LearnShareCorner is platform where you can learn and share your knowledge\"", baseFontNormal);
 
             //Create PdfTable object
             var pdfTab = new PdfPTable(3);
-            float[] width = { 100f, 320f, 100f };
-            pdfTab.SetWidths(width);
-            pdfTab.TotalWidth = 520f;
+            //float[] width = { 100f, 320f, 100f };
+            //pdfTab.SetWidths(width);
+            pdfTab.TotalWidth = 720f;
             pdfTab.LockedWidth = true;
             //We will have to create separate cells to include image logo and 2 separate strings
             //Row 1
             var pdfCell1 = new PdfPCell(logo);
-            var pdfCell2 = new PdfPCell(p1Header);
+            var pdfCell2 = new PdfPCell();
             var text = "Page " + writer.PageNumber + " of ";
             //string
+
 
             //Add paging to header
             {
                 cb.BeginText();
                 cb.SetFontAndSize(bf, 12);
                 cb.SetTextMatrix(document.PageSize.GetRight(100), document.PageSize.GetTop(45));
-                cb.ShowText(text);
+                //cb.ShowText(text);
                 cb.EndText();
-                float len = bf.GetWidthPoint(text, 12);
+                //float len = bf.GetWidthPoint(text, 12);
                 //Adds "12" in Page 1 of 12
-                cb.AddTemplate(headerTemplate, document.PageSize.GetRight(100) + len, document.PageSize.GetTop(45));
+                //cb.AddTemplate(headerTemplate, document.PageSize.GetRight(100) + len, document.PageSize.GetTop(45));
             }
             //Add paging to footer
             {
-                var leftCol = new Paragraph("Mukesh Salaria\n" + "Software Engineer", time);
-                var rightCol = new Paragraph("LearnShareCorner.com\n" + "Techical Blog", time);
-                var phone = new Paragraph("Phone +91-9814268272", time);
-                var address = new Paragraph("       Company: webtechsys.in\n" + "            SAS Nagar, Mohali", time);
-                var fax = new Paragraph("mukeshsalaria01@gmail.com", time);
+                //var leftCol = new Paragraph("Mukesh Salaria\n" + "Software Engineer", time);
+                //var rightCol = new Paragraph("LearnShareCorner.com\n" + "Techical Blog", time);
+                //var phone = new Paragraph("Phone +91-9814268272", time);
+                float len = bf.GetWidthPoint(text, 12);
+                //Adds "12" in Page 1 of 12
+                var algo = document.PageSize.GetRight(100) + len;
+                var otracosa = document.PageSize.GetTop(45);
 
-                leftCol.Alignment = Element.ALIGN_LEFT;
-                rightCol.Alignment = Element.ALIGN_RIGHT;
-                fax.Alignment = Element.ALIGN_RIGHT;
-                phone.Alignment = Element.ALIGN_LEFT;
+                var address = new Paragraph(text + " " + algo + " " + otracosa, time);
+                //var fax = new Paragraph("mukeshsalaria01@gmail.com", time);
+
+                //leftCol.Alignment = Element.ALIGN_LEFT;
+                //rightCol.Alignment = Element.ALIGN_RIGHT;
+                //fax.Alignment = Element.ALIGN_RIGHT;
+                //phone.Alignment = Element.ALIGN_LEFT;
                 address.Alignment = Element.ALIGN_CENTER;
 
                 var footerTbl = new PdfPTable(3) { TotalWidth = 520f, HorizontalAlignment = Element.ALIGN_CENTER, LockedWidth = true };
                 float[] widths = { 150f, 220f, 150f };
                 footerTbl.SetWidths(widths);
-                var footerCell1 = new PdfPCell(leftCol);
+                var footerCell1 = new PdfPCell(/*leftCol*/);
                 var footerCell2 = new PdfPCell();
-                var footerCell3 = new PdfPCell(rightCol);
+                var footerCell3 = new PdfPCell(/*rightCol*/);
                 var sep = new PdfPCell();
-                var footerCell4 = new PdfPCell(phone);
+                var footerCell4 = new PdfPCell(/*phone*/);
                 var footerCell5 = new PdfPCell(address);
-                var footerCell6 = new PdfPCell(fax);
+                var footerCell6 = new PdfPCell(/*fax*/);
 
 
                 footerCell1.Border = 0;
@@ -144,7 +148,7 @@ namespace Library_benchmark
             // PdfPCell pdfCell4 = new PdfPCell(new Phrase("No job is so urgent that it cannot be done safely", baseFontNormal));
             //Row 3
 
-            var pdfCell3 = new PdfPCell(new Phrase("Date:" + PrintTime.ToShortDateString(), baseFontBig));
+            var pdfCell3 = new PdfPCell(new Phrase("CR4150", fontFolio));
             var pdfCell4 = new PdfPCell();
             //var pdfCell5 = new PdfPCell(new Phrase("TIME:" + string.Format("{0:t}", DateTime.Now), baseFontBig));
             var pdfCell5 = new PdfPCell(new Phrase(""));
@@ -160,14 +164,16 @@ namespace Library_benchmark
             //pdfCell1.Colspan = 3;
             //pdfCell2.Colspan = 3;
             pdfCell2.PaddingTop = 9f;
-            pdfCell3.PaddingTop = 20f;
+            pdfCell3.PaddingTop = 8f;
+            pdfCell3.PaddingRight = 10f;
+
             pdfCell5.PaddingTop = 9f;
 
-            pdfCell1.Border = 0;
-            pdfCell2.Border = 0;
-            pdfCell3.Border = 0;
-            pdfCell4.Border = 0;
-            pdfCell5.Border = 0;
+            pdfCell1.Border = 1;
+            pdfCell2.Border = 1;
+            pdfCell3.Border = 1;
+            pdfCell4.Border = 1;
+            pdfCell5.Border = 1;
 
             //add all three cells into PdfTable
             pdfTab.AddCell(pdfCell1);
@@ -188,9 +194,9 @@ namespace Library_benchmark
             //set pdfContent value
 
             //Move the pointer and draw line to separate header section from rest of page
-            cb.MoveTo(40, document.PageSize.Height - 100);
-            cb.LineTo(document.PageSize.Width - 40, document.PageSize.Height - 100);
-            cb.Stroke();
+            //cb.MoveTo(40, document.PageSize.Height - 100);
+            //cb.LineTo(document.PageSize.Width - 40, document.PageSize.Height - 100);
+            //cb.Stroke();
 
             //Move the pointer and draw line to separate footer section from rest of page
             cb.MoveTo(40, document.PageSize.GetBottom(50));
