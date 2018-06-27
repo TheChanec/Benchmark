@@ -116,7 +116,7 @@ namespace Library_benchmark.Controllers
 
             var fileName = "Pdf_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".pdf";
 
-            var fontDoc = FontFactory.GetFont(FontFactory.HELVETICA, 9, Font.UNDERLINE, BaseColor.BLACK);
+            var fontDoc = FontFactory.GetFont(FontFactory.HELVETICA, 12f, Font.BOLD, BaseColor.BLACK);
             var fontTitle = FontFactory.GetFont(FontFactory.HELVETICA, 18, Font.NORMAL, BaseColor.WHITE);
             var fontSubTitle = FontFactory.GetFont(FontFactory.HELVETICA, 11.3f, Font.NORMAL, BaseColor.WHITE);
 
@@ -126,18 +126,19 @@ namespace Library_benchmark.Controllers
             var pdfWriter = PdfWriter.GetInstance(doc, new FileStream(strFilePath + fileName, FileMode.Create));
             pdfWriter.PageEvent = new ITextEvents();
             doc.Open();
-
-            var tblContainer = new PdfPTable(5) { TotalWidth = 558f, LockedWidth = true };
+            
+            var tblContainer = new PdfPTable(4) { TotalWidth = 558f, LockedWidth = true };
+            
             //float[] widths = { 90f, 150f, 120f, 95f, 65f };
             //tblContainer.SetWidths(widths);
             var title = new Phrase("DRIVER INSPECTION REPORT", fontTitle);
             var subtitle = new Phrase("AS REQUIRED BY DOT FEDERAL MOTOR CARRIER SAFETY REGULATIONS", fontSubTitle);
 
-            var titleEmployee = new Phrase("Employee", fontDoc);
-            var titleName = new Phrase("Name", fontDoc);
-            var titleOccupation = new Phrase("Occupation", fontDoc);
-            var titleLa = new Phrase("Lapse Action", fontDoc);
-            var titleExpiryDate = new Phrase("Expiry Date", fontDoc);
+            var titleDate = new Phrase("DATE", fontDoc);
+            var titleDriver = new Phrase("DRIVER", fontDoc);
+            var titleTruck = new Phrase("TRUCK", fontDoc);
+            var titleHour = new Phrase("HOUR", fontDoc);
+
             var cellTitle = new PdfPCell(title)
             {
                 Colspan = 5,
@@ -156,55 +157,175 @@ namespace Library_benchmark.Controllers
                 VerticalAlignment = PdfPCell.ALIGN_TOP,
                 FixedHeight = 29f
             };
-            var cellTitleEmployee = new PdfPCell(titleEmployee);
-            var cellTitleName = new PdfPCell(titleName);
-            var cellTitleOccupation = new PdfPCell(titleOccupation);
-            var cellTitleLa = new PdfPCell(titleLa);
-            var cellTitleExpiryDate = new PdfPCell(titleExpiryDate);
+            var cellDate = new PdfPCell(titleDate);
+            var cellDrive = new PdfPCell(titleDriver);
+            var cellTruck = new PdfPCell(titleTruck);
+            var cellHour = new PdfPCell(titleHour);
 
-            cellTitleEmployee.Border = 0;
-            cellTitleName.Border = 0;
-            cellTitleOccupation.Border = 0;
-            cellTitleLa.Border = 0;
-            cellTitleExpiryDate.Border = 0;
+            var fixedHeight = 30f;
+            var borderWidth = 2f;
+            var baseColorLines = new BaseColor(211, 211, 211);
+            var baseColorBackground = new BaseColor(238, 239, 239);
+
+            cellDate.Border = 0;
+            cellDate.FixedHeight = fixedHeight;
+            cellDate.BackgroundColor = baseColorBackground;
+            cellDate.BorderWidthRight= borderWidth;
+            cellDate.BorderColor = baseColorLines;
+
+            cellDrive.Border = 0;
+            cellDrive.FixedHeight = fixedHeight;
+            cellDrive.BackgroundColor = baseColorBackground;
+            cellDrive.BorderWidthRight = borderWidth;
+            cellDrive.BorderColor = baseColorLines;
+
+            cellTruck.Border = 0;
+            cellTruck.FixedHeight = fixedHeight;
+            cellTruck.BackgroundColor = baseColorBackground;
+            cellTruck.BorderWidthRight = borderWidth;
+            cellTruck.BorderColor = baseColorLines;
+
+            cellHour.Border = 0;
+            cellHour.BackgroundColor = baseColorBackground;
+            cellHour.BorderWidthRight = 0f;
 
             tblContainer.AddCell(cellTitle);
             tblContainer.AddCell(cellSubTitle);
 
-            tblContainer.AddCell(cellTitleEmployee);
-            tblContainer.AddCell(cellTitleName);
-            tblContainer.AddCell(cellTitleOccupation);
-            tblContainer.AddCell(cellTitleLa);
-            tblContainer.AddCell(cellTitleExpiryDate);
+            tblContainer.AddCell(cellDate);
+            tblContainer.AddCell(cellDrive);
+            tblContainer.AddCell(cellTruck);
+            tblContainer.AddCell(cellHour);
 
             doc.Add(tblContainer);
 
-            var tblResult = new PdfPTable(5) { TotalWidth = 520f, LockedWidth = true };
+            var tblResult = new PdfPTable(4) { TotalWidth = 558f, LockedWidth = true };
             //tblResult.SetWidths(widths);
-            var employee = new Phrase("WebTechSys.in", bodyFont);
-            var name = new Phrase("Mukesh Salaria", bodyFont);
-            var occupation = new Phrase("Software Engineer", bodyFont);
-            var la = new Phrase("None", bodyFont);
+            var date = new Phrase("21 Apr, 2017", bodyFont);
+            var driver = new Phrase("HUGO ISAAC RODRIGUEZ", bodyFont);
+            var occupation = new Phrase("CR4150", bodyFont);
+            var hour = new Phrase("08:54 AM", bodyFont);
 
-            var expiryDate = new Phrase("N/A", bodyFont);
-            var cellEmployee = new PdfPCell(employee);
-            var cellName = new PdfPCell(name);
+            var cellEmployee = new PdfPCell(date);
+            var cellName = new PdfPCell(driver);
             var cellOccupation = new PdfPCell(occupation);
-            var cellLa = new PdfPCell(la);
-            var cellExpiryDate = new PdfPCell(expiryDate);
+            var cellExpiryDate = new PdfPCell(hour);
 
             cellEmployee.Border = 0;
+            cellEmployee.FixedHeight = fixedHeight;
+            cellEmployee.BackgroundColor = baseColorBackground;
+            cellEmployee.BorderWidthRight = borderWidth;
+            cellEmployee.BorderWidthBottom = borderWidth;
+            cellEmployee.BorderColor = baseColorLines;
+
             cellName.Border = 0;
+            cellName.FixedHeight = fixedHeight;
+            cellName.BackgroundColor = baseColorBackground;
+            cellName.BorderWidthRight = borderWidth;
+            cellName.BorderWidthBottom = borderWidth;
+            cellName.BorderColor = baseColorLines;
+
             cellOccupation.Border = 0;
-            cellLa.Border = 0;
+            cellOccupation.FixedHeight = fixedHeight;
+            cellOccupation.BackgroundColor = baseColorBackground;
+            cellOccupation.BorderWidthRight = borderWidth;
+            cellOccupation.BorderWidthBottom = borderWidth;
+            cellOccupation.BorderColor = baseColorLines;
+
             cellExpiryDate.Border = 0;
+            cellExpiryDate.BackgroundColor = baseColorBackground;
+            cellExpiryDate.BorderWidthBottom = borderWidth;
+            cellExpiryDate.BorderColor = baseColorLines;
+
+
             tblResult.AddCell(cellEmployee);
             tblResult.AddCell(cellName);
             tblResult.AddCell(cellOccupation);
-            tblResult.AddCell(cellLa);
             tblResult.AddCell(cellExpiryDate);
 
             doc.Add(tblResult);
+
+            var tblGeneralInformation = new PdfPTable(3) { TotalWidth = 558f, LockedWidth = true };
+            var informacionGeneral = new Phrase("GENERAL INFORMATION", fontDoc);
+            var odometerStar = new Phrase("Odometer Start", fontDoc);
+            var maxAirPressure = new Phrase("Max Air Pressure PSI", fontDoc);
+            var lowAirWarningDevice = new Phrase("Low Air Warning Device PSI", fontDoc);
+
+            var cellInformacionGeneral = new PdfPCell(informacionGeneral);
+            var cellOdometerStar = new PdfPCell(odometerStar);
+            var cellMaxAirPressure = new PdfPCell(maxAirPressure);
+            var cellLowAirWarningDevice = new PdfPCell(lowAirWarningDevice);
+            
+
+            var valueOdometerStar = new Phrase("5", fontDoc);
+            var valuemaxAirPressure = new Phrase("8", fontDoc);
+            var valueLowAirWarningDevice = new Phrase("4", fontDoc);
+            
+
+            var cellValueOdometerStar = new PdfPCell(valueOdometerStar);
+            var cellValueMaxAirPressure = new PdfPCell(valuemaxAirPressure);
+            var cellValueLowAirWarningDevice = new PdfPCell(valueLowAirWarningDevice);
+
+            var valueSecoundaryOdometerStar = new Phrase("--", fontDoc);
+            var valueSecoundarymaxAirPressure = new Phrase("--", fontDoc);
+            var valueSecoundaryLowAirWarningDevice = new Phrase("--", fontDoc);
+
+
+            var cellSecoundaryValueOdometerStar = new PdfPCell(valueSecoundaryOdometerStar);
+            var cellSecoundaryValueMaxAirPressure = new PdfPCell(valueSecoundarymaxAirPressure);
+            var cellSecoundaryValueLowAirWarningDevice = new PdfPCell(valueSecoundaryLowAirWarningDevice);
+
+            cellInformacionGeneral.Colspan = 3;
+            cellInformacionGeneral.Border = 0;
+            cellInformacionGeneral.BackgroundColor = baseColorBackground;
+            cellInformacionGeneral.BorderWidthTop = borderWidth;
+            cellInformacionGeneral.BorderWidthBottom = borderWidth;
+            cellInformacionGeneral.BorderColor = baseColorLines;
+            cellInformacionGeneral.FixedHeight = fixedHeight;
+
+            
+                
+            cellOdometerStar.Border = 0;
+            cellOdometerStar.FixedHeight = fixedHeight;
+
+            cellMaxAirPressure.Border = 0;
+            cellMaxAirPressure.FixedHeight = fixedHeight;
+
+            cellLowAirWarningDevice.Border = 0;
+            cellLowAirWarningDevice.FixedHeight = fixedHeight;
+
+            cellValueOdometerStar.Border = 0;
+            cellValueOdometerStar.FixedHeight = fixedHeight;
+
+            cellValueMaxAirPressure.Border = 0;
+            cellValueMaxAirPressure.FixedHeight = fixedHeight;
+
+            cellValueLowAirWarningDevice.Border = 0;
+            cellValueLowAirWarningDevice.FixedHeight = fixedHeight;
+
+            cellSecoundaryValueOdometerStar.Border = 0;
+            cellSecoundaryValueOdometerStar.FixedHeight = fixedHeight;
+
+            cellSecoundaryValueMaxAirPressure.Border = 0;
+            cellSecoundaryValueMaxAirPressure.FixedHeight = fixedHeight;
+
+            cellSecoundaryValueLowAirWarningDevice.Border = 0;
+            cellSecoundaryValueLowAirWarningDevice.FixedHeight = fixedHeight;
+
+            
+
+            tblGeneralInformation.AddCell(cellInformacionGeneral);
+            tblGeneralInformation.AddCell(cellOdometerStar);
+            tblGeneralInformation.AddCell(cellMaxAirPressure);
+            tblGeneralInformation.AddCell(cellLowAirWarningDevice);
+            tblGeneralInformation.AddCell(valueOdometerStar);
+            tblGeneralInformation.AddCell(valuemaxAirPressure);
+            tblGeneralInformation.AddCell(valueLowAirWarningDevice);
+            tblGeneralInformation.AddCell(valueSecoundaryOdometerStar);
+            tblGeneralInformation.AddCell(valueSecoundarymaxAirPressure);
+            tblGeneralInformation.AddCell(valueSecoundaryLowAirWarningDevice);
+
+            doc.Add(tblGeneralInformation);
 
             doc.Close();
             //return Json(new { success = "true", link = strFilePath + fileName });

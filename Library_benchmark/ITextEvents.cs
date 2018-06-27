@@ -40,7 +40,7 @@ namespace Library_benchmark
             PrintTime = DateTime.Now;
             bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
             cb = writer.DirectContent;
-            headerTemplate = cb.CreateTemplate(500, 100);
+            headerTemplate = cb.CreateTemplate(560, 100);
             footerTemplate = cb.CreateTemplate(50, 50);
             //}
             //catch (DocumentException de)
@@ -70,11 +70,11 @@ namespace Library_benchmark
             var pdfTab = new PdfPTable(3);
             //float[] width = { 100f, 320f, 100f };
             //pdfTab.SetWidths(width);
-            pdfTab.TotalWidth = 720f;
-            pdfTab.LockedWidth = true;
+            //pdfTab.TotalWidth = 720f;
+            //pdfTab.LockedWidth = true;
             //We will have to create separate cells to include image logo and 2 separate strings
             //Row 1
-            var pdfCell1 = new PdfPCell(logo);
+            var cellLogo = new PdfPCell(logo);
             var pdfCell2 = new PdfPCell();
             var text = "Page " + writer.PageNumber + " of ";
             //string
@@ -84,12 +84,13 @@ namespace Library_benchmark
             {
                 cb.BeginText();
                 cb.SetFontAndSize(bf, 12);
-                cb.SetTextMatrix(document.PageSize.GetRight(100), document.PageSize.GetTop(45));
-                //cb.ShowText(text);
+                cb.SetTextMatrix(document.PageSize.GetRight(0), document.PageSize.GetTop(0));
+                cb.ShowText(text);
                 cb.EndText();
-                //float len = bf.GetWidthPoint(text, 12);
+                
+                float len = bf.GetWidthPoint(text, 12);
                 //Adds "12" in Page 1 of 12
-                //cb.AddTemplate(headerTemplate, document.PageSize.GetRight(100) + len, document.PageSize.GetTop(45));
+                cb.AddTemplate(headerTemplate, document.PageSize.GetRight(0) + len, document.PageSize.GetTop(0));
             }
             //Add paging to footer
             {
@@ -148,15 +149,14 @@ namespace Library_benchmark
             // PdfPCell pdfCell4 = new PdfPCell(new Phrase("No job is so urgent that it cannot be done safely", baseFontNormal));
             //Row 3
 
-            var pdfCell3 = new PdfPCell(new Phrase("CR4150", fontFolio));
+            var cellFolio = new PdfPCell(new Phrase("CR4150", fontFolio));
             var pdfCell4 = new PdfPCell();
             //var pdfCell5 = new PdfPCell(new Phrase("TIME:" + string.Format("{0:t}", DateTime.Now), baseFontBig));
             var pdfCell5 = new PdfPCell(new Phrase(""));
 
             //set the alignment of all three cells and set border to 0
-            pdfCell1.HorizontalAlignment = Element.ALIGN_LEFT;
-            pdfCell2.HorizontalAlignment = Element.ALIGN_CENTER;
-            pdfCell3.HorizontalAlignment = Element.ALIGN_RIGHT;
+            cellLogo.HorizontalAlignment = Element.ALIGN_LEFT;
+            cellFolio.HorizontalAlignment = Element.ALIGN_RIGHT;
             pdfCell5.HorizontalAlignment = Element.ALIGN_RIGHT;
 
             //pdfCell2.VerticalAlignment = Element.ALIGN_BOTTOM;
@@ -164,21 +164,21 @@ namespace Library_benchmark
             //pdfCell1.Colspan = 3;
             //pdfCell2.Colspan = 3;
             pdfCell2.PaddingTop = 9f;
-            pdfCell3.PaddingTop = 8f;
-            pdfCell3.PaddingRight = 10f;
+            cellFolio.PaddingTop = 8f;
+            cellFolio.PaddingRight = 10f;
 
             pdfCell5.PaddingTop = 9f;
 
-            pdfCell1.Border = 1;
-            pdfCell2.Border = 1;
-            pdfCell3.Border = 1;
-            pdfCell4.Border = 1;
-            pdfCell5.Border = 1;
+            cellLogo.Border = 0;
+            pdfCell2.Border = 0;
+            cellFolio.Border = 0;
+            pdfCell4.Border = 0;
+            pdfCell5.Border = 0;
 
             //add all three cells into PdfTable
-            pdfTab.AddCell(pdfCell1);
+            pdfTab.AddCell(cellLogo);
             pdfTab.AddCell(pdfCell2);
-            pdfTab.AddCell(pdfCell3);
+            pdfTab.AddCell(cellFolio);
             pdfTab.AddCell(pdfCell4);
             pdfTab.AddCell(pdfCell5);
 
