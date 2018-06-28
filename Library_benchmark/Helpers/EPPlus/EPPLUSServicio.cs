@@ -14,16 +14,14 @@ namespace Library_benchmark.Helpers.EPPlus
         private ExcelWorksheet _currentsheet;
         private ExcelWorksheet _basesheet;
         private readonly IList<Dummy> _informacion;
-        private readonly bool _design;
         private readonly bool _mascaras;
         private int _inicialRow;
 
-        
+
 
         public EpplusServicio(IList<Dummy> informacion, bool design, bool mascaras, int sheets)
         {
             _informacion = informacion;
-            _design = design;
             _mascaras = mascaras;
             _inicialRow = design ? 4 : 1;
 
@@ -36,7 +34,6 @@ namespace Library_benchmark.Helpers.EPPlus
         {
             _informacion = informacion;
             _inicialRow = 4;
-            _design = false;
             _mascaras = mascaras;
 
             CreateWorkBook(documentDummy);
@@ -48,18 +45,12 @@ namespace Library_benchmark.Helpers.EPPlus
         private void CreateWorkBook(byte[] documentDummy)
         {
             using (var memStream = new MemoryStream(documentDummy))
-            {
                 _excel = new ExcelPackage(memStream);
-            }
+
         }
         private void CreateWorkBook()
         {
             _excel = new ExcelPackage();
-        }
-        private void CreateWorkBook(string path)
-        {
-            _excel = new ExcelPackage(new FileInfo(path));
-
         }
         private void CreateSheetBase()
         {
@@ -85,8 +76,7 @@ namespace Library_benchmark.Helpers.EPPlus
                 _currentsheet = _excel.Workbook.Worksheets.FirstOrDefault(x => x.Name == name);
             }
 
-
-            _currentsheet.DefaultRowHeight = 17.25;
+            if (_currentsheet != null) _currentsheet.DefaultRowHeight = 17.25;
         }
         private void AddInformation()
         {

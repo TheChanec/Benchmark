@@ -11,7 +11,6 @@ namespace Library_benchmark.Helpers.NPOI
     public class NpoiService
     {
         private readonly IList<Dummy> _informacion;
-        private bool _design;
         private XSSFWorkbook _excel;
         private XSSFSheet _currentsheet;
         private XSSFSheet _basesheet;
@@ -30,7 +29,6 @@ namespace Library_benchmark.Helpers.NPOI
         {
             _mascaras = mascaras;
             _informacion = informacion;
-            _design = design;
 
             _rowInicial = design ? 4 : 1;
 
@@ -48,7 +46,6 @@ namespace Library_benchmark.Helpers.NPOI
         public NpoiService(byte[] excelFile, IList<Dummy> informacion, bool mascaras, int sheets)
         {
             _informacion = informacion;
-            _design = false;
             _rowInicial = 4;
             _mascaras = mascaras;
 

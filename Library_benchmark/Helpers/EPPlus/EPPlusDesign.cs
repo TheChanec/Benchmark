@@ -9,7 +9,6 @@ namespace Library_benchmark.Helpers.EPPlus
         private readonly ExcelPackage _excel;
         private readonly bool _resource;
         private int _rowInicial;
-        private Image _logo;
         private readonly Color _colorPrimary = Color.DarkBlue;
         private readonly Color _colorPrimaryText = Color.White;
 
@@ -18,12 +17,10 @@ namespace Library_benchmark.Helpers.EPPlus
         /// </summary>
         /// <param name="excel"></param>
         /// <param name="resource"></param>
-        /// <param name="logo"></param>
-        public EpplusDesign(ExcelPackage excel, bool resource, Image logo)
+        public EpplusDesign(ExcelPackage excel, bool resource)
         {
             _excel = excel;
             _resource = resource;
-            _logo = logo;
             _rowInicial = 4;
 
             DarFormato();

@@ -9,11 +9,10 @@ namespace Library_benchmark.Helpers.NPOI
     internal class NpoiDesign
     {
         private XSSFWorkbook _excel;
-        private bool _resource;
+        private readonly bool _resource;
         private int _rowInicial;
 
         private ICellStyle _headerStyle;
-        private ICellStyle _normalStyle;
         private ICellStyle _cabeceraStyle;
 
 
@@ -64,7 +63,7 @@ namespace Library_benchmark.Helpers.NPOI
         /// <param name="sheet"></param>
         private void DiseñoCabeceras(int sheet)
         {
-            if (sheet <= 0) throw new ArgumentOutOfRangeException(nameof(sheet));
+            if (sheet < 0) throw new ArgumentOutOfRangeException(nameof(sheet));
 
             var pestana = _excel.GetSheetAt(sheet);
 
@@ -140,7 +139,7 @@ namespace Library_benchmark.Helpers.NPOI
             }
 
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -184,22 +183,8 @@ namespace Library_benchmark.Helpers.NPOI
             return style;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private ICellStyle GetNormalCellStyle()
-        {
-            ICellStyle style = _excel.CreateCellStyle();
-            var hfont = _excel.CreateFont();
-            hfont.FontHeightInPoints = 12;
-            hfont.Color = IndexedColors.Black.Index;
-            hfont.FontName = "Century Gothic";
-
-
-            style.SetFont(hfont);
-            return style;
-        }
+        
+        
 
         /// <summary>
         /// 
@@ -223,28 +208,7 @@ namespace Library_benchmark.Helpers.NPOI
             }
 
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void PutTypeAndSizeText()
-        {
-            if (_normalStyle == null)
-                _normalStyle = GetNormalCellStyle();
-
-            for (var i = 0; i < _excel.NumberOfSheets; i++)
-            {
-                if (_excel.GetSheetAt(i).GetRow(_rowInicial) == null) continue;
-                for (var j = 0; j < _excel.GetSheetAt(i).GetRow(_rowInicial).Cells.Count; j++)
-                {
-
-                    _excel.GetSheetAt(i).SetDefaultColumnStyle(j, _normalStyle);
-                }
-
-
-            }
-        }
-
+        
         /// <summary>
         /// 
         /// </summary>
@@ -253,5 +217,34 @@ namespace Library_benchmark.Helpers.NPOI
         {
             return _excel;
         }
+
+
+
+        //private void PutTypeAndSizeText()
+        //{
+        //    if (_normalStyle == null)
+        //        _normalStyle = GetNormalCellStyle();
+
+        //    for (var i = 0; i < _excel.NumberOfSheets; i++)
+        //    {
+        //        if (_excel.GetSheetAt(i).GetRow(_rowInicial) == null) continue;
+        //        for (var j = 0; j < _excel.GetSheetAt(i).GetRow(_rowInicial).Cells.Count; j++)
+        //            _excel.GetSheetAt(i).SetDefaultColumnStyle(j, _normalStyle);
+        //    }
+        //}
+
+
+        //private ICellStyle GetNormalCellStyle()
+        //{
+        //    ICellStyle style = _excel.CreateCellStyle();
+        //    var hfont = _excel.CreateFont();
+        //    hfont.FontHeightInPoints = 12;
+        //    hfont.Color = IndexedColors.Black.Index;
+        //    hfont.FontName = "Century Gothic";
+
+
+        //    style.SetFont(hfont);
+        //    return style;
+        //}
     }
 }
