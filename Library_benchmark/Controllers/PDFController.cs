@@ -166,6 +166,7 @@ namespace Library_benchmark.Controllers
             var borderWidth = 2f;
             var baseColorLines = new BaseColor(211, 211, 211);
             var baseColorBackground = new BaseColor(238, 239, 239);
+            var baseColorSeparacion = new BaseColor(223, 223, 223);
 
             cellDate.Border = 0;
             cellDate.FixedHeight = fixedHeight;
@@ -274,6 +275,7 @@ namespace Library_benchmark.Controllers
             var cellSecoundaryValueOdometerStar = new PdfPCell(valueSecoundaryOdometerStar);
             var cellSecoundaryValueMaxAirPressure = new PdfPCell(valueSecoundarymaxAirPressure);
             var cellSecoundaryValueLowAirWarningDevice = new PdfPCell(valueSecoundaryLowAirWarningDevice);
+            var cellfinal = new PdfPCell();
 
             cellInformacionGeneral.Colspan = 3;
             cellInformacionGeneral.Border = 0;
@@ -312,6 +314,11 @@ namespace Library_benchmark.Controllers
             cellSecoundaryValueLowAirWarningDevice.BorderWidthBottom = borderWidth;
             cellSecoundaryValueLowAirWarningDevice.BorderColor = baseColorLines;
 
+            cellfinal.Border = 0;
+            cellfinal.Colspan = 3;
+            cellfinal.BackgroundColor = baseColorSeparacion;
+            cellfinal.FixedHeight = fixedHeight;
+
 
             tblGeneralInformation.AddCell(cellInformacionGeneral);
             tblGeneralInformation.AddCell(cellOdometerStar);
@@ -323,6 +330,7 @@ namespace Library_benchmark.Controllers
             tblGeneralInformation.AddCell(cellSecoundaryValueOdometerStar);
             tblGeneralInformation.AddCell(cellSecoundaryValueMaxAirPressure);
             tblGeneralInformation.AddCell(cellSecoundaryValueLowAirWarningDevice);
+            tblGeneralInformation.AddCell(cellfinal);
 
             doc.Add(tblGeneralInformation);
 
@@ -345,13 +353,13 @@ namespace Library_benchmark.Controllers
             cellCritical.FixedHeight = fixedHeight;
 
             cellWater.Border = 0;
-            cellCritical.Colspan = 2;
+            cellWater.Colspan = 2;
             cellWater.FixedHeight = fixedHeight;
             
 
 
             cellValueWater.Border = 0;
-            cellCritical.Colspan = 2;
+            cellValueWater.Colspan = 2;
             cellValueWater.BorderWidthBottom = borderWidth;
             cellValueWater.BorderColor = baseColorLines;
             
@@ -361,6 +369,91 @@ namespace Library_benchmark.Controllers
             tblCritical.AddCell(cellValueWater);
 
             doc.Add(tblCritical);
+
+
+
+            var tblMechanical = new PdfPTable(2) { TotalWidth = 558f, LockedWidth = true };
+            var mechanical = new Phrase("Mechanical", fontDoc);
+            var leaks = new Phrase("Leaks: Water, Oil, Fuel, Grease", fontDoc);
+            var valueLeaks = new Phrase("hsksnsk", fontDoc);
+
+            var cellMechanical = new PdfPCell(mechanical);
+            var cellLeaks = new PdfPCell(leaks);
+            var cellValueLeaks = new PdfPCell(valueLeaks);
+
+
+            cellMechanical.Colspan = 2;
+            cellMechanical.Border = 0;
+            cellMechanical.BackgroundColor = baseColorBackground;
+            cellMechanical.BorderWidthTop = borderWidth;
+            cellMechanical.BorderWidthBottom = borderWidth;
+            cellMechanical.BorderColor = baseColorLines;
+            cellMechanical.FixedHeight = fixedHeight;
+
+            cellLeaks.Border = 0;
+            cellLeaks.Colspan = 2;
+            cellLeaks.FixedHeight = fixedHeight;
+
+
+
+            cellValueLeaks.Border = 0;
+            cellValueLeaks.Colspan = 2;
+            cellValueLeaks.BorderWidthBottom = borderWidth;
+            cellValueLeaks.BorderColor = baseColorLines;
+
+
+            tblMechanical.AddCell(cellMechanical);
+            tblMechanical.AddCell(cellLeaks);
+            tblMechanical.AddCell(cellValueLeaks);
+
+            doc.Add(tblMechanical);
+
+
+
+            var tblSupervisor = new PdfPTable(2) { TotalWidth = 558f, LockedWidth = true };
+            var supervisor = new Phrase("Supervisor", fontDoc);
+            var valueDateSupervisor = new Phrase("21 Apr, 2017", fontDoc);
+
+            var cellSupervisor = new PdfPCell(supervisor);
+            var cellDateSupervisor = new PdfPCell(date);
+            var cellValueDateSupervisor = new PdfPCell(valueDateSupervisor);
+            var firma = Image.GetInstance("C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Content/images/firma.PNG");
+            firma.ScalePercent(2);
+            var cellFirma = new PdfPCell(firma, true);
+
+
+            cellSupervisor.Rowspan = 2;
+            cellSupervisor.Border = 0;
+            cellSupervisor.BackgroundColor = baseColorBackground;
+            cellSupervisor.BorderWidthTop = borderWidth;
+            cellSupervisor.BorderColor = baseColorLines;
+            cellSupervisor.FixedHeight = fixedHeight;
+
+            cellDateSupervisor.Border = 0;
+            cellDateSupervisor.BackgroundColor = baseColorBackground;
+            cellDateSupervisor.BorderWidthTop = borderWidth;
+            cellDateSupervisor.BorderColor = baseColorLines;
+            cellDateSupervisor.FixedHeight = fixedHeight;
+
+            cellValueDateSupervisor.Border = 0;
+            cellValueDateSupervisor.BackgroundColor = baseColorBackground;
+            cellValueDateSupervisor.BorderColor = baseColorLines;
+            cellValueDateSupervisor.FixedHeight = fixedHeight;
+
+            cellFirma.Colspan = 2;
+            cellFirma.Border = 0;
+            cellFirma.BackgroundColor = baseColorBackground;
+            cellFirma.BorderWidthBottom = borderWidth;
+            cellFirma.BorderColor = baseColorLines;
+
+
+            tblSupervisor.AddCell(cellSupervisor);
+            tblSupervisor.AddCell(cellDateSupervisor);
+            tblSupervisor.AddCell(cellValueDateSupervisor);
+            tblSupervisor.AddCell(cellFirma);
+
+            doc.Add(tblSupervisor);
+
 
             doc.Close();
             //return Json(new { success = "true", link = strFilePath + fileName });
