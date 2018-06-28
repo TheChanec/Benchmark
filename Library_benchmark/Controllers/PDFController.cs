@@ -22,7 +22,6 @@ namespace Library_benchmark.Controllers
 
         public ActionResult ITextSharp()
         {
-
             return PartialView();
         }
 
@@ -39,25 +38,23 @@ namespace Library_benchmark.Controllers
                 result.Parametro = parametros;
                 result.Libreria = "ITextSharp";
 
-                Document pdf = new Document();
+                var pdf = new Document();
 
-                if (informacion != null)
-                {
-                    Stopwatch watchCreation = Stopwatch.StartNew();
+                if (informacion == null) continue;
 
-                    MemoryStream workStream = new MemoryStream();
-                    PdfWriter.GetInstance(pdf, workStream).CloseStream = false;
-                    pdf = new ITextSharpServicio().GetPDFExample();
+                var watchCreation = Stopwatch.StartNew();
 
-                    byte[] byteInfo = workStream.ToArray();
-                    workStream.Write(byteInfo, 0, byteInfo.Length);
-                    workStream.Position = 0;
-                    Response.Buffer = true;
-                    Response.AddHeader("Content-Disposition", "attachment; filename= " + Server.HtmlEncode("abc.pdf"));
-                    Response.ContentType = "APPLICATION/pdf";
-                    Response.BinaryWrite(byteInfo);
-                    
-                }
+                MemoryStream workStream = new MemoryStream();
+                PdfWriter.GetInstance(pdf, workStream).CloseStream = false;
+                pdf = new ITextSharpServicio().GetPDFExample();
+
+                byte[] byteInfo = workStream.ToArray();
+                workStream.Write(byteInfo, 0, byteInfo.Length);
+                workStream.Position = 0;
+                Response.Buffer = true;
+                Response.AddHeader("Content-Disposition", "attachment; filename= " + Server.HtmlEncode("abc.pdf"));
+                Response.ContentType = "APPLICATION/pdf";
+                Response.BinaryWrite(byteInfo);
             }
 
 
@@ -66,43 +63,40 @@ namespace Library_benchmark.Controllers
         [HttpPost]
         public ActionResult GeneratePdf()
         {
-            //var userTickets = JsonConvert.DeserializeObject<List<TicketsByNameDetails>>(jsonString);
-
             var doc = new Document(PageSize.A4, 5f, 5f, 73.5f, 70f);
             var strFilePath = Server.MapPath("~/PdfUploads/");
 
             var fileName = "Pdf_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".pdf";
 
-            var fontDoc = FontFactory.GetFont(FontFactory.HELVETICA, 12f, Font.BOLD, BaseColor.BLACK);
-            var fontTitle = FontFactory.GetFont(FontFactory.HELVETICA, 18, Font.NORMAL, BaseColor.WHITE);
-            var fontSubTitle = FontFactory.GetFont(FontFactory.HELVETICA, 11.3f, Font.NORMAL, BaseColor.WHITE);
-
-            var bodyFont = FontFactory.GetFont(FontFactory.HELVETICA, 9, Font.NORMAL, BaseColor.DARK_GRAY);
-
-
             var pdfWriter = PdfWriter.GetInstance(doc, new FileStream(strFilePath + fileName, FileMode.Create));
             pdfWriter.PageEvent = new ITextEvents();
             doc.Open();
-            
-            var tblContainer = new PdfPTable(4) { TotalWidth = 558f, LockedWidth = true };
-            
-            //float[] widths = { 90f, 150f, 120f, 95f, 65f };
-            //tblContainer.SetWidths(widths);
-            var title = new Phrase("DRIVER INSPECTION REPORT", fontTitle);
-            var subtitle = new Phrase("AS REQUIRED BY DOT FEDERAL MOTOR CARRIER SAFETY REGULATIONS", fontSubTitle);
 
-            var titleDate = new Phrase("DATE", fontDoc);
-            var titleDriver = new Phrase("DRIVER", fontDoc);
-            var titleTruck = new Phrase("TRUCK", fontDoc);
-            var titleHour = new Phrase("HOUR", fontDoc);
+            #region Fonts
+            var fontDoceBold = FontFactory.GetFont(FontFactory.HELVETICA, 12f, Font.BOLD, BaseColor.BLACK);
+            var fontDiesiocho = FontFactory.GetFont(FontFactory.HELVETICA, 18f, Font.NORMAL, BaseColor.WHITE);
+            var fontOnceTres = FontFactory.GetFont(FontFactory.HELVETICA, 11.3f, Font.NORMAL, BaseColor.WHITE);
+            var fontDoce = FontFactory.GetFont(FontFactory.HELVETICA, 12f, Font.NORMAL, BaseColor.BLACK);
+            #endregion
+            
+
+            var tblContainer = new PdfPTable(4) { TotalWidth = 558f, LockedWidth = true };
+
+            var title = new Phrase("DRIVER INSPECTION REPORT", fontDiesiocho);
+            var subtitle = new Phrase("AS REQUIRED BY DOT FEDERAL MOTOR CARRIER SAFETY REGULATIONS", fontOnceTres);
+
+            var titleDate = new Phrase("DATE", fontDoceBold);
+            var titleDriver = new Phrase("DRIVER", fontDoceBold);
+            var titleTruck = new Phrase("TRUCK", fontDoceBold);
+            var titleHour = new Phrase("HOUR", fontDoceBold);
 
             var cellTitle = new PdfPCell(title)
             {
                 Colspan = 5,
                 Border = 0,
                 BackgroundColor = BaseColor.BLACK,
-                HorizontalAlignment = PdfPCell.ALIGN_CENTER,
-                VerticalAlignment = PdfPCell.ALIGN_BOTTOM,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_BOTTOM,
                 FixedHeight = 29f
             };
             var cellSubTitle = new PdfPCell(subtitle)
@@ -110,8 +104,8 @@ namespace Library_benchmark.Controllers
                 Colspan = 5,
                 Border = 0,
                 BackgroundColor = BaseColor.BLACK,
-                HorizontalAlignment = PdfPCell.ALIGN_CENTER,
-                VerticalAlignment = PdfPCell.ALIGN_TOP,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                VerticalAlignment = Element.ALIGN_TOP,
                 FixedHeight = 29f
             };
             var cellDate = new PdfPCell(titleDate);
@@ -119,8 +113,9 @@ namespace Library_benchmark.Controllers
             var cellTruck = new PdfPCell(titleTruck);
             var cellHour = new PdfPCell(titleHour);
 
-            var fixedHeight = 30f;
-            var borderWidth = 2f;
+            const float fixedHeight = 30f;
+            const float fixedHeightSeparacion = 10f;
+            const float borderWidth = 2f;
             var baseColorLines = new BaseColor(211, 211, 211);
             var baseColorBackground = new BaseColor(238, 239, 239);
             var baseColorSeparacion = new BaseColor(223, 223, 223);
@@ -128,7 +123,7 @@ namespace Library_benchmark.Controllers
             cellDate.Border = 0;
             cellDate.FixedHeight = fixedHeight;
             cellDate.BackgroundColor = baseColorBackground;
-            cellDate.BorderWidthRight= borderWidth;
+            cellDate.BorderWidthRight = borderWidth;
             cellDate.BorderColor = baseColorLines;
 
             cellDrive.Border = 0;
@@ -155,14 +150,18 @@ namespace Library_benchmark.Controllers
             tblContainer.AddCell(cellTruck);
             tblContainer.AddCell(cellHour);
 
+
+
+
+
             doc.Add(tblContainer);
 
             var tblResult = new PdfPTable(4) { TotalWidth = 558f, LockedWidth = true };
-            //tblResult.SetWidths(widths);
-            var date = new Phrase("21 Apr, 2017", bodyFont);
-            var driver = new Phrase("HUGO ISAAC RODRIGUEZ", bodyFont);
-            var occupation = new Phrase("CR4150", bodyFont);
-            var hour = new Phrase("08:54 AM", bodyFont);
+
+            var date = new Phrase("21 Apr, 2017", fontDoce);
+            var driver = new Phrase("HUGO ISAAC RODRIGUEZ", fontDoce);
+            var occupation = new Phrase("CR4150", fontDoce);
+            var hour = new Phrase("08:54 AM", fontDoce);
 
             var cellEmployee = new PdfPCell(date);
             var cellName = new PdfPCell(driver);
@@ -195,44 +194,52 @@ namespace Library_benchmark.Controllers
             cellExpiryDate.BorderWidthBottom = borderWidth;
             cellExpiryDate.BorderColor = baseColorLines;
 
+            var cellfinal = new PdfPCell();
+            cellfinal.Border = 0;
+            cellfinal.Colspan = 4;
+            cellfinal.BackgroundColor = baseColorSeparacion;
+            cellfinal.FixedHeight = fixedHeightSeparacion;
+
 
             tblResult.AddCell(cellEmployee);
             tblResult.AddCell(cellName);
             tblResult.AddCell(cellOccupation);
             tblResult.AddCell(cellExpiryDate);
 
+            tblResult.AddCell(cellfinal);
+
             doc.Add(tblResult);
 
             var tblGeneralInformation = new PdfPTable(3) { TotalWidth = 558f, LockedWidth = true };
-            var informacionGeneral = new Phrase("GENERAL INFORMATION", fontDoc);
-            var odometerStar = new Phrase("Odometer Start", fontDoc);
-            var maxAirPressure = new Phrase("Max Air Pressure PSI", fontDoc);
-            var lowAirWarningDevice = new Phrase("Low Air Warning Device PSI", fontDoc);
+            var informacionGeneral = new Phrase("GENERAL INFORMATION", fontDoceBold);
+            var odometerStar = new Phrase("Odometer Start", fontDoceBold);
+            var maxAirPressure = new Phrase("Max Air Pressure PSI", fontDoceBold);
+            var lowAirWarningDevice = new Phrase("Low Air Warning Device PSI", fontDoceBold);
 
             var cellInformacionGeneral = new PdfPCell(informacionGeneral);
             var cellOdometerStar = new PdfPCell(odometerStar);
             var cellMaxAirPressure = new PdfPCell(maxAirPressure);
             var cellLowAirWarningDevice = new PdfPCell(lowAirWarningDevice);
-            
 
-            var valueOdometerStar = new Phrase("5", fontDoc);
-            var valuemaxAirPressure = new Phrase("8", fontDoc);
-            var valueLowAirWarningDevice = new Phrase("4", fontDoc);
-            
+
+            var valueOdometerStar = new Phrase("5", fontDoceBold);
+            var valuemaxAirPressure = new Phrase("8", fontDoceBold);
+            var valueLowAirWarningDevice = new Phrase("4", fontDoceBold);
+
 
             var cellValueOdometerStar = new PdfPCell(valueOdometerStar);
             var cellValueMaxAirPressure = new PdfPCell(valuemaxAirPressure);
             var cellValueLowAirWarningDevice = new PdfPCell(valueLowAirWarningDevice);
 
-            var valueSecoundaryOdometerStar = new Phrase("--", fontDoc);
-            var valueSecoundarymaxAirPressure = new Phrase("--", fontDoc);
-            var valueSecoundaryLowAirWarningDevice = new Phrase("--", fontDoc);
+            var valueSecoundaryOdometerStar = new Phrase("--", fontDoceBold);
+            var valueSecoundarymaxAirPressure = new Phrase("--", fontDoceBold);
+            var valueSecoundaryLowAirWarningDevice = new Phrase("--", fontDoceBold);
 
 
             var cellSecoundaryValueOdometerStar = new PdfPCell(valueSecoundaryOdometerStar);
             var cellSecoundaryValueMaxAirPressure = new PdfPCell(valueSecoundarymaxAirPressure);
             var cellSecoundaryValueLowAirWarningDevice = new PdfPCell(valueSecoundaryLowAirWarningDevice);
-            var cellfinal = new PdfPCell();
+
 
             cellInformacionGeneral.Colspan = 3;
             cellInformacionGeneral.Border = 0;
@@ -242,8 +249,8 @@ namespace Library_benchmark.Controllers
             cellInformacionGeneral.BorderColor = baseColorLines;
             cellInformacionGeneral.FixedHeight = fixedHeight;
 
-            
-                
+
+
             cellOdometerStar.Border = 0;
             cellOdometerStar.FixedHeight = fixedHeight;
 
@@ -271,10 +278,11 @@ namespace Library_benchmark.Controllers
             cellSecoundaryValueLowAirWarningDevice.BorderWidthBottom = borderWidth;
             cellSecoundaryValueLowAirWarningDevice.BorderColor = baseColorLines;
 
+            cellfinal = new PdfPCell();
             cellfinal.Border = 0;
             cellfinal.Colspan = 3;
             cellfinal.BackgroundColor = baseColorSeparacion;
-            cellfinal.FixedHeight = fixedHeight;
+            cellfinal.FixedHeight = fixedHeightSeparacion;
 
 
             tblGeneralInformation.AddCell(cellInformacionGeneral);
@@ -292,15 +300,15 @@ namespace Library_benchmark.Controllers
             doc.Add(tblGeneralInformation);
 
             var tblCritical = new PdfPTable(2) { TotalWidth = 558f, LockedWidth = true };
-            var critical = new Phrase("Critical", fontDoc);
-            var water = new Phrase("Water", fontDoc);
-            var valueWater = new Phrase("hsksnsk", fontDoc);
+            var critical = new Phrase("Critical", fontDoceBold);
+            var water = new Phrase("Water", fontDoceBold);
+            var valueWater = new Phrase("hsksnsk", fontDoceBold);
 
             var cellCritical = new PdfPCell(critical);
             var cellWater = new PdfPCell(water);
             var cellValueWater = new PdfPCell(valueWater);
 
-            
+
             cellCritical.Colspan = 2;
             cellCritical.Border = 0;
             cellCritical.BackgroundColor = baseColorBackground;
@@ -312,27 +320,33 @@ namespace Library_benchmark.Controllers
             cellWater.Border = 0;
             cellWater.Colspan = 2;
             cellWater.FixedHeight = fixedHeight;
-            
+
 
 
             cellValueWater.Border = 0;
             cellValueWater.Colspan = 2;
             cellValueWater.BorderWidthBottom = borderWidth;
             cellValueWater.BorderColor = baseColorLines;
-            
+
+            cellfinal = new PdfPCell();
+            cellfinal.Border = 0;
+            cellfinal.Colspan = 3;
+            cellfinal.BackgroundColor = baseColorSeparacion;
+            cellfinal.FixedHeight = fixedHeightSeparacion;
 
             tblCritical.AddCell(cellCritical);
             tblCritical.AddCell(cellWater);
             tblCritical.AddCell(cellValueWater);
+            tblCritical.AddCell(cellfinal);
 
             doc.Add(tblCritical);
 
 
 
             var tblMechanical = new PdfPTable(2) { TotalWidth = 558f, LockedWidth = true };
-            var mechanical = new Phrase("Mechanical", fontDoc);
-            var leaks = new Phrase("Leaks: Water, Oil, Fuel, Grease", fontDoc);
-            var valueLeaks = new Phrase("hsksnsk", fontDoc);
+            var mechanical = new Phrase("Mechanical", fontDoceBold);
+            var leaks = new Phrase("Leaks: Water, Oil, Fuel, Grease", fontDoceBold);
+            var valueLeaks = new Phrase("hsksnsk", fontDoceBold);
 
             var cellMechanical = new PdfPCell(mechanical);
             var cellLeaks = new PdfPCell(leaks);
@@ -368,8 +382,8 @@ namespace Library_benchmark.Controllers
 
 
             var tblSupervisor = new PdfPTable(2) { TotalWidth = 558f, LockedWidth = true };
-            var supervisor = new Phrase("Supervisor", fontDoc);
-            var valueDateSupervisor = new Phrase("21 Apr, 2017", fontDoc);
+            var supervisor = new Phrase("Supervisor", fontDoceBold);
+            var valueDateSupervisor = new Phrase("21 Apr, 2017", fontDoceBold);
 
             var cellSupervisor = new PdfPCell(supervisor);
             var cellDateSupervisor = new PdfPCell(date);
