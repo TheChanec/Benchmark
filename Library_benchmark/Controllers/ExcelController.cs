@@ -1,19 +1,15 @@
 ﻿using Library_benchmark.Helpers;
+using Library_benchmark.Helpers.EPPlus;
+using Library_benchmark.Helpers.NPOI;
 using Library_benchmark.Models;
 using Library_benchmark.Properties;
-using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using OfficeOpenXml;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Library_benchmark.Helpers.EPPlus;
 
 
 namespace Library_benchmark.Controllers
@@ -26,7 +22,6 @@ namespace Library_benchmark.Controllers
         {
             Parametros parametros = new Parametros();
             ViewBag.IdLibreria = new SelectList(parametros.Exceles, "Id", "Nombre");
-
             return View(parametros);
         }
 
@@ -62,7 +57,7 @@ namespace Library_benchmark.Controllers
                 .ToList();
 
             currentsheet.Cells[1, 1].LoadFromCollection(respuesta, true);
-            FileStreamResult file = EPPlusDownload(excel);
+            FileStreamResult file = EpplusDownload(excel);
 
 
             return file;
@@ -100,7 +95,7 @@ namespace Library_benchmark.Controllers
         #endregion
 
         #region Helpers
-        private FileStreamResult EPPlusDownload(ExcelPackage excel)
+        private FileStreamResult EpplusDownload(ExcelPackage excel)
         {
             var ms = new MemoryStream();
             excel.SaveAs(ms);
@@ -116,7 +111,7 @@ namespace Library_benchmark.Controllers
             return fsr;
         }
 
-        private FileContentResult NPOIdownload(XSSFWorkbook excel)
+        private FileContentResult NpoiDownload(XSSFWorkbook excel)
         {
             using (MemoryStream ms = new MemoryStream())
             {
@@ -155,10 +150,10 @@ namespace Library_benchmark.Controllers
                     Stopwatch watchCreation = Stopwatch.StartNew();
 
                     if (parametros.Resource)
-                        excel = new NPOIService(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Sheets).GetExcelExample();
+                        excel = new NpoiService(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Sheets).GetExcelExample();
 
                     else
-                        excel = new NPOIService(informacion, parametros.Design, parametros.Mascaras, parametros.Sheets).GetExcelExample();
+                        excel = new NpoiService(informacion, parametros.Design, parametros.Mascaras, parametros.Sheets).GetExcelExample();
 
 
                     watchCreation.Stop();
@@ -171,7 +166,7 @@ namespace Library_benchmark.Controllers
                     if (parametros.Design)
                     {
                         Stopwatch watchDesign = Stopwatch.StartNew();
-                        excel = new NPOIDesign(excel, parametros.Resource).GetExcelExample();
+                        excel = new NpoiDesign(excel, parametros.Resource).GetExcelExample();
 
                         watchDesign.Stop();
                         result.Tiempos.Add(new Tiempo
@@ -182,7 +177,7 @@ namespace Library_benchmark.Controllers
 
                     }
                     Stopwatch watchFiletoDonwload = Stopwatch.StartNew();
-                    file = NPOIdownload(excel);
+                    file = NpoiDownload(excel);
                     watchFiletoDonwload.Stop();
                     result.Tiempos.Add(new Tiempo
                     {
@@ -260,7 +255,7 @@ namespace Library_benchmark.Controllers
                         });
                     }
                     Stopwatch watchFiletoDonwload = Stopwatch.StartNew();
-                    file = EPPlusDownload(excel);
+                    file = EpplusDownload(excel);
                     watchFiletoDonwload.Stop();
                     result.Tiempos.Add(new Tiempo
                     {

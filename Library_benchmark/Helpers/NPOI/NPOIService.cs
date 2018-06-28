@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-using Library_benchmark.Models;
-using NPOI.HSSF.UserModel;
-using NPOI.HSSF.Util;
+﻿using Library_benchmark.Models;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
-namespace Library_benchmark.Helpers
+namespace Library_benchmark.Helpers.NPOI
 {
-    public class NPOIService
+    public class NpoiService
     {
-        private IList<Dummy> informacion;
-        private bool design;
-        private XSSFWorkbook excel;
-        private ICellStyle dateStyle;
-        private XSSFSheet currentsheet;
-        private XSSFSheet basesheet;
-        private int rowInicial;
-        private bool mascaras;
+        private readonly IList<Dummy> _informacion;
+        private bool _design;
+        private XSSFWorkbook _excel;
+        private XSSFSheet _currentsheet;
+        private XSSFSheet _basesheet;
+        private int _rowInicial;
+        private readonly bool _mascaras;
 
 
         /// <summary>
@@ -30,20 +24,18 @@ namespace Library_benchmark.Helpers
         /// </summary>
         /// <param name="informacion">Lista de registros que se incrustaran en las hojas</param>
         /// <param name="design">parametro bandera para definir si se pondra diseño a las hojas</param>
+        /// <param name="mascaras">Parametro para anunciar si permite mascaras en el excel</param>
         /// <param name="sheets">numero de hojas que tendra el workbook</param>
-        public NPOIService(IList<Dummy> informacion, bool design, bool mascaras, int sheets)
+        public NpoiService(IList<Dummy> informacion, bool design, bool mascaras, int sheets)
         {
-            this.mascaras = mascaras;
-            this.informacion = informacion;
-            this.design = design;
-            if (design)
-                this.rowInicial = 4;
-            else
-                this.rowInicial = 1;
+            _mascaras = mascaras;
+            _informacion = informacion;
+            _design = design;
 
-            createWorkBook();
-            createSheets(sheets);
+            _rowInicial = design ? 4 : 1;
 
+            CreateWorkBook();
+            CreateSheets(sheets);
         }
 
         /// <summary>
@@ -51,34 +43,35 @@ namespace Library_benchmark.Helpers
         /// </summary>
         /// <param name="excelFile">archivo template en arreglo de bytes</param>
         /// <param name="informacion">informacion que se incrustara en las hojas</param>
+        /// <param name="mascaras">Parametro para anunciar si permite mascaras en el excel</param>
         /// <param name="sheets">numero de hojas que tendra el workbook</param>
-        public NPOIService(byte[] excelFile, IList<Dummy> informacion, bool mascaras, int sheets)
+        public NpoiService(byte[] excelFile, IList<Dummy> informacion, bool mascaras, int sheets)
         {
-            this.informacion = informacion;
-            this.design = false;
-            this.rowInicial = 4;
-            this.mascaras = mascaras;
+            _informacion = informacion;
+            _design = false;
+            _rowInicial = 4;
+            _mascaras = mascaras;
 
-            createWorkBook(excelFile);
-            createSheetBase();
-            createSheets(sheets);
+            CreateWorkBook(excelFile);
+            CreateSheetBase();
+            CreateSheets(sheets);
         }
 
 
         /// <summary>
         /// obtiene la primera hoja de el template para utilizarla como hoja base para armar el workbook
         /// </summary>
-        private void createSheetBase()
+        private void CreateSheetBase()
         {
-            basesheet = (XSSFSheet)excel.GetSheetAt(0);
+            _basesheet = (XSSFSheet)_excel.GetSheetAt(0);
         }
 
         /// <summary>
         /// crea un workbook base 
         /// </summary>
-        private void createWorkBook()
+        private void CreateWorkBook()
         {
-            excel = new XSSFWorkbook();
+            _excel = new XSSFWorkbook();
 
         }
 
@@ -86,26 +79,26 @@ namespace Library_benchmark.Helpers
         /// crea un workbook en base al templete establecido 
         /// </summary>
         /// <param name="excelFile">Templete</param>
-        private void createWorkBook(byte[] excelFile)
+        private void CreateWorkBook(byte[] excelFile)
         {
 
             var fs = new MemoryStream(excelFile);
             //excel = new HSSFWorkbook(fs);
-            excel = (XSSFWorkbook)WorkbookFactory.Create(fs);
+            _excel = (XSSFWorkbook)WorkbookFactory.Create(fs);
         }
 
         /// <summary>
         /// Funcion que crea hojas en el workbook
         /// </summary>
         /// <param name="sheets">numero de hojas que se crearan</param>
-        private void createSheets(int sheets)
+        private void CreateSheets(int sheets)
         {
-            for (int i = 0; i < sheets; i++)
+            for (var i = 0; i < sheets; i++)
             {
-                addSheet("Sheet" + i);
-                addcabeceras();
+                AddSheet("Sheet" + i);
+                Addcabeceras();
 
-                addInformation();
+                AddInformation();
 
                 PutFitInCells();
             }
@@ -116,85 +109,63 @@ namespace Library_benchmark.Helpers
         /// </summary>
         private void PutFitInCells()
         {
-
-
-            int noOfColumns = currentsheet.GetRow(rowInicial - 1).LastCellNum;
-            for (int j = 0; j < noOfColumns; j++)
+            int noOfColumns = _currentsheet.GetRow(_rowInicial - 1).LastCellNum;
+            for (var j = 0; j < noOfColumns; j++)
             {
-                currentsheet.AutoSizeColumn(j, false);
+                _currentsheet.AutoSizeColumn(j, false);
             }
-
-
-
-
-
         }
 
         /// <summary>
         /// Se encarga de poner el titulo de las tablas y de definil el estilo que tendra cada columna por defecto
         /// </summary>
-        private void addcabeceras()
+        private void Addcabeceras()
         {
-            IRow row;
-            row = currentsheet.GetRow(rowInicial - 1);
-            if (row == null)
-            {
-                row = currentsheet.CreateRow(rowInicial - 1);
-            }
+            var row = _currentsheet.GetRow(_rowInicial - 1) ?? _currentsheet.CreateRow(_rowInicial - 1);
+            var cell = 0;
+            var item = _informacion.FirstOrDefault();
 
-            int cell = 0;
-
-            var item = informacion.FirstOrDefault();
-
-
-
+            if (item == null) return;
             foreach (var prop in item.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
             {
-                var celda = row.GetCell(cell);
-                if (celda == null)
-                {
-                    celda = row.CreateCell(cell);
-                }
+                var celda = row.GetCell(cell) ?? row.CreateCell(cell);
 
-                if (mascaras)
+                if (_mascaras)
                 {
-                    var hfont = excel.CreateFont();
+                    var hfont = _excel.CreateFont();
                     hfont.FontHeightInPoints = 12;
                     hfont.Color = IndexedColors.Black.Index;
                     hfont.FontName = "Century Gothic";
 
                     if (prop.PropertyType.Equals(typeof(DateTime)))
                     {
-                        var style = excel.CreateCellStyle();
-                        style.DataFormat = excel.CreateDataFormat().GetFormat("m/d/yyyy");
-                        
-                        style.SetFont(hfont);
-                        currentsheet.SetDefaultColumnStyle(cell, style);
+                        var style = _excel.CreateCellStyle();
+                        style.DataFormat = _excel.CreateDataFormat().GetFormat("m/d/yyyy");
 
+                        style.SetFont(hfont);
+                        _currentsheet.SetDefaultColumnStyle(cell, style);
                     }
                     else if (prop.PropertyType.Equals(typeof(decimal)))
                     {
-                        var style = excel.CreateCellStyle();
-                        style.DataFormat = excel.CreateDataFormat().GetFormat("[$$-409]#,##0.00");
-                        
+                        var style = _excel.CreateCellStyle();
+                        style.DataFormat = _excel.CreateDataFormat().GetFormat("[$$-409]#,##0.00");
+
                         style.SetFont(hfont);
-                        currentsheet.SetDefaultColumnStyle(cell, style);
+                        _currentsheet.SetDefaultColumnStyle(cell, style);
                         celda.SetCellType(CellType.Numeric);
                     }
                     else
                     {
-                        var style = excel.CreateCellStyle();
-                        
+                        var style = _excel.CreateCellStyle();
+
                         style.SetFont(hfont);
-                        currentsheet.SetDefaultColumnStyle(cell, style);
+                        _currentsheet.SetDefaultColumnStyle(cell, style);
                         celda.SetCellType(CellType.Numeric);
                     }
                 }
 
-
-
                 cell++;
-                celda.SetCellValue(prop.Name.ToString());
+                celda.SetCellValue(prop.Name);
             }
         }
 
@@ -202,57 +173,47 @@ namespace Library_benchmark.Helpers
         /// Agrega Sheet a el excel en base a nombre
         /// </summary>
         /// <param name="name"></param>
-        private void addSheet(string name)
+        private void AddSheet(string name)
         {
-            currentsheet = (XSSFSheet)excel.GetSheet(name);
-            if (currentsheet == null)
+            _currentsheet = (XSSFSheet)_excel.GetSheet(name);
+            if (_currentsheet == null)
             {
-                if (basesheet != null)
-                    currentsheet = (XSSFSheet)basesheet.CopySheet(name, true);
+                if (_basesheet != null)
+                    _currentsheet = (XSSFSheet)_basesheet.CopySheet(name, true);
                 else
-                    currentsheet = (XSSFSheet)excel.CreateSheet(name);
+                    _currentsheet = (XSSFSheet)_excel.CreateSheet(name);
 
             }
-            currentsheet.DefaultRowHeight = 300;
+            _currentsheet.DefaultRowHeight = 300;
         }
 
         /// <summary>
         /// Agrega informacion a la Sheet que este en memoria 
         /// </summary>
-        private void addInformation()
+        private void AddInformation()
         {
-            int cont = rowInicial;
-            foreach (var item in informacion)
+            var cont = _rowInicial;
+            foreach (var item in _informacion)
             {
-                IRow row;
-                row = currentsheet.GetRow(cont);
-                if (row == null)
-                    row = currentsheet.CreateRow(cont);
-
-                int cell = 0;
+                var row = _currentsheet.GetRow(cont) ?? _currentsheet.CreateRow(cont);
+                var cell = 0;
 
                 foreach (var prop in item.GetType().GetProperties().Where(p => !p.GetGetMethod().GetParameters().Any()))
                 {
-                    ICell celda;
-                    celda = row.GetCell(cell);
-                    if (celda == null)
-                        celda = row.CreateCell(cell);
+                    var celda = row.GetCell(cell) ?? row.CreateCell(cell);
 
-                    var style = currentsheet.GetColumnStyle(cell);
+                    var style = _currentsheet.GetColumnStyle(cell);
                     if (prop.PropertyType.Equals(typeof(DateTime)))
                     {
                         var date = (DateTime)prop.GetValue(item, null);
                         celda.SetCellValue(date.Date);
-                        style.DataFormat = excel.CreateDataFormat().GetFormat("MM/dd/yyyy");
-
-
-
+                        style.DataFormat = _excel.CreateDataFormat().GetFormat("MM/dd/yyyy");
                     }
                     else if (prop.PropertyType.Equals(typeof(decimal)))
                     {
                         var money = (decimal)prop.GetValue(item, null);
                         celda.SetCellValue(Convert.ToDouble(money));
-                        style.DataFormat = excel.CreateDataFormat().GetFormat("[$$-409]#,##0.00");
+                        style.DataFormat = _excel.CreateDataFormat().GetFormat("[$$-409]#,##0.00");
 
                         celda.SetCellType(CellType.Numeric);
 
@@ -275,7 +236,7 @@ namespace Library_benchmark.Helpers
         /// <returns>dato referente a el excel que se esta armando</returns>
         internal XSSFWorkbook GetExcelExample()
         {
-            return excel;
+            return _excel;
         }
 
     }
