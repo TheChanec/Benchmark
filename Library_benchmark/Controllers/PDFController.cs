@@ -47,7 +47,7 @@ namespace Library_benchmark.Controllers
 
                     MemoryStream workStream = new MemoryStream();
                     PdfWriter.GetInstance(pdf, workStream).CloseStream = false;
-                    pdf = new ITextSharpServicio(informacion, workStream, parametros.Sheets).GetPDFExample();
+                    pdf = new ITextSharpServicio().GetPDFExample();
 
                     byte[] byteInfo = workStream.ToArray();
                     workStream.Write(byteInfo, 0, byteInfo.Length);
@@ -56,50 +56,7 @@ namespace Library_benchmark.Controllers
                     Response.AddHeader("Content-Disposition", "attachment; filename= " + Server.HtmlEncode("abc.pdf"));
                     Response.ContentType = "APPLICATION/pdf";
                     Response.BinaryWrite(byteInfo);
-
-                    //watchCreation.Stop();
-                    //result.Tiempos.Add(new Tiempo
-                    //{
-                    //    Descripcion = "Creacion",
-                    //    Value = watchCreation.Elapsed.ToString()
-                    //});
-
-                    //if (parametros.Design)
-                    //{
-                    //    Stopwatch watchDesign = Stopwatch.StartNew();
-                    //    excel = new NPOIDesign(excel, parametros.Resource).GetExcelExample();
-
-                    //    watchDesign.Stop();
-                    //    result.Tiempos.Add(new Tiempo
-                    //    {
-                    //        Descripcion = "Diseno",
-                    //        Value = watchDesign.Elapsed.ToString()
-                    //    });
-
-                    //}
-                    //Stopwatch watchFiletoDonwload = Stopwatch.StartNew();
-                    //FileContentResult file = NPOIdownload(excel);
-                    //watchFiletoDonwload.Stop();
-                    //result.Tiempos.Add(new Tiempo
-                    //{
-                    //    Descripcion = "File to download",
-                    //    Value = watchFiletoDonwload.Elapsed.ToString()
-                    //});
-
-
-
-                    //stopWatch.Stop();
-                    //result.Tiempos.Add(new Tiempo
-                    //{
-                    //    Descripcion = "Total",
-                    //    Value = stopWatch.Elapsed.ToString()
-                    //});
-                    //result.Intento = i;
-                    //res.Resultados.Add(result);
-
-                    ////return file;
-                    //excel = null;
-                    //file = null;
+                    
                 }
             }
 
