@@ -3,7 +3,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
 
-namespace Library_benchmark
+namespace Library_benchmark.Helpers.ITextSharp
 {
     public class ITextEvents : PdfPageEventHelper
     {
