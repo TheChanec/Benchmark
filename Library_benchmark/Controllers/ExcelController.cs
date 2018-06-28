@@ -39,9 +39,7 @@ namespace Library_benchmark.Controllers
             excel = new ExcelPackage();
             currentsheet = excel.Workbook.Worksheets.Add("Result");
 
-            ICollection<DummyView> respuesta = new List<DummyView>();
-
-            respuesta = res
+            ICollection<DummyView> respuesta = res
                 .Resultados
                 .Select(x => new DummyView
                 {
@@ -57,7 +55,7 @@ namespace Library_benchmark.Controllers
                 .ToList();
 
             currentsheet.Cells[1, 1].LoadFromCollection(respuesta, true);
-            FileStreamResult file = EpplusDownload(excel);
+            var file = EpplusDownload(excel);
 
 
             return file;
@@ -132,7 +130,7 @@ namespace Library_benchmark.Controllers
 
         private FileResult NPOI(Parametros parametros)
         {
-            Singleton res = Singleton.Instance;
+            var res = Singleton.Instance;
             FileContentResult file = null;
             for (int i = 0; i < parametros.Iteraciones; i++)
             {
