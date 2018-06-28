@@ -251,7 +251,7 @@ namespace Library_benchmark.Controllers
                     if (parametros.Design)
                     {
                         Stopwatch watchDesign = Stopwatch.StartNew();
-                        excel = new EPPlusDesign(excel, parametros.Resource, null).GetExcelExample();
+                        excel = new EpplusDesign(excel, parametros.Resource, null).GetExcelExample();
                         watchDesign.Stop();
                         result.Tiempos.Add(new Tiempo
                         {

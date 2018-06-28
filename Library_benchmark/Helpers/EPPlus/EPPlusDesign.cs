@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Web;
+﻿using System.Drawing;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 
-namespace Library_benchmark.Helpers
+namespace Library_benchmark.Helpers.EPPlus
 {
-    public class EPPlusDesign
+    public class EpplusDesign
     {
-        private ExcelPackage excel;
-        private bool resource;
-        private int rowInicial;
-        private Image logo;
-        private Color colorPrimary = Color.DarkBlue;
-        private Color colorPrimaryText= Color.White;
+        private readonly ExcelPackage _excel;
+        private readonly bool _resource;
+        private int _rowInicial;
+        private Image _logo;
+        private readonly Color _colorPrimary = Color.DarkBlue;
+        private readonly Color _colorPrimaryText = Color.White;
 
         /// <summary>
         /// 
@@ -23,12 +19,12 @@ namespace Library_benchmark.Helpers
         /// <param name="excel"></param>
         /// <param name="resource"></param>
         /// <param name="logo"></param>
-        public EPPlusDesign(ExcelPackage excel, bool resource, Image logo)
+        public EpplusDesign(ExcelPackage excel, bool resource, Image logo)
         {
-            this.excel = excel;
-            this.resource = resource;
-            this.logo = logo;
-            rowInicial = 4;
+            _excel = excel;
+            _resource = resource;
+            _logo = logo;
+            _rowInicial = 4;
 
             DarFormato();
         }
@@ -38,20 +34,14 @@ namespace Library_benchmark.Helpers
         /// </summary>
         private void DarFormato()
         {
-            if (excel != null)
+            if (_excel == null) return;
+            foreach (var item in _excel.Workbook.Worksheets)
             {
-                foreach (var item in excel.Workbook.Worksheets)
-                {
-                    
-
-                    PutCabeceras(item);
-                    PutTypeAndSizeText(item);
-                    PutFitInCells(item);
-
-                    if (!resource)
-                        PutImagenTitulo(item);
-                }
-
+                PutCabeceras(item);
+                PutTypeAndSizeText(item);
+                PutFitInCells(item);
+                if (!_resource)
+                    PutImagenTitulo(item);
             }
         }
 
@@ -68,8 +58,8 @@ namespace Library_benchmark.Helpers
             item.Cells["I1:M2"].Value = "EPPLUS";
 
             item.Cells["I1:M2"].Style.Fill.PatternType = ExcelFillStyle.Solid;
-            item.Cells["I1:M2"].Style.Fill.BackgroundColor.SetColor(colorPrimary);
-            item.Cells["I1:M2"].Style.Font.Color.SetColor(colorPrimaryText);
+            item.Cells["I1:M2"].Style.Fill.BackgroundColor.SetColor(_colorPrimary);
+            item.Cells["I1:M2"].Style.Font.Color.SetColor(_colorPrimaryText);
             item.Cells["I1:M2"].Style.Font.Size = 36f;
             item.Cells["I1:M2"].Style.Font.Bold = true;
             item.Cells["I1:M2"].Style.Font.Name = "Century Gothic";
@@ -79,9 +69,9 @@ namespace Library_benchmark.Helpers
             Image logo = Image.FromFile("C:/Users/mario.chan/Documents/GitHub/Benchmark/Library_benchmark/Content/images/Cemex.png");
             var picture = item.Drawings.AddPicture("DotNet", logo);
             picture.SetPosition(13, 11);
-            picture.SetSize(442,116);
-            
-            
+            picture.SetSize(442, 116);
+
+
         }
 
         /// <summary>
@@ -91,12 +81,12 @@ namespace Library_benchmark.Helpers
         private void PutCabeceras(ExcelWorksheet workSheet)
         {
 
-            var allCells = workSheet.Cells[rowInicial, 1, rowInicial, workSheet.Dimension.End.Column];
+            var allCells = workSheet.Cells[_rowInicial, 1, _rowInicial, workSheet.Dimension.End.Column];
             allCells.Style.Fill.PatternType = ExcelFillStyle.Solid;
-            allCells.Style.Fill.BackgroundColor.SetColor(colorPrimary /*Color.FromArgb(0, 42, 89)*/);
-            allCells.Style.Font.Color.SetColor(colorPrimaryText);
-            allCells.Style.Border.BorderAround( ExcelBorderStyle.Thin ,Color.Black);
-            
+            allCells.Style.Fill.BackgroundColor.SetColor(_colorPrimary /*Color.FromArgb(0, 42, 89)*/);
+            allCells.Style.Font.Color.SetColor(_colorPrimaryText);
+            allCells.Style.Border.BorderAround(ExcelBorderStyle.Thin, Color.Black);
+
 
 
 
@@ -106,13 +96,9 @@ namespace Library_benchmark.Helpers
         /// 
         /// </summary>
         /// <param name="workSheet"></param>
-        private void PutFitInCells(ExcelWorksheet workSheet)
+        private static void PutFitInCells(ExcelWorksheet workSheet)
         {
-
-
             workSheet.Cells[workSheet.Dimension.Address].AutoFitColumns();
-
-
         }
 
         /// <summary>
@@ -122,7 +108,7 @@ namespace Library_benchmark.Helpers
         private void PutTypeAndSizeText(ExcelWorksheet workSheet)
         {
 
-            var allCells = workSheet.Cells[rowInicial, 1, workSheet.Dimension.End.Row, workSheet.Dimension.End.Column];
+            var allCells = workSheet.Cells[_rowInicial, 1, workSheet.Dimension.End.Row, workSheet.Dimension.End.Column];
             allCells.Style.VerticalAlignment = ExcelVerticalAlignment.Bottom;
             var cellFont = allCells.Style.Font;
             cellFont.SetFromFont(new Font("Century Gothic", 12));
@@ -137,8 +123,7 @@ namespace Library_benchmark.Helpers
         /// <returns></returns>
         internal ExcelPackage GetExcelExample()
         {
-
-            return excel;
+            return _excel;
         }
     }
 }
