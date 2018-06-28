@@ -175,7 +175,7 @@
     <Compile Include="Helpers\EPPlus\EPPlusDesign.cs" />
     <Compile Include="Helpers\EPPlus\EPPLUSServicio.cs" />
     <Compile Include="Helpers\NPOI\NPOIService.cs" />
-    <Compile Include="ITextEvents.cs" />
+    <Compile Include="Helpers\ITextSharp\ITextEvents.cs" />
     <Compile Include="Models\DummyView.cs" />
     <Compile Include="Models\EPPLUS.cs" />
     <Compile Include="Models\Dummy.cs" />
