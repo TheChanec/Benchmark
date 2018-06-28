@@ -295,37 +295,72 @@ namespace Library_benchmark.Controllers
             cellLowAirWarningDevice.FixedHeight = fixedHeight;
 
             cellValueOdometerStar.Border = 0;
-            cellValueOdometerStar.FixedHeight = fixedHeight;
 
             cellValueMaxAirPressure.Border = 0;
-            cellValueMaxAirPressure.FixedHeight = fixedHeight;
 
             cellValueLowAirWarningDevice.Border = 0;
-            cellValueLowAirWarningDevice.FixedHeight = fixedHeight;
 
             cellSecoundaryValueOdometerStar.Border = 0;
-            cellSecoundaryValueOdometerStar.FixedHeight = fixedHeight;
+            cellSecoundaryValueOdometerStar.BorderWidthBottom = borderWidth;
+            cellSecoundaryValueOdometerStar.BorderColor = baseColorLines;
 
             cellSecoundaryValueMaxAirPressure.Border = 0;
-            cellSecoundaryValueMaxAirPressure.FixedHeight = fixedHeight;
+            cellSecoundaryValueMaxAirPressure.BorderWidthBottom = borderWidth;
+            cellSecoundaryValueMaxAirPressure.BorderColor = baseColorLines;
 
             cellSecoundaryValueLowAirWarningDevice.Border = 0;
-            cellSecoundaryValueLowAirWarningDevice.FixedHeight = fixedHeight;
+            cellSecoundaryValueLowAirWarningDevice.BorderWidthBottom = borderWidth;
+            cellSecoundaryValueLowAirWarningDevice.BorderColor = baseColorLines;
 
-            
 
             tblGeneralInformation.AddCell(cellInformacionGeneral);
             tblGeneralInformation.AddCell(cellOdometerStar);
             tblGeneralInformation.AddCell(cellMaxAirPressure);
             tblGeneralInformation.AddCell(cellLowAirWarningDevice);
-            tblGeneralInformation.AddCell(valueOdometerStar);
-            tblGeneralInformation.AddCell(valuemaxAirPressure);
-            tblGeneralInformation.AddCell(valueLowAirWarningDevice);
-            tblGeneralInformation.AddCell(valueSecoundaryOdometerStar);
-            tblGeneralInformation.AddCell(valueSecoundarymaxAirPressure);
-            tblGeneralInformation.AddCell(valueSecoundaryLowAirWarningDevice);
+            tblGeneralInformation.AddCell(cellValueOdometerStar);
+            tblGeneralInformation.AddCell(cellValueMaxAirPressure);
+            tblGeneralInformation.AddCell(cellValueLowAirWarningDevice);
+            tblGeneralInformation.AddCell(cellSecoundaryValueOdometerStar);
+            tblGeneralInformation.AddCell(cellSecoundaryValueMaxAirPressure);
+            tblGeneralInformation.AddCell(cellSecoundaryValueLowAirWarningDevice);
 
             doc.Add(tblGeneralInformation);
+
+            var tblCritical = new PdfPTable(2) { TotalWidth = 558f, LockedWidth = true };
+            var critical = new Phrase("Critical", fontDoc);
+            var water = new Phrase("Water", fontDoc);
+            var valueWater = new Phrase("hsksnsk", fontDoc);
+
+            var cellCritical = new PdfPCell(critical);
+            var cellWater = new PdfPCell(water);
+            var cellValueWater = new PdfPCell(valueWater);
+
+            
+            cellCritical.Colspan = 2;
+            cellCritical.Border = 0;
+            cellCritical.BackgroundColor = baseColorBackground;
+            cellCritical.BorderWidthTop = borderWidth;
+            cellCritical.BorderWidthBottom = borderWidth;
+            cellCritical.BorderColor = baseColorLines;
+            cellCritical.FixedHeight = fixedHeight;
+
+            cellWater.Border = 0;
+            cellCritical.Colspan = 2;
+            cellWater.FixedHeight = fixedHeight;
+            
+
+
+            cellValueWater.Border = 0;
+            cellCritical.Colspan = 2;
+            cellValueWater.BorderWidthBottom = borderWidth;
+            cellValueWater.BorderColor = baseColorLines;
+            
+
+            tblCritical.AddCell(cellCritical);
+            tblCritical.AddCell(cellWater);
+            tblCritical.AddCell(cellValueWater);
+
+            doc.Add(tblCritical);
 
             doc.Close();
             //return Json(new { success = "true", link = strFilePath + fileName });
