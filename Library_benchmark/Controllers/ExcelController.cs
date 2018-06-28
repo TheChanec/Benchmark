@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Library_benchmark.Helpers.EPPlus;
 
 
 namespace Library_benchmark.Controllers
@@ -235,9 +236,9 @@ namespace Library_benchmark.Controllers
                     Stopwatch watchCreation = Stopwatch.StartNew();
 
                     if (parametros.Resource)
-                        excel = new EPPLUSServicio(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Sheets).GetExcelExample();
+                        excel = new EpplusServicio(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Sheets).GetExcelExample();
                     else
-                        excel = new EPPLUSServicio(informacion, parametros.Design, parametros.Mascaras, parametros.Sheets).GetExcelExample();
+                        excel = new EpplusServicio(informacion, parametros.Design, parametros.Mascaras, parametros.Sheets).GetExcelExample();
 
                     watchCreation.Stop();
                     result.Tiempos.Add(new Tiempo
