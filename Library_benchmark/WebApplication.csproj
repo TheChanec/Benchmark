@@ -177,9 +177,7 @@
     <Compile Include="Helpers\NPOI\NPOIService.cs" />
     <Compile Include="Helpers\ITextSharp\ITextEvents.cs" />
     <Compile Include="Models\DummyView.cs" />
-    <Compile Include="Models\EPPLUS.cs" />
     <Compile Include="Models\Dummy.cs" />
-    <Compile Include="Models\NPOI.cs" />
     <Compile Include="Models\Parametros.cs" />
     <Compile Include="Models\Singleton.cs" />
     <Compile Include="Models\Resultado.cs" />

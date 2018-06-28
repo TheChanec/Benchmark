@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace Library_benchmark.Models
 {
@@ -10,22 +7,21 @@ namespace Library_benchmark.Models
         private ICollection<Resultado> _resultados = new List<Resultado>();
 
         public ICollection<Resultado> Resultados { get => _resultados; set => _resultados = value; }
-        private static Singleton instance = null;
-        private static readonly object padlock = new object();
-
+        private static Singleton _instance;
+        
         private Singleton() { }
 
         public static Singleton Instance
         {
             get
             {
-                if (instance == null) {
-                    instance = new Singleton();
+                if (_instance == null) {
+                    _instance = new Singleton();
                     
                 }
                     
 
-                return instance;
+                return _instance;
             }
         }
 
