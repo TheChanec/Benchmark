@@ -172,14 +172,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EPPlus\EPPlusDesign.cs" />
+    <Compile Include="Helpers\EPPlus\EpplusDesign.cs" />
     <Compile Include="Helpers\EPPlus\EPPLUSServicio.cs" />
     <Compile Include="Helpers\NPOI\NPOIService.cs" />
-    <Compile Include="ITextEvents.cs" />
+    <Compile Include="Helpers\ITextSharp\ITextEvents.cs" />
     <Compile Include="Models\DummyView.cs" />
-    <Compile Include="Models\EPPLUS.cs" />
     <Compile Include="Models\Dummy.cs" />
-    <Compile Include="Models\NPOI.cs" />
     <Compile Include="Models\Parametros.cs" />
     <Compile Include="Models\Singleton.cs" />
     <Compile Include="Models\Resultado.cs" />
@@ -197,6 +195,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\Cemex.png" />
+    <Content Include="Content\images\CemexPDF.PNG" />
+    <Content Include="Content\images\firma.PNG" />
     <Content Include="Content\images\goodmorning.jpg" />
     <Content Include="Content\images\net.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />

@@ -1,172 +1,113 @@
 ﻿using Library_benchmark.Models;
 using OfficeOpenXml;
-using OfficeOpenXml.Style;
 using OfficeOpenXml.Table;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Web;
 
-namespace Library_benchmark.Helpers
+namespace Library_benchmark.Helpers.EPPlus
 {
-    public class EPPLUSServicio
+    public class EpplusServicio
     {
-        private ExcelPackage excel;
-        private IList<Dummy> informacion;
-        private ExcelWorksheet currentsheet;
-        private ExcelWorksheet basesheet;
-        private int InicialRow;
-        private bool design;
-        private byte[] documentDummy;
-        private int sheets;
+        private ExcelPackage _excel;
+        private ExcelWorksheet _currentsheet;
+        private ExcelWorksheet _basesheet;
+        private readonly IList<Dummy> _informacion;
+        private readonly bool _mascaras;
+        private int _inicialRow;
 
-        public EPPLUSServicio(IList<Dummy> informacion, bool design, int sheets)
+
+
+        public EpplusServicio(IList<Dummy> informacion, bool design, bool mascaras, int sheets)
         {
-            this.informacion = informacion;
-            this.design = design;
-            if (design)
-                this.InicialRow = 4;
-            else
-                this.InicialRow = 1;
+            _informacion = informacion;
+            _mascaras = mascaras;
+            _inicialRow = design ? 4 : 1;
 
-            createWorkBook();
-            createSheets(sheets);
+            CreateWorkBook();
+            CreateSheets(sheets);
 
         }
 
-        public EPPLUSServicio(byte[] documentDummy, IList<Dummy> informacion, int sheets)
+        public EpplusServicio(byte[] documentDummy, IList<Dummy> informacion, bool mascaras, int sheets)
         {
-            this.informacion = informacion;
-            this.InicialRow = 4;
-            this.design = false;
+            _informacion = informacion;
+            _inicialRow = 4;
+            _mascaras = mascaras;
 
-
-            createWorkBook(documentDummy);
-            createSheetBase();
+            CreateWorkBook(documentDummy);
+            CreateSheetBase();
             //deleteWorkSheets();
-            createSheets(sheets);
+            CreateSheets(sheets);
         }
 
-        private void createWorkBook(byte[] documentDummy)
+        private void CreateWorkBook(byte[] documentDummy)
         {
-            using (MemoryStream memStream = new MemoryStream(documentDummy))
+            using (var memStream = new MemoryStream(documentDummy))
+                _excel = new ExcelPackage(memStream);
+
+        }
+        private void CreateWorkBook()
+        {
+            _excel = new ExcelPackage();
+        }
+        private void CreateSheetBase()
+        {
+            if (_excel.Workbook.Worksheets.Any())
+                _basesheet = _excel.Workbook.Worksheets.FirstOrDefault();
+        }
+        private void CreateSheets(int sheets)
+        {
+            for (var i = 0; i < sheets; i++)
             {
-                excel = new ExcelPackage(memStream);
+                AddSheet("Sheet" + i);
+                AddInformation();
             }
         }
-
-        private void deleteWorkSheets(int sheetsBase)
+        private void AddSheet(string name)
         {
-            if (excel.Workbook.Worksheets.Count() > sheetsBase)
+            if (_excel.Workbook.Worksheets.All(x => x.Name != name))
             {
-                for (int i = sheetsBase; i <= excel.Workbook.Worksheets.Count(); i++)
-                {
-                    excel.Workbook.Worksheets.Delete(i);
-                }
-
-            }
-
-        }
-
-        private void createWorkBook()
-        {
-            excel = new ExcelPackage();
-        }
-        private void createWorkBook(string path)
-        {
-            excel = new ExcelPackage(new FileInfo(path));
-
-        }
-        private void createSheetBase()
-        {
-            if (excel.Workbook.Worksheets.Count() > 0)
-                basesheet = excel.Workbook.Worksheets.FirstOrDefault();
-
-
-
-        }
-        private void createSheets(int sheets)
-        {
-            for (int i = 0; i < sheets; i++)
-            {
-                addSheet("Sheet" + i);
-                addInformation();
-            }
-        }
-
-        private void addSheet(string name)
-        {
-            if (!excel.Workbook.Worksheets.Where(x => x.Name == name).Any())
-            {
-                if (basesheet != null)
-                    currentsheet = excel.Workbook.Worksheets.Add(name, basesheet);
-                else
-                    currentsheet = excel.Workbook.Worksheets.Add(name);
+                _currentsheet = _basesheet != null ? _excel.Workbook.Worksheets.Add(name, _basesheet) : _excel.Workbook.Worksheets.Add(name);
             }
             else
             {
-                //excel.Workbook.Worksheets.Delete(name);
-                //addSheet(name);
-                currentsheet = excel.Workbook.Worksheets.Where(x => x.Name == name).FirstOrDefault();
+                _currentsheet = _excel.Workbook.Worksheets.FirstOrDefault(x => x.Name == name);
             }
 
-
-            currentsheet.DefaultRowHeight = 17.25;
+            if (_currentsheet != null) _currentsheet.DefaultRowHeight = 17.25;
         }
-
-
-
-
-
-        private void FormatExcel()
+        private void AddInformation()
         {
 
-        }
-
-        private void addInformation()
-        {
-
-            currentsheet.Cells[InicialRow, 1].LoadFromCollection(informacion, true, TableStyles.None);
-            currentsheet.Cells[currentsheet.Dimension.Address].AutoFitColumns();
-            if (design)
+            _currentsheet.Cells[_inicialRow, 1].LoadFromCollection(_informacion, true, TableStyles.None);
+            _currentsheet.Cells[_currentsheet.Dimension.Address].AutoFitColumns();
+            if (_mascaras)
             {
                 Mascaras();
             }
-            
+
         }
-
-
-
         private void Mascaras()
         {
-            int propiedad = 0;
-            foreach (PropertyInfo prop in typeof(Dummy).GetProperties())
+            var propiedad = 0;
+            foreach (var prop in typeof(Dummy).GetProperties())
             {
                 propiedad++;
                 if (prop.PropertyType.Equals(typeof(DateTime)))
                 {
-                    currentsheet.Column(propiedad).Style.Numberformat.Format = "mm/dd/yyyy"; // hh:mm:ss AM/PM";
+                    _currentsheet.Column(propiedad).Style.Numberformat.Format = "mm/dd/yyyy"; // hh:mm:ss AM/PM";
                 }
                 else if (prop.PropertyType.Equals(typeof(Decimal)))
                 {
-                    currentsheet.Column(propiedad).Style.Numberformat.Format = "_-$* #,##0.00_-;-$* #,##0.00_-;_-$* \"-\"??_-;_-@_-";
+                    _currentsheet.Column(propiedad).Style.Numberformat.Format = "_-$* #,##0.00_-;-$* #,##0.00_-;_-$* \"-\"??_-;_-@_-";
                 }
-
-
             }
-
-
         }
-
         internal ExcelPackage GetExcelExample()
         {
-
-            // FormatExcel();
-
-            return excel;
+            return _excel;
         }
     }
 }
