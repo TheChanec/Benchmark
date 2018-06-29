@@ -32,7 +32,7 @@ namespace Library_benchmark.Controllers
             for (int i = 0; i < parametros.Iteraciones; i++)
             {
                 Stopwatch stopWatch = Stopwatch.StartNew();
-                IList<Dummy> informacion = new Consultas(parametros.Rows).GetInformacion();
+                IList<ExcelDummy> informacion = new Consultas(parametros.Rows).GetInformacion();
 
                 Resultado result = new Resultado();
                 result.Parametro = parametros;
@@ -78,7 +78,8 @@ namespace Library_benchmark.Controllers
             var fontOnceTres = FontFactory.GetFont(FontFactory.HELVETICA, 11.3f, Font.NORMAL, BaseColor.WHITE);
             var fontDoce = FontFactory.GetFont(FontFactory.HELVETICA, 12f, Font.NORMAL, BaseColor.BLACK);
             #endregion
-            
+
+            #region Header
 
             var tblContainer = new PdfPTable(4) { TotalWidth = 558f, LockedWidth = true };
 
@@ -210,6 +211,10 @@ namespace Library_benchmark.Controllers
 
             doc.Add(tblResult);
 
+            #endregion
+
+            #region General Information 
+
             var tblGeneralInformation = new PdfPTable(3) { TotalWidth = 558f, LockedWidth = true };
             var informacionGeneral = new Phrase("GENERAL INFORMATION", fontDoceBold);
             var odometerStar = new Phrase("Odometer Start", fontDoceBold);
@@ -299,6 +304,10 @@ namespace Library_benchmark.Controllers
 
             doc.Add(tblGeneralInformation);
 
+            #endregion
+
+            #region Critical
+
             var tblCritical = new PdfPTable(2) { TotalWidth = 558f, LockedWidth = true };
             var critical = new Phrase("Critical", fontDoceBold);
             var water = new Phrase("Water", fontDoceBold);
@@ -341,7 +350,9 @@ namespace Library_benchmark.Controllers
 
             doc.Add(tblCritical);
 
+            #endregion
 
+            #region Mechanical
 
             var tblMechanical = new PdfPTable(2) { TotalWidth = 558f, LockedWidth = true };
             var mechanical = new Phrase("Mechanical", fontDoceBold);
@@ -379,7 +390,9 @@ namespace Library_benchmark.Controllers
 
             doc.Add(tblMechanical);
 
+            #endregion
 
+            #region Supervisor 
 
             var tblSupervisor = new PdfPTable(2) { TotalWidth = 558f, LockedWidth = true };
             var supervisor = new Phrase("Supervisor", fontDoceBold);
@@ -425,10 +438,10 @@ namespace Library_benchmark.Controllers
 
             doc.Add(tblSupervisor);
 
+            #endregion
 
             doc.Close();
-            //return Json(new { success = "true", link = strFilePath + fileName });
-            byte[] contents = System.IO.File.ReadAllBytes(strFilePath + fileName);
+            var contents = System.IO.File.ReadAllBytes(strFilePath + fileName);
             return File(contents, "application/pdf", fileName);
 
 

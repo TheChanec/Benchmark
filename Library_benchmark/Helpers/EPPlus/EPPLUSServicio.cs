@@ -13,13 +13,13 @@ namespace Library_benchmark.Helpers.EPPlus
         private ExcelPackage _excel;
         private ExcelWorksheet _currentsheet;
         private ExcelWorksheet _basesheet;
-        private readonly IList<Dummy> _informacion;
+        private readonly IList<ExcelDummy> _informacion;
         private readonly bool _mascaras;
         private int _inicialRow;
 
 
 
-        public EpplusServicio(IList<Dummy> informacion, bool design, bool mascaras, int sheets)
+        public EpplusServicio(IList<ExcelDummy> informacion, bool design, bool mascaras, int sheets)
         {
             _informacion = informacion;
             _mascaras = mascaras;
@@ -30,7 +30,7 @@ namespace Library_benchmark.Helpers.EPPlus
 
         }
 
-        public EpplusServicio(byte[] documentDummy, IList<Dummy> informacion, bool mascaras, int sheets)
+        public EpplusServicio(byte[] documentDummy, IList<ExcelDummy> informacion, bool mascaras, int sheets)
         {
             _informacion = informacion;
             _inicialRow = 4;
@@ -92,7 +92,7 @@ namespace Library_benchmark.Helpers.EPPlus
         private void Mascaras()
         {
             var propiedad = 0;
-            foreach (var prop in typeof(Dummy).GetProperties())
+            foreach (var prop in typeof(ExcelDummy).GetProperties())
             {
                 propiedad++;
                 if (prop.PropertyType.Equals(typeof(DateTime)))

@@ -32,16 +32,14 @@ namespace Library_benchmark.Controllers
 
         public FileResult DownloadSingleton()
         {
-            Singleton res = Singleton.Instance;
-            ExcelPackage excel;
-            ExcelWorksheet currentsheet;
+            var res = Singleton.Instance;
 
-            excel = new ExcelPackage();
-            currentsheet = excel.Workbook.Worksheets.Add("Result");
+            var excel = new ExcelPackage();
+            var currentsheet = excel.Workbook.Worksheets.Add("Result");
 
-            ICollection<DummyView> respuesta = res
+            ICollection<TimesView> respuesta = res
                 .Resultados
-                .Select(x => new DummyView
+                .Select(x => new TimesView
                 {
                     Libreria = x.Libreria,
                     Registros = x.Parametro.Rows,
@@ -135,7 +133,7 @@ namespace Library_benchmark.Controllers
             for (int i = 0; i < parametros.Iteraciones; i++)
             {
                 Stopwatch stopWatch = Stopwatch.StartNew();
-                IList<Dummy> informacion = new Consultas(parametros.Rows).GetInformacion();
+                IList<ExcelDummy> informacion = new Consultas(parametros.Rows).GetInformacion();
 
                 Resultado result = new Resultado();
                 result.Parametro = parametros;
@@ -216,7 +214,7 @@ namespace Library_benchmark.Controllers
             for (int i = 0; i < parametros.Iteraciones; i++)
             {
                 Stopwatch stopWatch = Stopwatch.StartNew();
-                IList<Dummy> informacion = new Consultas(parametros.Rows).GetInformacion();
+                IList<ExcelDummy> informacion = new Consultas(parametros.Rows).GetInformacion();
 
                 Resultado result = new Resultado();
                 result.Parametro = parametros;

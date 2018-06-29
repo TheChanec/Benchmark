@@ -21,13 +21,13 @@ namespace Library_benchmark.Helpers
         /// Obtiene el la lista generada de entidad Dummy
         /// </summary>
         /// <returns></returns>
-        internal IList<Dummy> GetInformacion()
+        internal IList<ExcelDummy> GetInformacion()
         {
 
-            IList<Dummy> respuesta = new List<Dummy>();
+            IList<ExcelDummy> respuesta = new List<ExcelDummy>();
             for (var i = 1; i <= _rows; i++)
             {
-                respuesta.Add(new Dummy
+                respuesta.Add(new ExcelDummy
                 {
                     Fecha1 = DateTime.Now.Date,
                     Fecha2 = DateTime.Now.Date,
