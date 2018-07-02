@@ -131,7 +131,7 @@ namespace Library_benchmark.Controllers
             for (int i = 0; i < parametros.Iteraciones; i++)
             {
                 var stopWatch = Stopwatch.StartNew();
-                var informacion = new Consultas(parametros.Rows).GetInformacion();
+                var informacion = new Consultas(parametros.Rows).GetExcelInformacion();
 
                 var result = new Resultado
                 {
@@ -214,7 +214,7 @@ namespace Library_benchmark.Controllers
             for (var i = 0; i < parametros.Iteraciones; i++)
             {
                 var stopWatch = Stopwatch.StartNew();
-                var informacion = new Consultas(parametros.Rows).GetInformacion();
+                var informacion = new Consultas(parametros.Rows).GetExcelInformacion();
 
                 var result = new Resultado
                 {

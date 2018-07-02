@@ -8,6 +8,10 @@ namespace Library_benchmark.Helpers
     {
         private readonly int _rows;
 
+        public Consultas()
+        {
+        }
+
         /// <summary>
         /// Contructor Inicial de la clase consultas 
         /// </summary>
@@ -18,10 +22,10 @@ namespace Library_benchmark.Helpers
         }
 
         /// <summary>
-        /// Obtiene el la lista generada de entidad Dummy
+        /// Obtiene el la lista generada de entidad ExcelDummy
         /// </summary>
         /// <returns></returns>
-        internal IList<ExcelDummy> GetInformacion()
+        internal IList<ExcelDummy> GetExcelInformacion()
         {
 
             IList<ExcelDummy> respuesta = new List<ExcelDummy>();
@@ -63,5 +67,26 @@ namespace Library_benchmark.Helpers
             return respuesta;
         }
 
+        /// <summary>
+        /// Obtiene valores dumi para la generacion de un PDF
+        /// </summary>
+        /// <returns></returns>
+        internal PdfDummy GetPdfInformacion()
+        {
+            return new PdfDummy
+            {
+                Title = "",
+                SubTitle = "",
+                Date = new DateTime().Date,
+                Driver = "",
+                Truck = "",
+                OdometerStatr = 9,
+                PressurePsi = 9,
+                DevicePsi = 9,
+                Water = "",
+                MechanicalComments = ""
+            };
+
+        }
     }
 }
