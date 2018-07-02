@@ -43,8 +43,8 @@ namespace Library_benchmark.Controllers
                 {
                     Libreria = x.Libreria,
                     Registros = x.Parametro.Rows,
-                    Sheet = x.Parametro.Sheets,
-                    Recurso = x.Parametro.Resource,
+                    Sheet = x.Parametro.Hojas,
+                    Recurso = x.Parametro.Template,
                     TiempoCreacionDeExcel = x.Tiempos.Where(t => t.Descripcion == "Creacion").Select(t => t.Value).FirstOrDefault(),
                     TiempoDiseno = x.Tiempos.Where(t => t.Descripcion == "Diseno").Select(t => t.Value).FirstOrDefault(),
                     TiempoCreardescarga = x.Tiempos.Where(t => t.Descripcion == "File to download").Select(t => t.Value).FirstOrDefault(),
@@ -97,12 +97,10 @@ namespace Library_benchmark.Controllers
             excel.SaveAs(ms);
             ms.Position = 0;
 
+            const string fileDownloadName = "EPPLUS.xlsx";
+            const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-            var fileDownloadName = "EPPLUS.xlsx";
-            var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
-            var fsr = new FileStreamResult(ms, contentType);
-            fsr.FileDownloadName = fileDownloadName;
+            var fsr = new FileStreamResult(ms, contentType) {FileDownloadName = fileDownloadName};
 
             return fsr;
         }
@@ -132,12 +130,14 @@ namespace Library_benchmark.Controllers
             FileContentResult file = null;
             for (int i = 0; i < parametros.Iteraciones; i++)
             {
-                Stopwatch stopWatch = Stopwatch.StartNew();
-                IList<ExcelDummy> informacion = new Consultas(parametros.Rows).GetInformacion();
+                var stopWatch = Stopwatch.StartNew();
+                var informacion = new Consultas(parametros.Rows).GetInformacion();
 
-                Resultado result = new Resultado();
-                result.Parametro = parametros;
-                result.Libreria = "NPOI";
+                var result = new Resultado
+                {
+                    Parametro = parametros,
+                    Libreria = "NPOI"
+                };
 
                 XSSFWorkbook excel;
 
@@ -145,11 +145,11 @@ namespace Library_benchmark.Controllers
                 {
                     Stopwatch watchCreation = Stopwatch.StartNew();
 
-                    if (parametros.Resource)
-                        excel = new NpoiService(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Sheets).GetExcelExample();
+                    if (parametros.Template)
+                        excel = new NpoiService(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Hojas).GetExcelExample();
 
                     else
-                        excel = new NpoiService(informacion, parametros.Design, parametros.Mascaras, parametros.Sheets).GetExcelExample();
+                        excel = new NpoiService(informacion, parametros.Diseno, parametros.Mascaras, parametros.Hojas).GetExcelExample();
 
 
                     watchCreation.Stop();
@@ -159,10 +159,10 @@ namespace Library_benchmark.Controllers
                         Value = watchCreation.Elapsed.ToString()
                     });
 
-                    if (parametros.Design)
+                    if (parametros.Diseno)
                     {
                         Stopwatch watchDesign = Stopwatch.StartNew();
-                        excel = new NpoiDesign(excel, parametros.Resource).GetExcelExample();
+                        excel = new NpoiDesign(excel, parametros.Template).GetExcelExample();
 
                         watchDesign.Stop();
                         result.Tiempos.Add(new Tiempo
@@ -209,70 +209,68 @@ namespace Library_benchmark.Controllers
 
         private FileStreamResult EPPLUS(Parametros parametros)
         {
-            Singleton res = Singleton.Instance;
+            var res = Singleton.Instance;
             FileStreamResult file = null;
-            for (int i = 0; i < parametros.Iteraciones; i++)
+            for (var i = 0; i < parametros.Iteraciones; i++)
             {
-                Stopwatch stopWatch = Stopwatch.StartNew();
-                IList<ExcelDummy> informacion = new Consultas(parametros.Rows).GetInformacion();
+                var stopWatch = Stopwatch.StartNew();
+                var informacion = new Consultas(parametros.Rows).GetInformacion();
 
-                Resultado result = new Resultado();
-                result.Parametro = parametros;
-                result.Libreria = "EPPLUS";
+                var result = new Resultado
+                {
+                    Parametro = parametros,
+                    Libreria = "EPPLUS"
+                };
 
                 ExcelPackage excel;
 
-                if (informacion != null)
+                if (informacion == null) continue;
+                var watchCreation = Stopwatch.StartNew();
+
+                excel = parametros.Template ? 
+                    new EpplusServicio(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Hojas).GetExcelExample() : 
+                    new EpplusServicio(informacion, parametros.Diseno, parametros.Mascaras, parametros.Hojas).GetExcelExample();
+
+                watchCreation.Stop();
+                result.Tiempos.Add(new Tiempo
                 {
-                    Stopwatch watchCreation = Stopwatch.StartNew();
+                    Descripcion = "Creacion",
+                    Value = watchCreation.Elapsed.ToString()
+                });
 
-                    if (parametros.Resource)
-                        excel = new EpplusServicio(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Sheets).GetExcelExample();
-                    else
-                        excel = new EpplusServicio(informacion, parametros.Design, parametros.Mascaras, parametros.Sheets).GetExcelExample();
 
-                    watchCreation.Stop();
+                if (parametros.Diseno)
+                {
+                    Stopwatch watchDesign = Stopwatch.StartNew();
+                    excel = new EpplusDesign(excel, parametros.Template).GetExcelExample();
+                    watchDesign.Stop();
                     result.Tiempos.Add(new Tiempo
                     {
-                        Descripcion = "Creacion",
-                        Value = watchCreation.Elapsed.ToString()
+                        Descripcion = "Diseno",
+                        Value = watchDesign.Elapsed.ToString()
                     });
-
-
-                    if (parametros.Design)
-                    {
-                        Stopwatch watchDesign = Stopwatch.StartNew();
-                        excel = new EpplusDesign(excel, parametros.Resource).GetExcelExample();
-                        watchDesign.Stop();
-                        result.Tiempos.Add(new Tiempo
-                        {
-                            Descripcion = "Diseno",
-                            Value = watchDesign.Elapsed.ToString()
-                        });
-                    }
-                    Stopwatch watchFiletoDonwload = Stopwatch.StartNew();
-                    file = EpplusDownload(excel);
-                    watchFiletoDonwload.Stop();
-                    result.Tiempos.Add(new Tiempo
-                    {
-                        Descripcion = "File to download",
-                        Value = watchFiletoDonwload.Elapsed.ToString()
-                    });
-
-                    stopWatch.Stop();
-                    result.Tiempos.Add(new Tiempo
-                    {
-                        Descripcion = "Total",
-                        Value = stopWatch.Elapsed.ToString()
-                    });
-                    result.Intento = i;
-                    res.Resultados.Add(result);
-
-                    excel = null;
-                    if (i != (parametros.Iteraciones - 1))
-                        file = null;
-
                 }
+                Stopwatch watchFiletoDonwload = Stopwatch.StartNew();
+                file = EpplusDownload(excel);
+                watchFiletoDonwload.Stop();
+                result.Tiempos.Add(new Tiempo
+                {
+                    Descripcion = "File to download",
+                    Value = watchFiletoDonwload.Elapsed.ToString()
+                });
+
+                stopWatch.Stop();
+                result.Tiempos.Add(new Tiempo
+                {
+                    Descripcion = "Total",
+                    Value = stopWatch.Elapsed.ToString()
+                });
+                result.Intento = i;
+                res.Resultados.Add(result);
+
+                excel = null;
+                if (i != (parametros.Iteraciones - 1))
+                    file = null;
 
             }
 
