@@ -75,16 +75,16 @@ namespace Library_benchmark.Helpers
         {
             return new PdfDummy
             {
-                Title = "",
-                SubTitle = "",
+                Title = "DRIVER INSPECTION REPORT",
+                SubTitle = "AS REQUIRED BY DOT FEDERAL MOTOR CARRIER SAFETY REGULATIONS",
                 Date = new DateTime().Date,
-                Driver = "",
-                Truck = "",
-                OdometerStatr = 9,
-                PressurePsi = 9,
-                DevicePsi = 9,
-                Water = "",
-                MechanicalComments = ""
+                Driver = "HUGO ISAAC RODRIGUEZ",
+                Truck = "CR4150",
+                OdometerStatr = 5,
+                PressurePsi = 8,
+                DevicePsi = 4,
+                Water = "asdwed",
+                MechanicalComments = "hsksnsk"
             };
 
         }
