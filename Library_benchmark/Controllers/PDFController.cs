@@ -5,7 +5,6 @@ using Library_benchmark.Helpers;
 using Library_benchmark.Helpers.ITextSharp;
 using Library_benchmark.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Web.Mvc;
@@ -28,27 +27,20 @@ namespace Library_benchmark.Controllers
         [HttpPost]
         public void ITextSharp(Parametros parametros)
         {
-            Singleton res = Singleton.Instance;
-            for (int i = 0; i < parametros.Iteraciones; i++)
+            for (var i = 0; i < parametros.Iteraciones; i++)
             {
-                Stopwatch stopWatch = Stopwatch.StartNew();
-                IList<ExcelDummy> informacion = new Consultas(parametros.Rows).GetInformacion();
-
-                Resultado result = new Resultado();
-                result.Parametro = parametros;
-                result.Libreria = "ITextSharp";
-
+                
+                var informacion = new Consultas().GetPdfInformacion();
+                
                 var pdf = new Document();
 
                 if (informacion == null) continue;
-
-                var watchCreation = Stopwatch.StartNew();
-
-                MemoryStream workStream = new MemoryStream();
+                
+                var workStream = new MemoryStream();
                 PdfWriter.GetInstance(pdf, workStream).CloseStream = false;
                 pdf = new ITextSharpServicio().GetPDFExample();
 
-                byte[] byteInfo = workStream.ToArray();
+                var byteInfo = workStream.ToArray();
                 workStream.Write(byteInfo, 0, byteInfo.Length);
                 workStream.Position = 0;
                 Response.Buffer = true;
@@ -195,11 +187,13 @@ namespace Library_benchmark.Controllers
             cellExpiryDate.BorderWidthBottom = borderWidth;
             cellExpiryDate.BorderColor = baseColorLines;
 
-            var cellfinal = new PdfPCell();
-            cellfinal.Border = 0;
-            cellfinal.Colspan = 4;
-            cellfinal.BackgroundColor = baseColorSeparacion;
-            cellfinal.FixedHeight = fixedHeightSeparacion;
+            var cellfinal = new PdfPCell
+            {
+                Border = 0,
+                Colspan = 4,
+                BackgroundColor = baseColorSeparacion,
+                FixedHeight = fixedHeightSeparacion
+            };
 
 
             tblResult.AddCell(cellEmployee);
@@ -283,11 +277,13 @@ namespace Library_benchmark.Controllers
             cellSecoundaryValueLowAirWarningDevice.BorderWidthBottom = borderWidth;
             cellSecoundaryValueLowAirWarningDevice.BorderColor = baseColorLines;
 
-            cellfinal = new PdfPCell();
-            cellfinal.Border = 0;
-            cellfinal.Colspan = 3;
-            cellfinal.BackgroundColor = baseColorSeparacion;
-            cellfinal.FixedHeight = fixedHeightSeparacion;
+            cellfinal = new PdfPCell
+            {
+                Border = 0,
+                Colspan = 3,
+                BackgroundColor = baseColorSeparacion,
+                FixedHeight = fixedHeightSeparacion
+            };
 
 
             tblGeneralInformation.AddCell(cellInformacionGeneral);
@@ -337,11 +333,13 @@ namespace Library_benchmark.Controllers
             cellValueWater.BorderWidthBottom = borderWidth;
             cellValueWater.BorderColor = baseColorLines;
 
-            cellfinal = new PdfPCell();
-            cellfinal.Border = 0;
-            cellfinal.Colspan = 3;
-            cellfinal.BackgroundColor = baseColorSeparacion;
-            cellfinal.FixedHeight = fixedHeightSeparacion;
+            cellfinal = new PdfPCell
+            {
+                Border = 0,
+                Colspan = 3,
+                BackgroundColor = baseColorSeparacion,
+                FixedHeight = fixedHeightSeparacion
+            };
 
             tblCritical.AddCell(cellCritical);
             tblCritical.AddCell(cellWater);
