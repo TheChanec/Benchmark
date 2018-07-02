@@ -45,7 +45,7 @@ namespace Library_benchmark.Controllers
                 //var pdfWriter = PdfWriter.GetInstance(doc, new FileStream(strFilePath + fileName, FileMode.Create));
                 //pdfWriter.PageEvent = new ITextEvents();
 
-                new ITextSharpServicio(informacion, parametros.Template, doc,strFilePath, fileName);
+                new TextSharpServicio(informacion, parametros.Template, doc,strFilePath, fileName);
 
                 
                 var contents = System.IO.File.ReadAllBytes(strFilePath + fileName);

@@ -95,11 +95,11 @@ namespace Library_benchmark.Helpers.EPPlus
             foreach (var prop in typeof(ExcelDummy).GetProperties())
             {
                 propiedad++;
-                if (prop.PropertyType.Equals(typeof(DateTime)))
+                if (prop.PropertyType == typeof(DateTime))
                 {
                     _currentsheet.Column(propiedad).Style.Numberformat.Format = "mm/dd/yyyy"; // hh:mm:ss AM/PM";
                 }
-                else if (prop.PropertyType.Equals(typeof(Decimal)))
+                else if (prop.PropertyType == typeof(decimal))
                 {
                     _currentsheet.Column(propiedad).Style.Numberformat.Format = "_-$* #,##0.00_-;-$* #,##0.00_-;_-$* \"-\"??_-;_-@_-";
                 }

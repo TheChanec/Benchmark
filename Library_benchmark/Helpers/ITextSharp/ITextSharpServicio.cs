@@ -1,33 +1,24 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Web;
 using Library_benchmark.Models;
+using System.IO;
 using Font = iTextSharp.text.Font;
 using Image = iTextSharp.text.Image;
 
 namespace Library_benchmark.Helpers.ITextSharp
 {
-    public class ITextSharpServicio
+    public class TextSharpServicio
     {
         private Document _doc;
         private readonly PdfDummy _informacion;
-        private readonly bool _template;
         private readonly string _filePath;
         private readonly string _fileName;
 
-        public ITextSharpServicio(Models.PdfDummy informacion, bool template, Document document, string filePath, string fileName)
+        public TextSharpServicio(PdfDummy informacion, bool template, Document document, string filePath, string fileName)
         {
             _fileName = fileName;
             _filePath = filePath;
             _informacion = informacion;
-            _template = template;
             _doc = document;
 
             GenerarPdf();
@@ -36,9 +27,9 @@ namespace Library_benchmark.Helpers.ITextSharp
         private void GenerarPdf()
         {
             //_doc = new Document(PageSize.A4, 5f, 5f, 73.5f, 70f);
-            
+
             var pdfWriter = PdfWriter.GetInstance(_doc, new FileStream(_filePath + _fileName, FileMode.Create));
-            pdfWriter.PageEvent = new ITextEvents();
+            pdfWriter.PageEvent = new TextEvents();
             _doc.Open();
 
             #region Fonts
@@ -419,16 +410,5 @@ namespace Library_benchmark.Helpers.ITextSharp
 
         }
 
-
-
-
-
-
-        internal Document GetPdfExample()
-        {
-
-            return _doc;
-        }
-        
     }
 }

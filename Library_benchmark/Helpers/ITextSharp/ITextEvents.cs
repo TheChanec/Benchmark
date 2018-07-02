@@ -1,47 +1,25 @@
-﻿using System.Web;
-using iTextSharp.text;
+﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System;
+using System.Web;
 
 namespace Library_benchmark.Helpers.ITextSharp
 {
-    public class ITextEvents : PdfPageEventHelper
+    public class TextEvents : PdfPageEventHelper
     {
-        // This is the contentbyte object of the writer
-        PdfContentByte cb;
+        private PdfContentByte _cb;
+        private PdfTemplate _headerTemplate, _footerTemplate;
+        private BaseFont _bf;
 
-        // we will put the final number of pages in a template
-        PdfTemplate headerTemplate, footerTemplate;
-
-        // this is the BaseFont we are going to use for the header / footer
-        BaseFont bf = null;
-
-        // This keeps track of the creation time
-        DateTime PrintTime = DateTime.Now;
-
-
-        #region Fields
-        private string _header;
-        #endregion
-
-        #region Properties
-        public string Header
-        {
-            get { return _header; }
-            set { _header = value; }
-        }
-        #endregion
-
-
+        public string Header { get; set; }
+        
         public override void OnOpenDocument(PdfWriter writer, Document document)
         {
             //try
             //{
-            PrintTime = DateTime.Now;
-            bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-            cb = writer.DirectContent;
-            headerTemplate = cb.CreateTemplate(560, 100);
-            footerTemplate = cb.CreateTemplate(50, 50);
+            _bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            _cb = writer.DirectContent;
+            _headerTemplate = _cb.CreateTemplate(560, 100);
+            _footerTemplate = _cb.CreateTemplate(50, 50);
             //}
             //catch (DocumentException de)
             //{
@@ -57,10 +35,9 @@ namespace Library_benchmark.Helpers.ITextSharp
         {
             base.OnEndPage(writer, document);
 
-            Font baseFontNormal = FontFactory.GetFont(FontFactory.HELVETICA, 12f, Font.NORMAL, BaseColor.BLACK);
-
-            Font fontFolio = FontFactory.GetFont(FontFactory.TIMES, 14, Font.NORMAL, BaseColor.BLACK);
-            Font time = FontFactory.GetFont(FontFactory.HELVETICA, 11f, Font.NORMAL);
+            
+            var fontFolio = FontFactory.GetFont(FontFactory.TIMES, 14, Font.NORMAL, BaseColor.BLACK);
+            var time = FontFactory.GetFont(FontFactory.HELVETICA, 11f, Font.NORMAL);
             var logo = Image.GetInstance(HttpContext.Current.Server.MapPath("~/Content/images/CemexPDF.png"));
             //logo.ScaleToFit(200, 57);
             logo.ScalePercent(60);
@@ -82,22 +59,22 @@ namespace Library_benchmark.Helpers.ITextSharp
 
             //Add paging to header
             {
-                cb.BeginText();
-                cb.SetFontAndSize(bf, 12);
-                cb.SetTextMatrix(document.PageSize.GetRight(0), document.PageSize.GetTop(0));
-                cb.ShowText(text);
-                cb.EndText();
-                
-                float len = bf.GetWidthPoint(text, 12);
+                _cb.BeginText();
+                _cb.SetFontAndSize(_bf, 12);
+                _cb.SetTextMatrix(document.PageSize.GetRight(0), document.PageSize.GetTop(0));
+                _cb.ShowText(text);
+                _cb.EndText();
+
+                float len = _bf.GetWidthPoint(text, 12);
                 //Adds "12" in Page 1 of 12
-                cb.AddTemplate(headerTemplate, document.PageSize.GetRight(0) + len, document.PageSize.GetTop(0));
+                _cb.AddTemplate(_headerTemplate, document.PageSize.GetRight(0) + len, document.PageSize.GetTop(0));
             }
             //Add paging to footer
             {
                 //var leftCol = new Paragraph("Mukesh Salaria\n" + "Software Engineer", time);
                 //var rightCol = new Paragraph("LearnShareCorner.com\n" + "Techical Blog", time);
                 //var phone = new Paragraph("Phone +91-9814268272", time);
-                float len = bf.GetWidthPoint(text, 12);
+                float len = _bf.GetWidthPoint(text, 12);
                 //Adds "12" in Page 1 of 12
                 var algo = document.PageSize.GetRight(100) + len;
                 var otracosa = document.PageSize.GetTop(45);
@@ -199,26 +176,26 @@ namespace Library_benchmark.Helpers.ITextSharp
             //cb.Stroke();
 
             //Move the pointer and draw line to separate footer section from rest of page
-            cb.MoveTo(40, document.PageSize.GetBottom(50));
-            cb.LineTo(document.PageSize.Width - 40, document.PageSize.GetBottom(50));
-            cb.Stroke();
+            _cb.MoveTo(40, document.PageSize.GetBottom(50));
+            _cb.LineTo(document.PageSize.Width - 40, document.PageSize.GetBottom(50));
+            _cb.Stroke();
         }
 
         public override void OnCloseDocument(PdfWriter writer, Document document)
         {
             base.OnCloseDocument(writer, document);
 
-            headerTemplate.BeginText();
-            headerTemplate.SetFontAndSize(bf, 12);
-            headerTemplate.SetTextMatrix(0, 0);
-            headerTemplate.ShowText((writer.PageNumber - 1).ToString());
-            headerTemplate.EndText();
+            _headerTemplate.BeginText();
+            _headerTemplate.SetFontAndSize(_bf, 12);
+            _headerTemplate.SetTextMatrix(0, 0);
+            _headerTemplate.ShowText((writer.PageNumber - 1).ToString());
+            _headerTemplate.EndText();
 
-            footerTemplate.BeginText();
-            footerTemplate.SetFontAndSize(bf, 12);
-            footerTemplate.SetTextMatrix(0, 0);
-            footerTemplate.ShowText((writer.PageNumber - 1).ToString());
-            footerTemplate.EndText();
+            _footerTemplate.BeginText();
+            _footerTemplate.SetFontAndSize(_bf, 12);
+            _footerTemplate.SetTextMatrix(0, 0);
+            _footerTemplate.ShowText((writer.PageNumber - 1).ToString());
+            _footerTemplate.EndText();
         }
     }
 }
