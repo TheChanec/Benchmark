@@ -107,15 +107,15 @@ namespace Library_benchmark.Controllers
 
         private FileContentResult NpoiDownload(XSSFWorkbook excel)
         {
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
 
                 excel.Write(ms);
 
-                var fileDownloadName = "NPOI.xlsx";
-                var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                const string fileDownloadName = "NPOI.xlsx";
+                const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-                byte[] bytes = ms.ToArray();
+                var bytes = ms.ToArray();
 
 
                 return File(bytes, contentType, fileDownloadName);
@@ -128,7 +128,7 @@ namespace Library_benchmark.Controllers
         {
             var res = Singleton.Instance;
             FileContentResult file = null;
-            for (int i = 0; i < parametros.Iteraciones; i++)
+            for (var i = 0; i < parametros.Iteraciones; i++)
             {
                 var stopWatch = Stopwatch.StartNew();
                 var informacion = new Consultas(parametros.Rows).GetExcelInformacion();
@@ -139,69 +139,58 @@ namespace Library_benchmark.Controllers
                     Libreria = "NPOI"
                 };
 
-                XSSFWorkbook excel;
+                if (informacion == null) continue;
+                var watchCreation = Stopwatch.StartNew();
 
-                if (informacion != null)
+                var excel = parametros.Template ? 
+                    new NpoiService(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Hojas).GetExcelExample() : 
+                    new NpoiService(informacion, parametros.Diseno, parametros.Mascaras, parametros.Hojas).GetExcelExample();
+
+
+                watchCreation.Stop();
+                result.Tiempos.Add(new Tiempo
                 {
-                    Stopwatch watchCreation = Stopwatch.StartNew();
+                    Descripcion = "Creacion",
+                    Value = watchCreation.Elapsed.ToString()
+                });
 
-                    if (parametros.Template)
-                        excel = new NpoiService(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Hojas).GetExcelExample();
+                if (parametros.Diseno)
+                {
+                    var watchDesign = Stopwatch.StartNew();
+                    excel = new NpoiDesign(excel, parametros.Template).GetExcelExample();
 
-                    else
-                        excel = new NpoiService(informacion, parametros.Diseno, parametros.Mascaras, parametros.Hojas).GetExcelExample();
-
-
-                    watchCreation.Stop();
+                    watchDesign.Stop();
                     result.Tiempos.Add(new Tiempo
                     {
-                        Descripcion = "Creacion",
-                        Value = watchCreation.Elapsed.ToString()
+                        Descripcion = "Diseno",
+                        Value = watchDesign.Elapsed.ToString()
                     });
-
-                    if (parametros.Diseno)
-                    {
-                        Stopwatch watchDesign = Stopwatch.StartNew();
-                        excel = new NpoiDesign(excel, parametros.Template).GetExcelExample();
-
-                        watchDesign.Stop();
-                        result.Tiempos.Add(new Tiempo
-                        {
-                            Descripcion = "Diseno",
-                            Value = watchDesign.Elapsed.ToString()
-                        });
-
-                    }
-                    Stopwatch watchFiletoDonwload = Stopwatch.StartNew();
-                    file = NpoiDownload(excel);
-                    watchFiletoDonwload.Stop();
-                    result.Tiempos.Add(new Tiempo
-                    {
-                        Descripcion = "File to download",
-                        Value = watchFiletoDonwload.Elapsed.ToString()
-                    });
-
-
-
-                    stopWatch.Stop();
-                    result.Tiempos.Add(new Tiempo
-                    {
-                        Descripcion = "Total",
-                        Value = stopWatch.Elapsed.ToString()
-                    });
-                    result.Intento = i;
-                    res.Resultados.Add(result);
-
-                    excel = null;
-                    if (i != (parametros.Iteraciones - 1))
-                        file = null;
-
 
                 }
-                else
+                var watchFiletoDonwload = Stopwatch.StartNew();
+                file = NpoiDownload(excel);
+                watchFiletoDonwload.Stop();
+                result.Tiempos.Add(new Tiempo
                 {
-                    return null;
-                }
+                    Descripcion = "File to download",
+                    Value = watchFiletoDonwload.Elapsed.ToString()
+                });
+
+
+
+                stopWatch.Stop();
+                result.Tiempos.Add(new Tiempo
+                {
+                    Descripcion = "Total",
+                    Value = stopWatch.Elapsed.ToString()
+                });
+                result.Intento = i;
+                res.Resultados.Add(result);
+
+                excel = null;
+                if (i != (parametros.Iteraciones - 1))
+                    file = null;
+
             }
 
             return file;
@@ -222,12 +211,10 @@ namespace Library_benchmark.Controllers
                     Libreria = "EPPLUS"
                 };
 
-                ExcelPackage excel;
-
                 if (informacion == null) continue;
                 var watchCreation = Stopwatch.StartNew();
 
-                excel = parametros.Template ? 
+                var excel = parametros.Template ? 
                     new EpplusServicio(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Hojas).GetExcelExample() : 
                     new EpplusServicio(informacion, parametros.Diseno, parametros.Mascaras, parametros.Hojas).GetExcelExample();
 
@@ -241,7 +228,7 @@ namespace Library_benchmark.Controllers
 
                 if (parametros.Diseno)
                 {
-                    Stopwatch watchDesign = Stopwatch.StartNew();
+                    var watchDesign = Stopwatch.StartNew();
                     excel = new EpplusDesign(excel, parametros.Template).GetExcelExample();
                     watchDesign.Stop();
                     result.Tiempos.Add(new Tiempo

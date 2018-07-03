@@ -6,20 +6,18 @@ namespace Library_benchmark.Helpers.ITextSharp
 {
     public class TextEvents : PdfPageEventHelper
     {
-        private PdfContentByte _cb;
+        private PdfContentByte _contentByte;
         private PdfTemplate _headerTemplate, _footerTemplate;
-        private BaseFont _bf;
-
-        public string Header { get; set; }
+        private BaseFont _baseFont;
         
         public override void OnOpenDocument(PdfWriter writer, Document document)
         {
             //try
             //{
-            _bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-            _cb = writer.DirectContent;
-            _headerTemplate = _cb.CreateTemplate(560, 100);
-            _footerTemplate = _cb.CreateTemplate(50, 50);
+            _baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+            _contentByte = writer.DirectContent;
+            _headerTemplate = _contentByte.CreateTemplate(560, 100);
+            _footerTemplate = _contentByte.CreateTemplate(50, 50);
             //}
             //catch (DocumentException de)
             //{
@@ -59,22 +57,22 @@ namespace Library_benchmark.Helpers.ITextSharp
 
             //Add paging to header
             {
-                _cb.BeginText();
-                _cb.SetFontAndSize(_bf, 12);
-                _cb.SetTextMatrix(document.PageSize.GetRight(0), document.PageSize.GetTop(0));
-                _cb.ShowText(text);
-                _cb.EndText();
+                _contentByte.BeginText();
+                _contentByte.SetFontAndSize(_baseFont, 12);
+                _contentByte.SetTextMatrix(document.PageSize.GetRight(0), document.PageSize.GetTop(0));
+                _contentByte.ShowText(text);
+                _contentByte.EndText();
 
-                float len = _bf.GetWidthPoint(text, 12);
+                float len = _baseFont.GetWidthPoint(text, 12);
                 //Adds "12" in Page 1 of 12
-                _cb.AddTemplate(_headerTemplate, document.PageSize.GetRight(0) + len, document.PageSize.GetTop(0));
+                _contentByte.AddTemplate(_headerTemplate, document.PageSize.GetRight(0) + len, document.PageSize.GetTop(0));
             }
             //Add paging to footer
             {
                 //var leftCol = new Paragraph("Mukesh Salaria\n" + "Software Engineer", time);
                 //var rightCol = new Paragraph("LearnShareCorner.com\n" + "Techical Blog", time);
                 //var phone = new Paragraph("Phone +91-9814268272", time);
-                float len = _bf.GetWidthPoint(text, 12);
+                float len = _baseFont.GetWidthPoint(text, 12);
                 //Adds "12" in Page 1 of 12
                 var algo = document.PageSize.GetRight(100) + len;
                 var otracosa = document.PageSize.GetTop(45);
@@ -176,9 +174,9 @@ namespace Library_benchmark.Helpers.ITextSharp
             //cb.Stroke();
 
             //Move the pointer and draw line to separate footer section from rest of page
-            _cb.MoveTo(40, document.PageSize.GetBottom(50));
-            _cb.LineTo(document.PageSize.Width - 40, document.PageSize.GetBottom(50));
-            _cb.Stroke();
+            _contentByte.MoveTo(40, document.PageSize.GetBottom(50));
+            _contentByte.LineTo(document.PageSize.Width - 40, document.PageSize.GetBottom(50));
+            _contentByte.Stroke();
         }
 
         public override void OnCloseDocument(PdfWriter writer, Document document)
@@ -186,13 +184,13 @@ namespace Library_benchmark.Helpers.ITextSharp
             base.OnCloseDocument(writer, document);
 
             _headerTemplate.BeginText();
-            _headerTemplate.SetFontAndSize(_bf, 12);
+            _headerTemplate.SetFontAndSize(_baseFont, 12);
             _headerTemplate.SetTextMatrix(0, 0);
             _headerTemplate.ShowText((writer.PageNumber - 1).ToString());
             _headerTemplate.EndText();
 
             _footerTemplate.BeginText();
-            _footerTemplate.SetFontAndSize(_bf, 12);
+            _footerTemplate.SetFontAndSize(_baseFont, 12);
             _footerTemplate.SetTextMatrix(0, 0);
             _footerTemplate.ShowText((writer.PageNumber - 1).ToString());
             _footerTemplate.EndText();

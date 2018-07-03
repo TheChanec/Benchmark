@@ -5,7 +5,6 @@ using Library_benchmark.Helpers;
 using Library_benchmark.Helpers.ITextSharp;
 using Library_benchmark.Models;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Web.Mvc;
 

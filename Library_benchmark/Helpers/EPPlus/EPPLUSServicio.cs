@@ -41,7 +41,6 @@ namespace Library_benchmark.Helpers.EPPlus
             //deleteWorkSheets();
             CreateSheets(sheets);
         }
-
         private void CreateWorkBook(byte[] documentDummy)
         {
             using (var memStream = new MemoryStream(documentDummy))

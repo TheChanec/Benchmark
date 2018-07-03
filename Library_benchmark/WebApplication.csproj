@@ -167,15 +167,15 @@
     <Compile Include="Controllers\PDFController.cs" />
     <Compile Include="Helpers\Consultas.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
-    <Compile Include="Helpers\ITextSharp\ITextSharpServicio.cs" />
+    <Compile Include="Helpers\ITextSharp\TextSharpServicio.cs" />
     <Compile Include="Helpers\NPOI\NPOIDesign.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EPPlus\EpplusDesign.cs" />
-    <Compile Include="Helpers\EPPlus\EPPLUSServicio.cs" />
+    <Compile Include="Helpers\EPPlus\EpplusServicio.cs" />
     <Compile Include="Helpers\NPOI\NPOIService.cs" />
-    <Compile Include="Helpers\ITextSharp\ITextEvents.cs" />
+    <Compile Include="Helpers\ITextSharp\TextEvents.cs" />
     <Compile Include="Models\PdfDummy.cs" />
     <Compile Include="Models\TimesView.cs" />
     <Compile Include="Models\ExcelDummy.cs" />
@@ -198,8 +198,6 @@
     <Content Include="Content\images\Cemex.png" />
     <Content Include="Content\images\CemexPDF.PNG" />
     <Content Include="Content\images\firma.PNG" />
-    <Content Include="Content\images\goodmorning.jpg" />
-    <Content Include="Content\images\net.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -222,7 +220,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <None Include="Resource\DummyReport.xlsx" />
+    <None Include="Content\Resource\DummyReport.xlsx" />
+    <Content Include="Content\Resource\DummyTemplate.pdf" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
