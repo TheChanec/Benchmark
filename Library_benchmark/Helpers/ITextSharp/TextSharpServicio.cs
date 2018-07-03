@@ -1,4 +1,5 @@
-﻿using iTextSharp.text;
+﻿using System.Globalization;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Library_benchmark.Models;
 using System.IO;
@@ -74,7 +75,7 @@ namespace Library_benchmark.Helpers.ITextSharp
 
                 foreach (var fieldKey in fieldKeys)
                 {
-                    form.SetField(fieldKey, fieldKey.ToString());
+                    form.SetField(fieldKey, fieldKey);
                 }
 
                 stamper.FormFlattening = true;
@@ -88,9 +89,9 @@ namespace Library_benchmark.Helpers.ITextSharp
             }
         }
 
-
-
-
+        /// <summary>
+        /// Funcion que Inicializa valores como el background y los espacion al generar el pdf
+        /// </summary>
         private static void InicializarEstilos()
         {
             _fixedHeight = 30f;
@@ -100,7 +101,9 @@ namespace Library_benchmark.Helpers.ITextSharp
             _baseColorBackground = new BaseColor(238, 239, 239);
             _baseColorSeparacion = new BaseColor(223, 223, 223);
         }
-
+        /// <summary>
+        /// Inicializa los tipos de letra que se van a utilizar al generar el pdf
+        /// </summary>
         private static void InicializarFonts()
         {
             _fontDoceBold = FontFactory.GetFont(FontFactory.HELVETICA, 12f, Font.BOLD, BaseColor.BLACK);
@@ -108,7 +111,9 @@ namespace Library_benchmark.Helpers.ITextSharp
             _fontOnceTres = FontFactory.GetFont(FontFactory.HELVETICA, 11.3f, Font.NORMAL, BaseColor.WHITE);
             _fontDoce = FontFactory.GetFont(FontFactory.HELVETICA, 12f, Font.NORMAL, BaseColor.BLACK);
         }
-
+        /// <summary>
+        /// Crea la Table para poder llenar Titulo y la primera seccion de el PDF
+        /// </summary>
         private void CrearHeader()
         {
             var tblContainer = new PdfPTable(4) { TotalWidth = 558f, LockedWidth = true };
@@ -184,10 +189,10 @@ namespace Library_benchmark.Helpers.ITextSharp
 
             var tblResult = new PdfPTable(4) { TotalWidth = 558f, LockedWidth = true };
 
-            var date = new Phrase(_informacion.Date.ToString()/*"21 Apr, 2017"*/, _fontDoce);
+            var date = new Phrase(_informacion.Date.ToString(CultureInfo.InvariantCulture)/*"21 Apr, 2017"*/, _fontDoce);
             var driver = new Phrase(_informacion.Driver, _fontDoce);
             var occupation = new Phrase(_informacion.Truck, _fontDoce);
-            var hour = new Phrase(_informacion.Date.ToString()/*"08:54 AM"*/, _fontDoce);
+            var hour = new Phrase(_informacion.Date.ToString(CultureInfo.InvariantCulture)/*"08:54 AM"*/, _fontDoce);
 
             var cellEmployee = new PdfPCell(date);
             var cellName = new PdfPCell(driver);
@@ -238,7 +243,9 @@ namespace Library_benchmark.Helpers.ITextSharp
 
             _doc.Add(tblResult);
         }
-
+        /// <summary>
+        /// Crea la seccion donde vine la informacion mas relevante del PDF
+        /// </summary>
         private void CrearInformacionGeneral()
         {
 
@@ -333,7 +340,9 @@ namespace Library_benchmark.Helpers.ITextSharp
 
             _doc.Add(tblGeneralInformation);
         }
-
+        /// <summary>
+        /// CRea la seccion Citical
+        /// </summary>
         private void CrearCritical()
         {
 
@@ -381,7 +390,9 @@ namespace Library_benchmark.Helpers.ITextSharp
 
             _doc.Add(tblCritical);
         }
-
+        /// <summary>
+        /// Crae la seccion donde vienen los comentarios del Mecanico
+        /// </summary>
         private void CrearMechanical()
         {
 
@@ -421,14 +432,16 @@ namespace Library_benchmark.Helpers.ITextSharp
 
             _doc.Add(tblMechanical);
         }
-
+        /// <summary>
+        /// Crea la seccion donde vienen los comentarios del Supervisor
+        /// </summary>
         private void CrearSupervisor()
         {
 
             var tblSupervisor = new PdfPTable(2) { TotalWidth = 558f, LockedWidth = true };
             var supervisor = new Phrase("Supervisor", _fontDoceBold);
             var valueDateSupervisor = new Phrase("21 Apr, 2017", _fontDoceBold);
-            var date = new Phrase(_informacion.Date.ToString()/*"21 Apr, 2017"*/, _fontDoce);
+            var date = new Phrase(_informacion.Date.ToString(CultureInfo.CurrentCulture)/*"21 Apr, 2017"*/, _fontDoce);
 
             var cellSupervisor = new PdfPCell(supervisor);
             var cellDateSupervisor = new PdfPCell(date);
