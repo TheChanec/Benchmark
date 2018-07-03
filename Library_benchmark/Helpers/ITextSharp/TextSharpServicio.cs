@@ -8,6 +8,9 @@ using Image = iTextSharp.text.Image;
 
 namespace Library_benchmark.Helpers.ITextSharp
 {
+    /// <summary>
+    /// Servicio Encargado de la Generacion de PDF's
+    /// </summary>
     public class TextSharpServicio
     {
         private Document _doc;
@@ -88,6 +91,9 @@ namespace Library_benchmark.Helpers.ITextSharp
                 pdfReader.Close();
             }
         }
+
+
+        #region Creacion del pdf
 
         /// <summary>
         /// Funcion que Inicializa valores como el background y los espacion al generar el pdf
@@ -483,5 +489,8 @@ namespace Library_benchmark.Helpers.ITextSharp
 
             _doc.Add(tblSupervisor);
         }
+
+        #endregion
+
     }
 }

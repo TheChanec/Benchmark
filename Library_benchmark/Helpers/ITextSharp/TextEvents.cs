@@ -4,6 +4,10 @@ using System.Web;
 
 namespace Library_benchmark.Helpers.ITextSharp
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Clase encargada de la generacion de Headers y Footers para el PDF
+    /// </summary>
     public class TextEvents : PdfPageEventHelper
     {
         private PdfContentByte _contentByte;
