@@ -13,31 +13,22 @@ namespace Library_benchmark.Helpers.ITextSharp
         private PdfContentByte _contentByte;
         private PdfTemplate _headerTemplate, _footerTemplate;
         private BaseFont _baseFont;
-        
+
         public override void OnOpenDocument(PdfWriter writer, Document document)
         {
-            //try
-            //{
+
             _baseFont = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
             _contentByte = writer.DirectContent;
             _headerTemplate = _contentByte.CreateTemplate(560, 100);
             _footerTemplate = _contentByte.CreateTemplate(50, 50);
-            //}
-            //catch (DocumentException de)
-            //{
 
-            //}
-            //catch (System.IO.IOException ioe)
-            //{
-
-            //}
         }
 
         public override void OnEndPage(PdfWriter writer, Document document)
         {
             base.OnEndPage(writer, document);
 
-            
+
             var fontFolio = FontFactory.GetFont(FontFactory.TIMES, 14, Font.NORMAL, BaseColor.BLACK);
             var time = FontFactory.GetFont(FontFactory.HELVETICA, 11f, Font.NORMAL);
             var logo = Image.GetInstance(HttpContext.Current.Server.MapPath("~/Content/images/CemexPDF.png"));
@@ -55,7 +46,7 @@ namespace Library_benchmark.Helpers.ITextSharp
             //Row 1
             var cellLogo = new PdfPCell(logo);
             var pdfCell2 = new PdfPCell();
-            var text = "Page " + writer.PageNumber + " of ";
+            var text = "Pagina " + writer.PageNumber + " de ";
             //string
 
 
@@ -67,61 +58,25 @@ namespace Library_benchmark.Helpers.ITextSharp
                 _contentByte.ShowText(text);
                 _contentByte.EndText();
 
-                float len = _baseFont.GetWidthPoint(text, 12);
+                var len = _baseFont.GetWidthPoint(text, 12);
                 //Adds "12" in Page 1 of 12
                 _contentByte.AddTemplate(_headerTemplate, document.PageSize.GetRight(0) + len, document.PageSize.GetTop(0));
             }
-            //Add paging to footer
+
             {
-                //var leftCol = new Paragraph("Mukesh Salaria\n" + "Software Engineer", time);
-                //var rightCol = new Paragraph("LearnShareCorner.com\n" + "Techical Blog", time);
-                //var phone = new Paragraph("Phone +91-9814268272", time);
-                float len = _baseFont.GetWidthPoint(text, 12);
-                //Adds "12" in Page 1 of 12
-                var algo = document.PageSize.GetRight(100) + len;
-                var otracosa = document.PageSize.GetTop(45);
+                var numberOfPages = new Paragraph(text + " ", time) { Alignment = Element.ALIGN_CENTER };
+                var footerTbl = new PdfPTable(1) { TotalWidth = 520f, HorizontalAlignment = Element.ALIGN_CENTER, LockedWidth = true };
 
-                var address = new Paragraph(text + " " + algo + " " + otracosa, time);
-                //var fax = new Paragraph("mukeshsalaria01@gmail.com", time);
+                var sep = new PdfPCell
+                {
+                    Border = 0,
+                    FixedHeight = 10f,
+                    Colspan = 1
+                };
+                var footerCell1 = new PdfPCell(numberOfPages) { Border = 0 };
 
-                //leftCol.Alignment = Element.ALIGN_LEFT;
-                //rightCol.Alignment = Element.ALIGN_RIGHT;
-                //fax.Alignment = Element.ALIGN_RIGHT;
-                //phone.Alignment = Element.ALIGN_LEFT;
-                address.Alignment = Element.ALIGN_CENTER;
-
-                var footerTbl = new PdfPTable(3) { TotalWidth = 520f, HorizontalAlignment = Element.ALIGN_CENTER, LockedWidth = true };
-                float[] widths = { 150f, 220f, 150f };
-                footerTbl.SetWidths(widths);
-                var footerCell1 = new PdfPCell(/*leftCol*/);
-                var footerCell2 = new PdfPCell();
-                var footerCell3 = new PdfPCell(/*rightCol*/);
-                var sep = new PdfPCell();
-                var footerCell4 = new PdfPCell(/*phone*/);
-                var footerCell5 = new PdfPCell(address);
-                var footerCell6 = new PdfPCell(/*fax*/);
-
-
-                footerCell1.Border = 0;
-                footerCell2.Border = 0;
-                footerCell3.Border = 0;
-                footerCell4.Border = 0;
-                footerCell5.Border = 0;
-                footerCell6.Border = 0;
-                footerCell6.HorizontalAlignment = Element.ALIGN_RIGHT;
-                sep.Border = 0;
-                sep.FixedHeight = 10f;
-                footerCell3.HorizontalAlignment = Element.ALIGN_RIGHT;
-                footerCell6.PaddingLeft = 0;
-                sep.Colspan = 3;
-
-                footerTbl.AddCell(footerCell1);
-                footerTbl.AddCell(footerCell2);
-                footerTbl.AddCell(footerCell3);
                 footerTbl.AddCell(sep);
-                footerTbl.AddCell(footerCell4);
-                footerTbl.AddCell(footerCell5);
-                footerTbl.AddCell(footerCell6);
+                footerTbl.AddCell(footerCell1);
                 footerTbl.WriteSelectedRows(0, -1, 40, 80, writer.DirectContent);
             }
             //Row 2

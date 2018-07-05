@@ -3,6 +3,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Library_benchmark.Models;
 using System.IO;
+using iTextSharp.text.html;
 using Font = iTextSharp.text.Font;
 using Image = iTextSharp.text.Image;
 
@@ -63,6 +64,7 @@ namespace Library_benchmark.Helpers.ITextSharp
 
         private void UtilizarTemplatePdf()
         {
+            
             const string fileNameExisting = @"C:\Users\mario.chan\Documents\GitHub\Benchmark\Library_benchmark\Content\Resource\DummyTemplate.pdf";
             var fileNameNew = _filePath + _fileName;
 
@@ -78,8 +80,22 @@ namespace Library_benchmark.Helpers.ITextSharp
 
                 foreach (var fieldKey in fieldKeys)
                 {
-                    form.SetField(fieldKey, fieldKey);
+                    switch (fieldKey)
+                    {
+                        case "Fields.truck.FieldValue":
+                            form.SetField(fieldKey, _informacion.Truck);
+                            break;
+                        case "body":
+
+                            break;
+                        case "Labels.pageNumberAndCount":
+                            form.SetField(fieldKey, "2");
+                            break;
+                    }
                 }
+
+
+
 
                 stamper.FormFlattening = true;
 
@@ -91,7 +107,6 @@ namespace Library_benchmark.Helpers.ITextSharp
                 pdfReader.Close();
             }
         }
-
 
         #region Creacion del pdf
 

@@ -20,7 +20,7 @@ namespace Library_benchmark.Controllers
         #region GET
         public ActionResult Index()
         {
-            Parametros parametros = new Parametros();
+            var parametros = new Parametros();
             ViewBag.IdLibreria = new SelectList(parametros.Exceles, "Id", "Nombre");
             return View(parametros);
         }
@@ -33,24 +33,22 @@ namespace Library_benchmark.Controllers
         public FileResult DownloadSingleton()
         {
             var res = Singleton.Instance;
-
             var excel = new ExcelPackage();
             var currentsheet = excel.Workbook.Worksheets.Add("Result");
-
             ICollection<TimesView> respuesta = res
-                .Resultados
-                .Select(x => new TimesView
-                {
-                    Libreria = x.Libreria,
-                    Registros = x.Parametro.Rows,
-                    Sheet = x.Parametro.Hojas,
-                    Recurso = x.Parametro.Template,
-                    TiempoCreacionDeExcel = x.Tiempos.Where(t => t.Descripcion == "Creacion").Select(t => t.Value).FirstOrDefault(),
-                    TiempoDiseno = x.Tiempos.Where(t => t.Descripcion == "Diseno").Select(t => t.Value).FirstOrDefault(),
-                    TiempoCreardescarga = x.Tiempos.Where(t => t.Descripcion == "File to download").Select(t => t.Value).FirstOrDefault(),
-                    Total = x.Tiempos.Where(t => t.Descripcion == "Total").Select(t => t.Value).FirstOrDefault()
-                })
-                .ToList();
+                            .Resultados
+                            .Select(x => new TimesView
+                            {
+                                Libreria = x.Libreria,
+                                Registros = x.Parametro.Rows,
+                                Sheet = x.Parametro.Hojas,
+                                Recurso = x.Parametro.Template,
+                                TiempoCreacionDeExcel = x.Tiempos.Where(t => t.Descripcion == "Creacion").Select(t => t.Value).FirstOrDefault(),
+                                TiempoDiseno = x.Tiempos.Where(t => t.Descripcion == "Diseno").Select(t => t.Value).FirstOrDefault(),
+                                TiempoCreardescarga = x.Tiempos.Where(t => t.Descripcion == "File to download").Select(t => t.Value).FirstOrDefault(),
+                                Total = x.Tiempos.Where(t => t.Descripcion == "Total").Select(t => t.Value).FirstOrDefault()
+                            })
+                            .ToList();
 
             currentsheet.Cells[1, 1].LoadFromCollection(respuesta, true);
             var file = EpplusDownload(excel);
@@ -66,25 +64,17 @@ namespace Library_benchmark.Controllers
         [HttpPost]
         public ActionResult Index(Parametros parametros)
         {
-
-            if (parametros.IdExcel == 1)
+            switch (parametros.IdExcel)
             {
-                var res = NPOI(parametros);
-                return res;
+                case 1:
+                    var res = Npoi(parametros);
+                    return res;
+                case 2:
+                    return Epplus(parametros);
+                default:
+                    ViewBag.IdLibreria = new SelectList(parametros.Exceles, "Id", "Nombre");
+                    return View(parametros);
             }
-            else if (parametros.IdExcel == 2)
-            {
-                return EPPLUS(parametros);
-            }
-            else
-            {
-
-                ViewBag.IdLibreria = new SelectList(parametros.Exceles, "Id", "Nombre");
-
-                return View(parametros);
-            }
-
-
         }
 
 
@@ -100,7 +90,7 @@ namespace Library_benchmark.Controllers
             const string fileDownloadName = "EPPLUS.xlsx";
             const string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-            var fsr = new FileStreamResult(ms, contentType) {FileDownloadName = fileDownloadName};
+            var fsr = new FileStreamResult(ms, contentType) { FileDownloadName = fileDownloadName };
 
             return fsr;
         }
@@ -124,7 +114,7 @@ namespace Library_benchmark.Controllers
 
         }
 
-        private FileResult NPOI(Parametros parametros)
+        private FileResult Npoi(Parametros parametros)
         {
             var res = Singleton.Instance;
             FileContentResult file = null;
@@ -132,25 +122,24 @@ namespace Library_benchmark.Controllers
             {
                 var stopWatch = Stopwatch.StartNew();
                 var informacion = new Consultas(parametros.Rows).GetExcelInformacion();
-
                 var result = new Resultado
                 {
                     Parametro = parametros,
-                    Libreria = "NPOI"
+                    Libreria = Leyendas.Npoi
                 };
 
                 if (informacion == null) continue;
                 var watchCreation = Stopwatch.StartNew();
 
-                var excel = parametros.Template ? 
-                    new NpoiService(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Hojas).GetExcelExample() : 
+                var excel = parametros.Template ?
+                    new NpoiService(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Hojas).GetExcelExample() :
                     new NpoiService(informacion, parametros.Diseno, parametros.Mascaras, parametros.Hojas).GetExcelExample();
 
 
                 watchCreation.Stop();
                 result.Tiempos.Add(new Tiempo
                 {
-                    Descripcion = "Creacion",
+                    Descripcion = Leyendas.Creacion,
                     Value = watchCreation.Elapsed.ToString()
                 });
 
@@ -162,7 +151,7 @@ namespace Library_benchmark.Controllers
                     watchDesign.Stop();
                     result.Tiempos.Add(new Tiempo
                     {
-                        Descripcion = "Diseno",
+                        Descripcion = Leyendas.Diseno,
                         Value = watchDesign.Elapsed.ToString()
                     });
 
@@ -172,7 +161,7 @@ namespace Library_benchmark.Controllers
                 watchFiletoDonwload.Stop();
                 result.Tiempos.Add(new Tiempo
                 {
-                    Descripcion = "File to download",
+                    Descripcion = Leyendas.Download,
                     Value = watchFiletoDonwload.Elapsed.ToString()
                 });
 
@@ -181,13 +170,12 @@ namespace Library_benchmark.Controllers
                 stopWatch.Stop();
                 result.Tiempos.Add(new Tiempo
                 {
-                    Descripcion = "Total",
+                    Descripcion = Leyendas.Total,
                     Value = stopWatch.Elapsed.ToString()
                 });
                 result.Intento = i;
                 res.Resultados.Add(result);
 
-                excel = null;
                 if (i != (parametros.Iteraciones - 1))
                     file = null;
 
@@ -196,7 +184,7 @@ namespace Library_benchmark.Controllers
             return file;
         }
 
-        private FileStreamResult EPPLUS(Parametros parametros)
+        private FileStreamResult Epplus(Parametros parametros)
         {
             var res = Singleton.Instance;
             FileStreamResult file = null;
@@ -208,20 +196,20 @@ namespace Library_benchmark.Controllers
                 var result = new Resultado
                 {
                     Parametro = parametros,
-                    Libreria = "EPPLUS"
+                    Libreria = Leyendas.Epplus
                 };
 
                 if (informacion == null) continue;
                 var watchCreation = Stopwatch.StartNew();
 
-                var excel = parametros.Template ? 
-                    new EpplusServicio(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Hojas).GetExcelExample() : 
+                var excel = parametros.Template ?
+                    new EpplusServicio(Resources.DummyReport, informacion, parametros.Mascaras, parametros.Hojas).GetExcelExample() :
                     new EpplusServicio(informacion, parametros.Diseno, parametros.Mascaras, parametros.Hojas).GetExcelExample();
 
                 watchCreation.Stop();
                 result.Tiempos.Add(new Tiempo
                 {
-                    Descripcion = "Creacion",
+                    Descripcion = Leyendas.Creacion,
                     Value = watchCreation.Elapsed.ToString()
                 });
 
@@ -233,7 +221,7 @@ namespace Library_benchmark.Controllers
                     watchDesign.Stop();
                     result.Tiempos.Add(new Tiempo
                     {
-                        Descripcion = "Diseno",
+                        Descripcion = Leyendas.Diseno,
                         Value = watchDesign.Elapsed.ToString()
                     });
                 }
@@ -242,20 +230,19 @@ namespace Library_benchmark.Controllers
                 watchFiletoDonwload.Stop();
                 result.Tiempos.Add(new Tiempo
                 {
-                    Descripcion = "File to download",
+                    Descripcion = Leyendas.Download,
                     Value = watchFiletoDonwload.Elapsed.ToString()
                 });
 
                 stopWatch.Stop();
                 result.Tiempos.Add(new Tiempo
                 {
-                    Descripcion = "Total",
+                    Descripcion = Leyendas.Total,
                     Value = stopWatch.Elapsed.ToString()
                 });
                 result.Intento = i;
                 res.Resultados.Add(result);
-
-                excel = null;
+                
                 if (i != (parametros.Iteraciones - 1))
                     file = null;
 
@@ -265,6 +252,17 @@ namespace Library_benchmark.Controllers
             return file;
 
         }
+
+        private static class Leyendas
+        {
+            public const string Npoi = "NPOI";
+            public const string Epplus = "EPPLUS";
+            public const string Total = "Total";
+            public const string Download = "File to download";
+            public const string Diseno = "Diseno";
+            public const string Creacion = "Creacion";
+        }
+
         #endregion
 
     }
