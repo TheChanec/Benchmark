@@ -69,5 +69,15 @@ namespace Library_benchmark.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] DummyTemplate {
+            get {
+                object obj = ResourceManager.GetObject("DummyTemplate", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

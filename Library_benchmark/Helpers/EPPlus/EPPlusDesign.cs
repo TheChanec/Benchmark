@@ -4,6 +4,9 @@ using System.Drawing;
 
 namespace Library_benchmark.Helpers.EPPlus
 {
+    /// <summary>
+    /// Clase encargada de dar diseño y estilo a Excel usando la libreria EPPLUS
+    /// </summary>
     public class EpplusDesign
     {
         private readonly ExcelPackage _excel;

@@ -1,6 +1,6 @@
 ﻿namespace Library_benchmark.Models
 {
-    public class DummyView
+    public class TimesView
     {
         public string Libreria { get; set; }
         public bool Recurso { get; set; }

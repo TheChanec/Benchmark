@@ -8,6 +8,10 @@ namespace Library_benchmark.Helpers
     {
         private readonly int _rows;
 
+        public Consultas()
+        {
+        }
+
         /// <summary>
         /// Contructor Inicial de la clase consultas 
         /// </summary>
@@ -18,16 +22,16 @@ namespace Library_benchmark.Helpers
         }
 
         /// <summary>
-        /// Obtiene el la lista generada de entidad Dummy
+        /// Obtiene el la lista generada de entidad ExcelDummy
         /// </summary>
         /// <returns></returns>
-        internal IList<Dummy> GetInformacion()
+        internal IList<ExcelDummy> GetExcelInformacion()
         {
 
-            IList<Dummy> respuesta = new List<Dummy>();
+            IList<ExcelDummy> respuesta = new List<ExcelDummy>();
             for (var i = 1; i <= _rows; i++)
             {
-                respuesta.Add(new Dummy
+                respuesta.Add(new ExcelDummy
                 {
                     Fecha1 = DateTime.Now.Date,
                     Fecha2 = DateTime.Now.Date,
@@ -63,5 +67,26 @@ namespace Library_benchmark.Helpers
             return respuesta;
         }
 
+        /// <summary>
+        /// Obtiene valores dumi para la generacion de un PDF
+        /// </summary>
+        /// <returns></returns>
+        internal PdfDummy GetPdfInformacion()
+        {
+            return new PdfDummy
+            {
+                Title = "DRIVER INSPECTION REPORT",
+                SubTitle = "AS REQUIRED BY DOT FEDERAL MOTOR CARRIER SAFETY REGULATIONS",
+                Date = new DateTime().Date,
+                Driver = "HUGO ISAAC RODRIGUEZ",
+                Truck = "CR4150",
+                OdometerStatr = 5,
+                PressurePsi = 8,
+                DevicePsi = 4,
+                Water = "asdwed",
+                MechanicalComments = "hsksnsk"
+            };
+
+        }
     }
 }

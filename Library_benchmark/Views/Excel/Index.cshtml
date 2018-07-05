@@ -38,22 +38,22 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Sheets, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Hojas, htmlAttributes: new { @class = "control-label" })
 
-                        @Html.EditorFor(model => model.Sheets, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Sheets, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Hojas, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Hojas, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Design, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Diseno, htmlAttributes: new { @class = "control-label" })
 
-                        @Html.EditorFor(model => model.Design, new { htmlAttributes = new { @class = "pull-right" } })
-                        @Html.ValidationMessageFor(model => model.Design, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Diseno, new { htmlAttributes = new { @class = "pull-right" } })
+                        @Html.ValidationMessageFor(model => model.Diseno, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Resource, htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.Template, htmlAttributes: new { @class = "control-label" })
 
-                        @Html.EditorFor(model => model.Resource, new { htmlAttributes = new { @class = "pull-right" } })
-                        @Html.ValidationMessageFor(model => model.Resource, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.Template, new { htmlAttributes = new { @class = "pull-right" } })
+                        @Html.ValidationMessageFor(model => model.Template, "", new { @class = "text-danger" })
                     </div>
                     <div class="form-group">
                         @Html.LabelFor(model => model.Mascaras, htmlAttributes: new { @class = "control-label" })

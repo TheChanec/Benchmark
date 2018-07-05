@@ -2,7 +2,7 @@
 
 namespace Library_benchmark.Models
 {
-    public class Dummy
+    public class ExcelDummy
     {
         public DateTime Fecha1 { get; set; }
         public DateTime Fecha2 { get; set; }

@@ -10,7 +10,7 @@ namespace Library_benchmark.Helpers.NPOI
 {
     public class NpoiService
     {
-        private readonly IList<Dummy> _informacion;
+        private readonly IList<ExcelDummy> _informacion;
         private XSSFWorkbook _excel;
         private XSSFSheet _currentsheet;
         private XSSFSheet _basesheet;
@@ -25,7 +25,7 @@ namespace Library_benchmark.Helpers.NPOI
         /// <param name="design">parametro bandera para definir si se pondra diseño a las hojas</param>
         /// <param name="mascaras">Parametro para anunciar si permite mascaras en el excel</param>
         /// <param name="sheets">numero de hojas que tendra el workbook</param>
-        public NpoiService(IList<Dummy> informacion, bool design, bool mascaras, int sheets)
+        public NpoiService(IList<ExcelDummy> informacion, bool design, bool mascaras, int sheets)
         {
             _mascaras = mascaras;
             _informacion = informacion;
@@ -43,7 +43,7 @@ namespace Library_benchmark.Helpers.NPOI
         /// <param name="informacion">informacion que se incrustara en las hojas</param>
         /// <param name="mascaras">Parametro para anunciar si permite mascaras en el excel</param>
         /// <param name="sheets">numero de hojas que tendra el workbook</param>
-        public NpoiService(byte[] excelFile, IList<Dummy> informacion, bool mascaras, int sheets)
+        public NpoiService(byte[] excelFile, IList<ExcelDummy> informacion, bool mascaras, int sheets)
         {
             _informacion = informacion;
             _rowInicial = 4;

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.10.1\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -103,6 +104,9 @@
     <Reference Include="NPOI.OpenXmlFormats, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.3.0\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework, Version=3.10.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -167,17 +171,18 @@
     <Compile Include="Controllers\PDFController.cs" />
     <Compile Include="Helpers\Consultas.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
-    <Compile Include="Helpers\ITextSharp\ITextSharpServicio.cs" />
+    <Compile Include="Helpers\ITextSharp\TextSharpServicio.cs" />
     <Compile Include="Helpers\NPOI\NPOIDesign.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EPPlus\EpplusDesign.cs" />
-    <Compile Include="Helpers\EPPlus\EPPLUSServicio.cs" />
+    <Compile Include="Helpers\EPPlus\EpplusServicio.cs" />
     <Compile Include="Helpers\NPOI\NPOIService.cs" />
-    <Compile Include="Helpers\ITextSharp\ITextEvents.cs" />
-    <Compile Include="Models\DummyView.cs" />
-    <Compile Include="Models\Dummy.cs" />
+    <Compile Include="Helpers\ITextSharp\TextEvents.cs" />
+    <Compile Include="Models\PdfDummy.cs" />
+    <Compile Include="Models\TimesView.cs" />
+    <Compile Include="Models\ExcelDummy.cs" />
     <Compile Include="Models\Parametros.cs" />
     <Compile Include="Models\Singleton.cs" />
     <Compile Include="Models\Resultado.cs" />
@@ -197,8 +202,6 @@
     <Content Include="Content\images\Cemex.png" />
     <Content Include="Content\images\CemexPDF.PNG" />
     <Content Include="Content\images\firma.PNG" />
-    <Content Include="Content\images\goodmorning.jpg" />
-    <Content Include="Content\images\net.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -221,7 +224,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <None Include="Resource\DummyReport.xlsx" />
+    <None Include="Content\Resource\DummyReport.xlsx" />
+    <Content Include="Content\Resource\DummyTemplate.pdf" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -328,6 +332,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.2\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.10.1\build\NUnit.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
