@@ -14,7 +14,7 @@ namespace Library_benchmark.Helpers.NPOI
         private XSSFWorkbook _excel;
         private XSSFSheet _currentsheet;
         private XSSFSheet _basesheet;
-        private int _rowInicial;
+        private readonly int _rowInicial;
         private readonly bool _mascaras;
 
 
@@ -134,7 +134,7 @@ namespace Library_benchmark.Helpers.NPOI
                     hfont.Color = IndexedColors.Black.Index;
                     hfont.FontName = "Century Gothic";
 
-                    if (prop.PropertyType.Equals(typeof(DateTime)))
+                    if (prop.PropertyType == typeof(DateTime))
                     {
                         var style = _excel.CreateCellStyle();
                         style.DataFormat = _excel.CreateDataFormat().GetFormat("m/d/yyyy");
@@ -142,7 +142,7 @@ namespace Library_benchmark.Helpers.NPOI
                         style.SetFont(hfont);
                         _currentsheet.SetDefaultColumnStyle(cell, style);
                     }
-                    else if (prop.PropertyType.Equals(typeof(decimal)))
+                    else if (prop.PropertyType == typeof(decimal))
                     {
                         var style = _excel.CreateCellStyle();
                         style.DataFormat = _excel.CreateDataFormat().GetFormat("[$$-409]#,##0.00");
@@ -200,13 +200,13 @@ namespace Library_benchmark.Helpers.NPOI
                     var celda = row.GetCell(cell) ?? row.CreateCell(cell);
 
                     var style = _currentsheet.GetColumnStyle(cell);
-                    if (prop.PropertyType.Equals(typeof(DateTime)))
+                    if (prop.PropertyType == typeof(DateTime))
                     {
                         var date = (DateTime)prop.GetValue(item, null);
                         celda.SetCellValue(date.Date);
                         style.DataFormat = _excel.CreateDataFormat().GetFormat("MM/dd/yyyy");
                     }
-                    else if (prop.PropertyType.Equals(typeof(decimal)))
+                    else if (prop.PropertyType == typeof(decimal))
                     {
                         var money = (decimal)prop.GetValue(item, null);
                         celda.SetCellValue(Convert.ToDouble(money));

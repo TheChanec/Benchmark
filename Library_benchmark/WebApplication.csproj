@@ -171,15 +171,15 @@
     <Compile Include="Controllers\PDFController.cs" />
     <Compile Include="Helpers\Consultas.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
-    <Compile Include="Helpers\ITextSharp\TextSharpServicio.cs" />
-    <Compile Include="Helpers\NPOI\NPOIDesign.cs" />
+    <Compile Include="Helpers\IText\TextSharpServicio.cs" />
+    <Compile Include="Helpers\Npoi\NPOIDesign.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\EPPlus\EpplusDesign.cs" />
-    <Compile Include="Helpers\EPPlus\EpplusServicio.cs" />
-    <Compile Include="Helpers\NPOI\NPOIService.cs" />
-    <Compile Include="Helpers\ITextSharp\TextEvents.cs" />
+    <Compile Include="Helpers\Epplus\EpplusDesign.cs" />
+    <Compile Include="Helpers\Epplus\EpplusServicio.cs" />
+    <Compile Include="Helpers\Npoi\NPOIService.cs" />
+    <Compile Include="Helpers\IText\TextEvents.cs" />
     <Compile Include="Models\PdfDummy.cs" />
     <Compile Include="Models\TimesView.cs" />
     <Compile Include="Models\ExcelDummy.cs" />

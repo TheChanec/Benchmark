@@ -57,6 +57,12 @@ namespace Library_benchmark.Controllers
             return file;
         }
 
+        public void LimpiarSingleton()
+        {
+            var res = Singleton.Instance;
+            res.Resultados = null;
+            Index();
+        }
         #endregion
 
         #region Post
@@ -265,5 +271,6 @@ namespace Library_benchmark.Controllers
 
         #endregion
 
+        
     }
 }

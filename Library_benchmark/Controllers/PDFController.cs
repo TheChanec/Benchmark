@@ -1,5 +1,4 @@
-﻿
-using iTextSharp.text;
+﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Library_benchmark.Helpers;
 using Library_benchmark.Helpers.ITextSharp;
@@ -7,6 +6,7 @@ using Library_benchmark.Models;
 using System;
 using System.IO;
 using System.Web.Mvc;
+using Library_benchmark.Helpers.IText;
 
 namespace Library_benchmark.Controllers
 {
@@ -30,10 +30,10 @@ namespace Library_benchmark.Controllers
             if (informacion == null) return null;
 
             var pdf = new Document();
-            
+
             for (var i = 0; i < parametros.Iteraciones;)
             {
-                
+
                 var workStream = new MemoryStream();
                 PdfWriter.GetInstance(pdf, workStream).CloseStream = false;
                 var strFilePath = Server.MapPath("~/PdfUploads/");
@@ -44,9 +44,9 @@ namespace Library_benchmark.Controllers
                 //var pdfWriter = PdfWriter.GetInstance(doc, new FileStream(strFilePath + fileName, FileMode.Create));
                 //pdfWriter.PageEvent = new ITextEvents();
 
-                new TextSharpServicio(informacion, parametros.Template, doc,strFilePath, fileName);
+                new TextSharpServicio(informacion, parametros.Template, doc, strFilePath, fileName);
 
-                
+
                 var contents = System.IO.File.ReadAllBytes(strFilePath + fileName);
                 return File(contents, "application/pdf", fileName);
 
@@ -57,7 +57,7 @@ namespace Library_benchmark.Controllers
 
             return null;
         }
-        
+
 
     }
 }

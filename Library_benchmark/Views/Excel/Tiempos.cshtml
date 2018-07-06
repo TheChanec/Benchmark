@@ -4,7 +4,8 @@
     <div class="panel-heading">
         Resultados
 
-        @Html.ActionLink("Exportar", "DownloadSingleton", null, htmlAttributes: new { @class = "pull-right" })
+        @Html.ActionLink(" Exportar ", "DownloadSingleton", null, htmlAttributes: new { @class = "pull-right" }) 
+        @Html.ActionLink(" Limpiar ", "LimpiarSingleton", null, htmlAttributes: new { @class = "pull-right" })
     </div>
 
     @if (Model != null)
@@ -85,12 +86,12 @@
         }
         else
         {
-            <h2>Nada por aqui</h2>
+            
         }
     }
     else
     {
-        <h2>Nada por aqui</h2>
+        
     }
 
 
