@@ -1,20 +1,21 @@
 ﻿using System.Globalization;
+using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using Library_benchmark.Helpers.ITextSharp;
 using Library_benchmark.Models;
-using System.IO;
-using iTextSharp.text.html;
+using NPOI.HSSF.Record;
 using Font = iTextSharp.text.Font;
 using Image = iTextSharp.text.Image;
 
-namespace Library_benchmark.Helpers.ITextSharp
+namespace Library_benchmark.Helpers.IText
 {
     /// <summary>
     /// Servicio Encargado de la Generacion de PDF's
     /// </summary>
     public class TextSharpServicio
     {
-        private Document _doc;
+        private readonly Document _doc;
         private readonly PdfDummy _informacion;
         private readonly string _filePath;
         private readonly string _fileName;
@@ -44,8 +45,6 @@ namespace Library_benchmark.Helpers.ITextSharp
 
         private void GenerarPdf()
         {
-            //_doc = new Document(PageSize.A4, 5f, 5f, 73.5f, 70f);
-
             var pdfWriter = PdfWriter.GetInstance(_doc, new FileStream(_filePath + _fileName, FileMode.Create));
             pdfWriter.PageEvent = new TextEvents();
             _doc.Open();
@@ -64,7 +63,7 @@ namespace Library_benchmark.Helpers.ITextSharp
 
         private void UtilizarTemplatePdf()
         {
-            
+
             const string fileNameExisting = @"C:\Users\mario.chan\Documents\GitHub\Benchmark\Library_benchmark\Content\Resource\DummyTemplate.pdf";
             var fileNameNew = _filePath + _fileName;
 
