@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/20/2009 23:03:47" ReportInfo.Modified="09/05/2018 09:58:32" ReportInfo.CreatorVersion="2018.3.41.0">
+  <Dictionary>
+    <BusinessObjectDataSource Name="Informacion" ReferenceName="Informacion" DataType="null" Enabled="true">
+      <Column Name="Title" DataType="System.String"/>
+      <Column Name="SubTitle" DataType="System.String"/>
+      <Column Name="Date" DataType="System.String"/>
+      <Column Name="Driver" DataType="System.String"/>
+      <Column Name="Truck" DataType="System.String"/>
+      <Column Name="OdometerStatr" DataType="System.String"/>
+      <Column Name="PressurePsi" DataType="System.String"/>
+      <Column Name="DevicePsi" DataType="System.String"/>
+      <Column Name="Water" DataType="System.String"/>
+      <Column Name="MechanicalComments" DataType="System.String"/>
+    </BusinessObjectDataSource>
+  </Dictionary>
+  <ReportPage Name="Page1">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="75.6">
+      <PictureObject Name="Picture1" Top="9.45" Width="160.65" Height="56.7" Fill.Color="White" Image="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"/>
+      <TextObject Name="Truck" Left="548.1" Top="37.8" Width="141.75" Height="18.9" Fill.Color="White" Text="[Informacion.Truck]" HorzAlign="Right" VertAlign="Bottom" Font="Calibri, 11pt, style=Bold"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="79.6" Width="718.2" Height="85.05">
+      <TextObject Name="Title" Width="718.2" Height="47.25" Fill.Color="Black" Text="[Informacion.Title]" HorzAlign="Center" VertAlign="Bottom" Font="Arial, 18pt" TextFill.Color="White"/>
+      <TextObject Name="SubTitle" Top="47.25" Width="718.2" Height="37.8" Fill.Color="Black" Text="[Informacion.SubTitle]" HorzAlign="Center" Font="Arial, 11.5pt" TextFill.Color="White"/>
+    </PageHeaderBand>
+    <ReportSummaryBand Name="ReportSummary1" Top="168.65" Width="718.2" Height="831.6">
+      <ShapeObject Name="Shape1" Width="189" Height="94.5" Border.Color="LightGray" Border.Width="3" Fill.Color="238, 239, 239"/>
+      <ShapeObject Name="Shape2" Left="179.55" Width="189" Height="94.5" Border.Color="LightGray" Border.Width="3" Fill.Color="238, 239, 239"/>
+      <ShapeObject Name="Shape3" Left="359.1" Width="189" Height="94.5" Border.Color="LightGray" Border.Width="3" Fill.Color="238, 239, 239"/>
+      <ShapeObject Name="Shape4" Left="538.65" Width="179.55" Height="94.5" Border.Color="LightGray" Border.Width="3" Fill.Color="238, 239, 239"/>
+      <TextObject Name="Date1" Left="18.9" Top="47.25" Width="141.75" Height="18.9" Text="[Informacion.Date]" HorzAlign="Right" VertAlign="Bottom" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Text5" Left="14.45" Top="25.9" Width="151.2" Height="18.9" Text="DATE" VertAlign="Bottom" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Text6" Left="198.45" Top="18.9" Width="151.2" Height="18.9" Text="DRIVER" VertAlign="Bottom" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Text7" Left="375" Top="30.35" Width="151.2" Height="18.9" Text="TRUCK" VertAlign="Bottom" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Text8" Left="548.1" Top="28.35" Width="151.2" Height="18.9" Text="HOURS" VertAlign="Bottom" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Driver" Left="198.45" Top="37.8" Width="151.2" Height="37.8" Text="[Informacion.Driver]" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Truck" Left="378" Top="47.25" Width="151.2" Height="18.9" Text="[Informacion.Truck]" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Date" Left="548.1" Top="47.25" Width="151.2" Height="18.9" Text="[Informacion.Date]" Font="Calibri, 11pt, style=Bold"/>
+      <ShapeObject Name="Shape5" Top="85.05" Width="718.2" Height="37.8" Border.Color="LightGray" Border.Width="3" Fill.Color="223, 223, 223"/>
+      <TextObject Name="Text12" Top="122.85" Width="718.2" Height="37.8" Border.Lines="Left, Right" Border.Color="LightGray" Border.Width="3" Fill.Color="238, 239, 239" Text="      GENERAL INFORMATION" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <ShapeObject Name="Shape6" Top="160.65" Width="718.2" Height="103.95" Border.Color="LightGray" Border.Width="3" Fill.Color="White"/>
+      <TextObject Name="Text13" Left="27.65" Top="187.35" Width="141.75" Height="18.9" Fill.Color="White" Text="Odometer Start " HorzAlign="Center" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Text14" Left="207.9" Top="189" Width="179.55" Height="18.9" Fill.Color="White" Text="Max Air Pressure PSI" HorzAlign="Center" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Text15" Left="434.7" Top="189" Width="264.6" Height="18.9" Fill.Color="White" Text="Low Air Warning Device PSI&#13;" HorzAlign="Center" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="OdometerStatr" Left="47.25" Top="207.9" Width="103.95" Height="18.9" Fill.Color="White" Text="[Informacion.OdometerStatr]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="PressurePsi" Left="207.9" Top="207.9" Width="179.55" Height="18.9" Fill.Color="White" Text="[Informacion.PressurePsi]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="DevicePsi" Left="453.6" Top="207.9" Width="236.25" Height="18.9" Fill.Color="White" Text="[Informacion.DevicePsi]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <ShapeObject Name="Shape7" Top="255.15" Width="718.2" Height="37.8" Border.Color="LightGray" Border.Width="3" Fill.Color="223, 223, 223"/>
+      <TextObject Name="Text19" Top="292.95" Width="718.2" Height="37.8" Border.Lines="Left, Right" Border.Color="LightGray" Border.Width="3" Fill.Color="238, 239, 239" Text="      Critical&#13;" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <ShapeObject Name="Shape8" Top="330.75" Width="718.2" Height="94.5" Border.Color="LightGray" Border.Width="3" Fill.Color="White"/>
+      <ShapeObject Name="Shape9" Top="415.8" Width="718.2" Height="37.8" Border.Color="LightGray" Border.Width="3" Fill.Color="223, 223, 223"/>
+      <TextObject Name="Text20" Top="453.6" Width="718.2" Height="37.8" Border.Lines="Left, Right" Border.Color="LightGray" Border.Width="3" Fill.Color="238, 239, 239" Text="      Mechanical" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <ShapeObject Name="Shape10" Top="491.4" Width="718.2" Height="103.95" Border.Color="LightGray" Border.Width="3" Fill.Color="White"/>
+      <TextObject Name="Text21" Left="18.9" Top="349.65" Width="94.5" Height="18.9" Fill.Color="White" Text="Water" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Water" Left="18.9" Top="368.55" Width="274.05" Height="18.9" Fill.Color="White" Text="[Informacion.Water]" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Text23" Left="18.9" Top="510.3" Width="132.3" Height="47.25" Fill.Color="White" Text="Leaks: Water, Oil,&#13;&#10;Fuel, Grease" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="MechanicalComments" Left="18.9" Top="557.55" Width="264.6" Height="18.9" Fill.Color="White" Text="[Informacion.MechanicalComments]" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <ShapeObject Name="Shape11" Top="585.9" Width="718.2" Height="37.8" Border.Color="LightGray" Border.Width="3" Fill.Color="223, 223, 223"/>
+      <ShapeObject Name="Shape12" Top="614.25" Width="718.2" Height="198.45" Border.Color="LightGray" Border.Width="3" Fill.Color="238, 239, 239"/>
+      <TextObject Name="Text25" Left="9.45" Top="633.15" Width="94.5" Height="18.9" Fill.Color="238, 239, 239" Text="Supervisor" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Text26" Left="604.8" Top="633.15" Width="94.5" Height="18.9" Fill.Color="238, 239, 239" Text="DATE" HorzAlign="Right" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <TextObject Name="Date" Left="463.05" Top="652.05" Width="236.25" Height="18.9" Fill.Color="238, 239, 239" Text="[Informacion.Date]" HorzAlign="Right" VertAlign="Center" Font="Calibri, 11pt, style=Bold"/>
+      <PictureObject Name="Picture2" Left="189" Top="699.3" Width="330.75" Height="75.6" Border.Lines="All" Border.Color="LightGray" Border.Width="3" Fill.Color="238, 239, 239"/>
+    </ReportSummaryBand>
+    <PageFooterBand Name="PageFooter1" Top="1004.25" Width="718.2" Height="37.8"/>
+  </ReportPage>
+</Report>
