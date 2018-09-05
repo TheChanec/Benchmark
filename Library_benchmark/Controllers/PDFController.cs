@@ -23,19 +23,40 @@ namespace Library_benchmark.Controllers
         // GET: PDF
         public ActionResult Index()
         {
-            return View();
+            var parametros = new Parametros();
+            ViewBag.IdLibreria = new SelectList(parametros.PDFes, "Id", "Nombre");
+            return View(parametros);
+        }
+
+        public ActionResult Tiempos()
+        {
+            return PartialView(Singleton.Instance.Resultados);
+        }
+
+        [HttpPost]
+        public ActionResult Index(Parametros parametros)
+        {
+            switch (parametros.IdPdf)
+            {
+                case 1:
+                    //return ITextSharp(parametros);
+                case 2:
+                    //return FastReport(parametros);
+                default:
+                    ViewBag.IdLibreria = new SelectList(parametros.PDFes, "Id", "Nombre");
+                    return View(parametros);
+            }
         }
 
         public ActionResult ITextSharp()
         {
             return PartialView();
         }
-
-        [HttpPost]
-        public ActionResult ITextSharp(Parametros parametros)
+        
+        public void ITextSharp(Parametros parametros)
         {
             var informacion = new Consultas().GetPdfInformacion();
-            if (informacion == null) return null;
+            //if (informacion == null) return null;
 
             var pdf = new Document();
 
@@ -56,17 +77,16 @@ namespace Library_benchmark.Controllers
 
 
                 var contents = System.IO.File.ReadAllBytes(strFilePath + fileName);
-                return File(contents, "application/pdf", fileName);
+                //return File(contents, "application/pdf", fileName);
 
 
             }
 
 
 
-            return null;
+            //return null;
         }
 
-        [HttpPost]
         public void FastReport(Parametros parametros)
         {
             Thread thread = new Thread(new ThreadStart(CreateReport));
