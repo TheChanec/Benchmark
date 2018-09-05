@@ -77,12 +77,12 @@ namespace Library_benchmark.Helpers
             {
                 Title = "DRIVER INSPECTION REPORT",
                 SubTitle = "AS REQUIRED BY DOT FEDERAL MOTOR CARRIER SAFETY REGULATIONS",
-                Date = new DateTime().Date,
+                Date = new DateTime().Date.ToString(),
                 Driver = "HUGO ISAAC RODRIGUEZ",
                 Truck = "CR4150",
-                OdometerStatr = 5,
-                PressurePsi = 8,
-                DevicePsi = 4,
+                OdometerStatr = "5",
+                PressurePsi = "8",
+                DevicePsi = "4",
                 Water = "asdwed",
                 MechanicalComments = "hsksnsk"
             };
