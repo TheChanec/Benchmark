@@ -346,6 +346,9 @@ namespace Library_benchmark.Controllers
                 new ShapeObject()
                 {
                     Name = "Shape5",
+                    Top =  85.05f ,
+                    Width =  718.2f ,
+                    Height =  37.8f ,
                     Border = new Border()
                     {
                         Color = Color.LightGray,
@@ -597,7 +600,7 @@ namespace Library_benchmark.Controllers
                     Top = 510.3F,
                     Width = 132.3F,
                     Height = 47.25F,
-                    Text = "Leaks: Water, Oil,&#13;&#10;Fuel, Grease",
+                    Text = "Leaks: Water, Oil, Fuel, Grease",
                     FillColor = Color.White,
                     VertAlign = VertAlign.Center,
                     Font = new System.Drawing.Font("Calibri", 11, FontStyle.Bold)
