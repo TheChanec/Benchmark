@@ -8,17 +8,29 @@ using System.Linq;
 
 namespace Library_benchmark.Helpers.EPPlus
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class EpplusServicio
     {
+        #region Variables Locales
         private ExcelPackage _excel;
         private ExcelWorksheet _currentsheet;
         private ExcelWorksheet _basesheet;
         private readonly IList<ExcelDummy> _informacion;
         private readonly bool _mascaras;
-        private int _inicialRow;
+        private int _inicialRow; 
+        #endregion
 
+        #region Constuctores
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="informacion"></param>
+        /// <param name="design"></param>
+        /// <param name="mascaras"></param>
+        /// <param name="sheets"></param>
         public EpplusServicio(IList<ExcelDummy> informacion, bool design, bool mascaras, int sheets)
         {
             _informacion = informacion;
@@ -29,7 +41,13 @@ namespace Library_benchmark.Helpers.EPPlus
             CreateSheets(sheets);
 
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="documentDummy"></param>
+        /// <param name="informacion"></param>
+        /// <param name="mascaras"></param>
+        /// <param name="sheets"></param>
         public EpplusServicio(byte[] documentDummy, IList<ExcelDummy> informacion, bool mascaras, int sheets)
         {
             _informacion = informacion;
@@ -41,21 +59,39 @@ namespace Library_benchmark.Helpers.EPPlus
             //deleteWorkSheets();
             CreateSheets(sheets);
         }
+
+        #endregion
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="documentDummy"></param>
         private void CreateWorkBook(byte[] documentDummy)
         {
             using (var memStream = new MemoryStream(documentDummy))
                 _excel = new ExcelPackage(memStream);
 
         }
+        /// <summary>
+        /// 
+        /// </summary>
         private void CreateWorkBook()
         {
             _excel = new ExcelPackage();
         }
+        /// <summary>
+        /// 
+        /// </summary>
         private void CreateSheetBase()
         {
             if (_excel.Workbook.Worksheets.Any())
                 _basesheet = _excel.Workbook.Worksheets.FirstOrDefault();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sheets"></param>
         private void CreateSheets(int sheets)
         {
             for (var i = 0; i < sheets; i++)
@@ -64,6 +100,10 @@ namespace Library_benchmark.Helpers.EPPlus
                 AddInformation();
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
         private void AddSheet(string name)
         {
             if (_excel.Workbook.Worksheets.All(x => x.Name != name))
@@ -77,6 +117,9 @@ namespace Library_benchmark.Helpers.EPPlus
 
             if (_currentsheet != null) _currentsheet.DefaultRowHeight = 17.25;
         }
+        /// <summary>
+        /// 
+        /// </summary>
         private void AddInformation()
         {
 
@@ -84,11 +127,14 @@ namespace Library_benchmark.Helpers.EPPlus
             _currentsheet.Cells[_currentsheet.Dimension.Address].AutoFitColumns();
             if (_mascaras)
             {
-                Mascaras();
+                UseMascaras();
             }
 
         }
-        private void Mascaras()
+        /// <summary>
+        /// 
+        /// </summary>
+        private void UseMascaras()
         {
             var propiedad = 0;
             foreach (var prop in typeof(ExcelDummy).GetProperties())
@@ -104,6 +150,10 @@ namespace Library_benchmark.Helpers.EPPlus
                 }
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         internal ExcelPackage GetExcelExample()
         {
             return _excel;
