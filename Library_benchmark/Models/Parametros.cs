@@ -6,6 +6,7 @@ namespace Library_benchmark.Models
     public class Parametros
     {
         public int IdExcel { get; set; }
+        public int IdPdf { get; set; }
         public int Rows { get; set; }
         public int Hojas { get; set; }
         public bool Diseno { get; set; }
@@ -13,5 +14,8 @@ namespace Library_benchmark.Models
         public bool Template { get; set; }
         public int Iteraciones { get; set; }
         public ICollection<object> Exceles { get; set; } = new List<Object>() { new { Id = 1, Nombre = "NPOI" }, new { Id = 2, Nombre = "EPPLUS" } };
+        public ICollection<object> PDFes { get; set; } = new List<Object>() { new { Id = 1, Nombre = "ITextSharp" }, new { Id = 2, Nombre = "Fast-Report" } };
+
+        
     }
 }
