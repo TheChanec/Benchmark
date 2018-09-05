@@ -5,10 +5,9 @@ VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "Library_benchmark\WebApplication.csproj", "{50BDB997-0BBB-4824-8471-FB6DAA7CD862}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplicationTests", "WebApplicationTests\WebApplicationTests.csproj", "{9BEE5467-5235-44D0-AAFA-FDBB02B3A75A}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -18,12 +17,19 @@ Global
 		{50BDB997-0BBB-4824-8471-FB6DAA7CD862}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50BDB997-0BBB-4824-8471-FB6DAA7CD862}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50BDB997-0BBB-4824-8471-FB6DAA7CD862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BEE5467-5235-44D0-AAFA-FDBB02B3A75A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BEE5467-5235-44D0-AAFA-FDBB02B3A75A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BEE5467-5235-44D0-AAFA-FDBB02B3A75A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BEE5467-5235-44D0-AAFA-FDBB02B3A75A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1835367B-DB79-4FF8-91BC-4910471536C9}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
