@@ -1,0 +1,104 @@
+﻿@model  ICollection<Library_benchmark.Models.Resultado>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        Resultados
+
+        @Html.ActionLink(" Exportar ", "DownloadSingleton", null, htmlAttributes: new { @class = "pull-right" })
+        @Html.ActionLink(" Limpiar ", "LimpiarSingleton", null, htmlAttributes: new { @class = "pull-right" })
+    </div>
+
+    @if (Model != null)
+    {
+        if (Model != null)
+        {
+            <table class="table table-responsive table-striped">
+                <thead>
+                    <tr class="info">
+                        <td>
+                            #
+                        </td>
+                        <td>
+                            Libreria
+                        </td>
+                        <td>
+                            Recurso
+                        </td>
+                        <td>
+                            Registros
+                        </td>
+                        <td>
+                            Hojas
+                        </td>
+
+                        <td>
+                            Tiempos
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Intento
+                            </td>
+                            <td>
+                                @item.Libreria
+                            </td>
+                            <td>
+                                @item.Parametro.Template
+                            </td>
+                            <td>
+                                @item.Parametro.Rows
+                            </td>
+                            <td>
+                                @item.Parametro.Hojas
+                            </td>
+                            <td>
+                                @if (item.Tiempos != null)
+                                {
+                                    <ul class="list-group">
+                                        @foreach (var time in item.Tiempos)
+                                        {
+
+                                            <li class="list-group-item">
+                                                @time.Value
+                                                <span class="badge">@time.Descripcion</span>
+                                            </li>
+                                        }
+                                    </ul>
+
+                                }
+
+                            </td>
+
+                        </tr>
+
+                    }
+
+                </tbody>
+
+            </table>
+
+
+        }
+        else
+        {
+
+        }
+    }
+    else
+    {
+
+    }
+
+
+</div>
+
+
+
+
+
+

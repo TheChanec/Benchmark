@@ -183,6 +183,7 @@
     <Compile Include="Controllers\PDFController.cs" />
     <Compile Include="Helpers\Consultas.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
+    <Compile Include="Helpers\FastReport\FastReportServicio.cs" />
     <Compile Include="Helpers\IText\TextSharpServicio.cs" />
     <Compile Include="Helpers\Npoi\NPOIDesign.cs" />
     <Compile Include="Global.asax.cs">
@@ -290,6 +291,7 @@
     <Content Include="Views\Excel\Index.cshtml" />
     <Content Include="Views\PDF\Index.cshtml" />
     <Content Include="Views\PDF\ITextSharp.cshtml" />
+    <Content Include="Views\PDF\Tiempos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PdfUploads\" />
