@@ -20,7 +20,7 @@ namespace Library_benchmark.Helpers.Fast
         /// <param name="informacion"></param>
         public FastReportServicio(PdfDummy informacion)
         {
-            Report report = new Report();
+            report = new Report();
             this.informacion = informacion;
 
 
