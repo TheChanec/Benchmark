@@ -59,7 +59,7 @@ namespace Library_benchmark.Helpers.Fast
 
             ReportSummary(page1);
 
-            report.Show();
+            //report.Show();
             //thread.Suspend();
         }
 
@@ -705,9 +705,9 @@ namespace Library_benchmark.Helpers.Fast
                 myText.Text = (string)prop.GetValue(informacion, null).ToString();
             }
 
-            report.Show();
+            //report.Show();
 
-            thread.Suspend();
+            //thread.Suspend();
 
         }
 

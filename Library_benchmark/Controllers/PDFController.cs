@@ -9,6 +9,7 @@ using Library_benchmark.Helpers.IText;
 using System.Diagnostics;
 using Library_benchmark.Helpers.Fast;
 using Library_benchmark.Properties;
+using FastReport;
 
 namespace Library_benchmark.Controllers
 {
@@ -36,13 +37,13 @@ namespace Library_benchmark.Controllers
                     return ITextSharp(parametros);
                 case 2:
                     return FastReport(parametros);
-                    
+
                 default:
                     ViewBag.IdLibreria = new SelectList(parametros.PDFes, "Id", "Nombre");
                     return View(parametros);
             }
         }
-        
+
 
         public FileContentResult ITextSharp(Parametros parametros)
         {
@@ -78,9 +79,9 @@ namespace Library_benchmark.Controllers
             return null;
         }
 
-        public FastReport.Report FastReport(Parametros parametros)
+        public FileStreamResult FastReport(Parametros parametros)
         {
-
+            FileStreamResult file = null;
             var res = Singleton.Instance;
             for (var i = 0; i < parametros.Iteraciones; i++)
             {
@@ -90,7 +91,7 @@ namespace Library_benchmark.Controllers
                 var result = new Resultado
                 {
                     Parametro = parametros,
-                    //Libreria = Leyendas.Epplus
+                    Libreria = Leyendas.Fast
                 };
 
                 if (informacion == null) continue;
@@ -103,27 +104,72 @@ namespace Library_benchmark.Controllers
                 watchCreation.Stop();
                 result.Tiempos.Add(new Tiempo
                 {
-                    //Descripcion = Leyendas.Creacion,
+                    Descripcion = Leyendas.Creacion,
                     Value = watchCreation.Elapsed.ToString()
                 });
 
+                Stopwatch watchFiletoDonwload = Stopwatch.StartNew();
+                file = FastReportDownload(pdf);
+                watchFiletoDonwload.Stop();
+                result.Tiempos.Add(new Tiempo
+                {
+                    Descripcion = Leyendas.Download,
+                    Value = watchFiletoDonwload.Elapsed.ToString()
+                });
 
-                return pdf;
+                stopWatch.Stop();
+                result.Tiempos.Add(new Tiempo
+                {
+                    Descripcion = Leyendas.Total,
+                    Value = stopWatch.Elapsed.ToString()
+                });
+                result.Intento = i;
+                res.Resultados.Add(result);
+
+                if (i != (parametros.Iteraciones - 1))
+                    file = null;
+
             }
-
-
-            
-
-
-            return null;
+            return file;
         }
 
+        private FileStreamResult FastReportDownload(Report pdf)
+        {
+            if (pdf.Report.Prepare())
+            {
+                // Set PDF export props
+                FastReport.Export.Pdf.PDFExport pdfExport = new FastReport.Export.Pdf.PDFExport();
+                pdfExport.ShowProgress = false;
+                pdfExport.Subject = "Subject";
+                pdfExport.Title = "xxxxxxx";
+                pdfExport.Compressed = true;
+                pdfExport.AllowPrint = true;
+                pdfExport.EmbeddingFonts = true;
 
-        
+                MemoryStream strm = new MemoryStream();
+                pdf.Report.Export(pdfExport, strm);
+                pdf.Dispose();
+                pdfExport.Dispose();
+                strm.Position = 0;
 
-        
+                // return stream in browser
+                return File(strm, "application/pdf", "report.pdf");
+            }
+            else
+            {
+                return null;
+            }
+        }
 
-       
+        private static class Leyendas
+        {
+            public const string Fast = "FastReport";
+            public const string ITextSharp = "TextSharp";
+            public const string Total = "Total";
+            public const string Download = "File to download";
+            public const string Creacion = "Creacion";
+        }
+
     }
 
 
