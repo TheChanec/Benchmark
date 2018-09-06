@@ -79,5 +79,15 @@ namespace Library_benchmark.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] PdfDummy {
+            get {
+                object obj = ResourceManager.GetObject("PdfDummy", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
