@@ -33,23 +33,18 @@ namespace Library_benchmark.Controllers
             switch (parametros.IdPdf)
             {
                 case 1:
-                    ITextSharp(parametros);
-                    return null;
+                    return ITextSharp(parametros);
                 case 2:
-                    FastReport(parametros);
-                    return null;
+                    return FastReport(parametros);
+                    
                 default:
                     ViewBag.IdLibreria = new SelectList(parametros.PDFes, "Id", "Nombre");
                     return View(parametros);
             }
         }
+        
 
-        public ActionResult ITextSharp()
-        {
-            return PartialView();
-        }
-
-        public void ITextSharp(Parametros parametros)
+        public FileContentResult ITextSharp(Parametros parametros)
         {
             var informacion = new Consultas().GetPdfInformacion();
             //if (informacion == null) return null;
@@ -73,17 +68,17 @@ namespace Library_benchmark.Controllers
 
 
                 var contents = System.IO.File.ReadAllBytes(strFilePath + fileName);
-                //return File(contents, "application/pdf", fileName);
+                return File(contents, "application/pdf", fileName);
 
 
             }
 
 
 
-            //return null;
+            return null;
         }
 
-        public void FastReport(Parametros parametros)
+        public FastReport.Report FastReport(Parametros parametros)
         {
 
             var res = Singleton.Instance;
@@ -111,13 +106,16 @@ namespace Library_benchmark.Controllers
                     //Descripcion = Leyendas.Creacion,
                     Value = watchCreation.Elapsed.ToString()
                 });
+
+
+                return pdf;
             }
 
 
             
 
 
-            //return null;
+            return null;
         }
 
 
