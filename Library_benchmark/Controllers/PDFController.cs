@@ -45,38 +45,24 @@ namespace Library_benchmark.Controllers
         }
 
 
-        public FileContentResult ITextSharp(Parametros parametros)
+        public FileStreamResult ITextSharp(Parametros parametros)
         {
             var informacion = new Consultas().GetPdfInformacion();
             //if (informacion == null) return null;
 
-            var pdf = new Document();
-
-            for (var i = 0; i < parametros.Iteraciones;)
+            FileStreamResult output = null;
+            MemoryStream ms = new MemoryStream();
+            for (var i = 0; i < parametros.Iteraciones; i++)
             {
 
-                var workStream = new MemoryStream();
-                PdfWriter.GetInstance(pdf, workStream).CloseStream = false;
-                var strFilePath = Server.MapPath("~/PdfUploads/");
+                var file = new TextSharpServicio(informacion, parametros.Template).GetFile();
 
-                var fileName = "Pdf_" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + ".pdf";
-                var doc = new Document(PageSize.A4, 5F, 5F, 73.5F, 70f);
-
-                //var pdfWriter = PdfWriter.GetInstance(doc, new FileStream(strFilePath + fileName, FileMode.Create));
-                //pdfWriter.PageEvent = new ITextEvents();
-
-                new TextSharpServicio(informacion, parametros.Template, doc, strFilePath, fileName);
-
-
-                var contents = System.IO.File.ReadAllBytes(strFilePath + fileName);
-                return File(contents, "application/pdf", fileName);
-
-
+                output = ItextSharpDownload(file);
             }
 
 
 
-            return null;
+            return output;
         }
 
         public FileStreamResult FastReport(Parametros parametros)
@@ -132,6 +118,18 @@ namespace Library_benchmark.Controllers
             }
             return file;
         }
+        private FileStreamResult ItextSharpDownload(byte[] file)
+        {
+            MemoryStream output = new MemoryStream();
+            output.Write(file, 0, file.Length);
+            output.Position = 0;
+
+            HttpContext.Response.AddHeader("content-disposition", "attachment; filename=form.pdf");
+
+
+            // Return the output stream
+            return File(output, "application/pdf");
+        }
 
         private FileStreamResult FastReportDownload(Report pdf)
         {
@@ -160,6 +158,8 @@ namespace Library_benchmark.Controllers
                 return null;
             }
         }
+
+
 
         private static class Leyendas
         {

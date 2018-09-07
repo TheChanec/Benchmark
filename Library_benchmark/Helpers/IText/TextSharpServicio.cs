@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -16,6 +17,8 @@ namespace Library_benchmark.Helpers.IText
     public class TextSharpServicio
     {
         private readonly Document _doc;
+        private readonly MemoryStream _workStream;
+        private readonly PdfWriter _pdfWriter;
         private readonly PdfDummy _informacion;
         private readonly string _filePath;
         private readonly string _fileName;
@@ -30,12 +33,20 @@ namespace Library_benchmark.Helpers.IText
         private static BaseColor _baseColorBackground;
         private static BaseColor _baseColorSeparacion;
 
-        public TextSharpServicio(PdfDummy informacion, bool template, Document document, string filePath, string fileName)
+        public TextSharpServicio(PdfDummy informacion, bool template)
         {
-            _fileName = fileName;
-            _filePath = filePath;
+            _doc = new Document(PageSize.A4, 5F, 5F, 73.5F, 70f);
+
+            _workStream = new MemoryStream();
+            _pdfWriter = PdfWriter.GetInstance(_doc, _workStream);
+            _pdfWriter.CloseStream = false;
+
+           
+
+
+
             _informacion = informacion;
-            _doc = document;
+
 
             if (!template)
                 GenerarPdf();
@@ -45,8 +56,8 @@ namespace Library_benchmark.Helpers.IText
 
         private void GenerarPdf()
         {
-            var pdfWriter = PdfWriter.GetInstance(_doc, new FileStream(_filePath + _fileName, FileMode.Create));
-            pdfWriter.PageEvent = new TextEvents();
+
+            _pdfWriter.PageEvent = new TextEvents();
             _doc.Open();
 
             InicializarFonts();
@@ -106,6 +117,8 @@ namespace Library_benchmark.Helpers.IText
                 pdfReader.Close();
             }
         }
+
+
 
         #region Creacion del pdf
 
@@ -506,5 +519,10 @@ namespace Library_benchmark.Helpers.IText
 
         #endregion
 
+
+        internal byte[] GetFile()
+        {
+            return this._workStream.ToArray();
+        }
     }
 }
