@@ -13,35 +13,41 @@
                 {
                     @Html.AntiForgeryToken()
 
-                    <div class="col-md-12">
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-12">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Iteraciones, htmlAttributes: new { @class = "control-label" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Iteraciones, htmlAttributes: new { @class = "control-label" })
 
-                            @Html.EditorFor(model => model.Iteraciones, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Iteraciones, "", new { @class = "text-danger" })
-                        </div>
-                        <hr />
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.PDFes, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Iteraciones, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Iteraciones, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Hojas, htmlAttributes: new { @class = "control-label" })
 
-                            @Html.DropDownList("IdPdf", new SelectList(Model.PDFes, "Id", "Nombre"), htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.PDFes, "", new { @class = "text-danger" })
-                        </div>
-                        <hr />
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Template, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Hojas, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Hojas, "", new { @class = "text-danger" })
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PDFes, htmlAttributes: new { @class = "control-label" })
 
-                            @Html.EditorFor(model => model.Template, new { htmlAttributes = new { @class = "pull-right" } })
-                            @Html.ValidationMessageFor(model => model.Template, "", new { @class = "text-danger" })
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input class="btn btn-primary pull-right" type="submit" value="submit" />
-                            </div>
+                        @Html.DropDownList("IdPdf", new SelectList(Model.PDFes, "Id", "Nombre"), htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.PDFes, "", new { @class = "text-danger" })
+                    </div>
+                    <hr />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Template, htmlAttributes: new { @class = "control-label" })
+
+                        @Html.EditorFor(model => model.Template, new { htmlAttributes = new { @class = "pull-right" } })
+                        @Html.ValidationMessageFor(model => model.Template, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input class="btn btn-primary pull-right" type="submit" value="submit" />
                         </div>
                     </div>
+                </div>
                 }
 
 
