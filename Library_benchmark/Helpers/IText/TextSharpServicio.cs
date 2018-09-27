@@ -19,6 +19,7 @@ namespace Library_benchmark.Helpers.IText
         private readonly Document _doc;
         private readonly MemoryStream _workStream;
         private readonly PdfWriter _pdfWriter;
+        private readonly int _hojas;
         private readonly PdfDummy _informacion;
         private readonly string _filePath;
         private readonly string _fileName;
@@ -33,14 +34,14 @@ namespace Library_benchmark.Helpers.IText
         private static BaseColor _baseColorBackground;
         private static BaseColor _baseColorSeparacion;
 
-        public TextSharpServicio(PdfDummy informacion, bool template)
+        public TextSharpServicio(PdfDummy informacion, bool template, int hojas)
         {
             _doc = new Document(PageSize.A4, 5F, 5F, 73.5F, 70f);
 
             _workStream = new MemoryStream();
             _pdfWriter = PdfWriter.GetInstance(_doc, _workStream);
             _pdfWriter.CloseStream = false;
-
+            _hojas = hojas;
            
 
 
@@ -62,11 +63,22 @@ namespace Library_benchmark.Helpers.IText
 
             InicializarFonts();
             InicializarEstilos();
-            CrearHeader();
-            CrearInformacionGeneral();
-            CrearCritical();
-            CrearMechanical();
-            CrearSupervisor();
+
+            for (int i = 0; i < _hojas; i++)
+            {
+                if (i != 0)
+                {
+                    _doc.NewPage();
+                }
+                
+                CrearHeader();
+                CrearInformacionGeneral();
+                CrearCritical();
+                CrearMechanical();
+                CrearSupervisor();
+            }
+
+            
 
             _doc.Close();
 
@@ -76,7 +88,7 @@ namespace Library_benchmark.Helpers.IText
         {
 
             const string fileNameExisting = @"C:\Users\mario.chan\Documents\GitHub\Benchmark\Library_benchmark\Content\Resource\DummyTemplate.pdf";
-            var fileNameNew = _filePath + _fileName;
+            var fileNameNew = @"C:\Users\mario.chan\Documents\GitHub\Benchmark\Library_benchmark\PdfUploads\" + "prueba.pdf";
 
             using (var existingFileStream = new FileStream(fileNameExisting, FileMode.Open))
             using (var newFileStream = new FileStream(fileNameNew, FileMode.Create))
@@ -149,6 +161,8 @@ namespace Library_benchmark.Helpers.IText
         /// </summary>
         private void CrearHeader()
         {
+            
+
             var tblContainer = new PdfPTable(4) { TotalWidth = 558f, LockedWidth = true };
 
             var title = new Phrase(_informacion.Title, _fontDiesiocho);

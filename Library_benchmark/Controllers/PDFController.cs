@@ -55,7 +55,7 @@ namespace Library_benchmark.Controllers
             for (var i = 0; i < parametros.Iteraciones; i++)
             {
 
-                var file = new TextSharpServicio(informacion, parametros.Template).GetFile();
+                var file = new TextSharpServicio(informacion, parametros.Template, parametros.Hojas).GetFile();
 
                 output = ItextSharpDownload(file);
             }
@@ -85,7 +85,7 @@ namespace Library_benchmark.Controllers
 
                 var pdf = parametros.Template ?
                     new FastReportServicio(Resources.PdfDummy, informacion).GetExcelExample() :
-                    new FastReportServicio(informacion).GetExcelExample();
+                    new FastReportServicio(informacion, parametros.Hojas).GetExcelExample();
 
                 watchCreation.Stop();
                 result.Tiempos.Add(new Tiempo

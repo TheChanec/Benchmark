@@ -11,6 +11,7 @@ namespace Library_benchmark.Helpers.Fast
     public class FastReportServicio
     {
         private readonly PdfDummy informacion;
+        private readonly int hojas;
         private Report report;
         private Thread thread;
 
@@ -18,10 +19,11 @@ namespace Library_benchmark.Helpers.Fast
         /// 
         /// </summary>
         /// <param name="informacion"></param>
-        public FastReportServicio(PdfDummy informacion)
+        public FastReportServicio(PdfDummy informacion, int hojas)
         {
             report = new Report();
             this.informacion = informacion;
+            this.hojas = hojas;
 
 
             thread = new Thread(new ThreadStart(Reporte));
@@ -52,15 +54,18 @@ namespace Library_benchmark.Helpers.Fast
         /// </summary>
         private void Reporte()
         {
-            ReportPage page1 = CreateReportPage();
+            for (int i = 0; i < this.hojas; i++)
+            {
+                ReportPage page = CreateReportPage();
 
-            ReportTile(page1);
-            PageHeader(page1);
+                ReportTile(page);
+                PageHeader(page);
+                ReportSummary(page);
 
-            ReportSummary(page1);
+                //report.Show();
+                //thread.Suspend();
+            }
 
-            //report.Show();
-            //thread.Suspend();
         }
 
         /// <summary>
@@ -69,14 +74,14 @@ namespace Library_benchmark.Helpers.Fast
         /// <returns></returns>
         private ReportPage CreateReportPage()
         {
-            ReportPage page1 = new ReportPage()
+            ReportPage page = new ReportPage()
             {
-                Name = "Page1"
+                Name = "Page"
             };
-            report.Pages.Add(page1);
-            return page1;
+            report.Pages.Add(page);
+            return page;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -650,7 +655,7 @@ namespace Library_benchmark.Helpers.Fast
                     TextColor = Color.White
                 });
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
