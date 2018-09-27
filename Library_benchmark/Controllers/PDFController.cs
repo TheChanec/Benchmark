@@ -47,17 +47,53 @@ namespace Library_benchmark.Controllers
 
         public FileStreamResult ITextSharp(Parametros parametros)
         {
-            var informacion = new Consultas().GetPdfInformacion();
-            //if (informacion == null) return null;
-
+            var res = Singleton.Instance;
             FileStreamResult output = null;
-            MemoryStream ms = new MemoryStream();
             for (var i = 0; i < parametros.Iteraciones; i++)
             {
+                var stopWatch = Stopwatch.StartNew();
+                var informacion = new Consultas().GetPdfInformacion();
 
+                var result = new Resultado
+                {
+                    Parametro = parametros,
+                    Libreria = Leyendas.ITextSharp
+                };
+
+                if (informacion == null) continue;
+                var watchCreation = Stopwatch.StartNew();
+
+
+                MemoryStream ms = new MemoryStream();
                 var file = new TextSharpServicio(informacion, parametros.Template, parametros.Hojas).GetFile();
+                watchCreation.Stop();
+                result.Tiempos.Add(new Tiempo
+                {
+                    Descripcion = Leyendas.Creacion,
+                    Value = watchCreation.Elapsed.ToString()
+                });
+
+                Stopwatch watchFiletoDonwload = Stopwatch.StartNew();
 
                 output = ItextSharpDownload(file);
+                watchFiletoDonwload.Stop();
+                result.Tiempos.Add(new Tiempo
+                {
+                    Descripcion = Leyendas.Download,
+                    Value = watchFiletoDonwload.Elapsed.ToString()
+                });
+
+                stopWatch.Stop();
+                result.Tiempos.Add(new Tiempo
+                {
+                    Descripcion = Leyendas.Total,
+                    Value = stopWatch.Elapsed.ToString()
+                });
+                result.Intento = i;
+                res.Resultados.Add(result);
+
+                if (i != (parametros.Iteraciones - 1))
+                    output = null;
             }
 
 
@@ -84,7 +120,7 @@ namespace Library_benchmark.Controllers
                 var watchCreation = Stopwatch.StartNew();
 
                 var pdf = parametros.Template ?
-                    new FastReportServicio(Resources.PdfDummy, informacion).GetExcelExample() :
+                    new FastReportServicio(Resources.PdfDummy, informacion, parametros.Hojas).GetExcelExample() :
                     new FastReportServicio(informacion, parametros.Hojas).GetExcelExample();
 
                 watchCreation.Stop();

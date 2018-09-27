@@ -36,7 +36,7 @@ namespace Library_benchmark.Helpers.Fast
         /// </summary>
         /// <param name="pdfDummy"></param>
         /// <param name="informacion"></param>
-        public FastReportServicio(byte[] pdfDummy, PdfDummy informacion)
+        public FastReportServicio(byte[] pdfDummy, PdfDummy informacion, int hojas)
         {
             var fs = new MemoryStream(pdfDummy);
             report = Report.FromStream(fs);
